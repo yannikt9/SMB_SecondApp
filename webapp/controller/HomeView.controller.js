@@ -13,7 +13,7 @@ sap.ui.define([
         return Controller.extend("project1.controller.HomeView", {
             onInit: function () {
                 let oSalesOfficeModel = new JSONModel("model/mockdata.json");
-                this.getView().setModel(new JSONModel(), "display");
+                /* this.getView().setModel(new JSONModel(), "display"); */
         
                 oSalesOfficeModel.dataLoaded().then(() => {
                   let oData = oSalesOfficeModel.getData();

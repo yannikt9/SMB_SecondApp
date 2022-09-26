@@ -76,7 +76,7 @@
 					id="orderTable"
 					paste="onPaste"
 					ariaLabelledBy="title"
-					items="{orders>/Orders}"
+					items="{/A_SalesOrder}"
 				>
 					<columns>
 						<Column width="5%">
@@ -104,12 +104,12 @@
 							press=".onRowPressed"
 						>
 							<cells>
-								<Text text="{orders>SalesOrder}"/>
-								<Text text="{orders>SalesOffice}"/>
-								<Text text="{orders>OverallDeliveryStatus}"/>
-								<Text text="{orders>SoldToParty}"/>
-								<Text text="{orders>SalesOrderDate}"/>
-								<ObjectNumber number="{
+								<Text text="{SalesOrder}"/>
+								<Text text="{SalesOffice}"/>
+								<Text text="{OverallDeliveryStatus}"/>
+								<Text text="{SoldToParty}"/>
+								<Text text="{SalesOrderDate}"/>
+								<!-- <ObjectNumber number="{
 									parts: [{
 										path: 'orders>TotalNetAmount'
 									}, {
@@ -119,7 +119,7 @@
 									formatOptions: {
 										showMeasure: true
 									}
-								}"/>
+								}"/> -->
 							</cells>
 						</ColumnListItem>
 					</items>
