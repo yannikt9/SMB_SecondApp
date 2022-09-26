@@ -1,0 +1,130 @@
+<mvc:View
+	controllerName="project1.controller.SecondPage"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+	xmlns:core="sap.ui.core"
+>
+	<f:DynamicPage
+		id="secondPage"
+		stickySubheaderProvider="iconTabBar"
+		class="sapUiNoContentPadding"
+		toggleHeaderOnTitleClick="{/titleClickable}"
+	>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title
+						id="secondPageTitle"
+						text=""
+					/>
+				</f:heading>
+				<f:breadcrumbs>
+					<Breadcrumbs>
+						<Link
+							text="Standorte"
+							href="./index.html"
+						/>
+					</Breadcrumbs>
+				</f:breadcrumbs>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<f:content>
+					<Title
+						text="Optionen: "
+						level="H2"
+					/>
+					<FlexBox>
+						<ComboBox
+							id="idSelectStatus"
+							placeholder="Status"
+							change="onStatusChanged"
+						>
+							<items>
+								<core:Item
+									key="Ausgeführt"
+									text="Ausgeführt"
+								/>
+								<core:Item
+									key="In Bearbeitung"
+									text="In Bearbeitung"
+								/>
+								<core:Item
+									key="Erfasst"
+									text="Erfasst"
+								/>
+							</items>
+						</ComboBox>
+						<HBox width="100%"/>
+						<DateRangeSelection
+							width="13rem"
+							minDate=""
+							secondDateValue=""
+						/>
+					</FlexBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<ScrollContainer>
+				<Table
+					id="orderTable"
+					paste="onPaste"
+					ariaLabelledBy="title"
+					items="{orders>/Orders}"
+				>
+					<columns>
+						<Column width="5%">
+							<Label text="Nummer"/>
+						</Column>
+						<Column width="25%">
+							<Label text="Verkaufsbüro"/>
+						</Column>
+						<Column width="25%">
+							<Label text="Status"/>
+						</Column>
+						<Column width="25%">
+							<Label text="Kunde"/>
+						</Column>
+						<Column width="10%">
+							<Label text="Datum"/>
+						</Column>
+						<Column width="10%">
+							<Label text="Betrag"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem
+							type="Active"
+							press=".onRowPressed"
+						>
+							<cells>
+								<Text text="{orders>SalesOrder}"/>
+								<Text text="{orders>SalesOffice}"/>
+								<Text text="{orders>OverallDeliveryStatus}"/>
+								<Text text="{orders>SoldToParty}"/>
+								<Text text="{orders>SalesOrderDate}"/>
+								<ObjectNumber number="{
+									parts: [{
+										path: 'orders>TotalNetAmount'
+									}, {
+										path: 'view>/currency'
+									}],
+									type: 'sap.ui.model.type.Currency',
+									formatOptions: {
+										showMeasure: true
+									}
+								}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</ScrollContainer>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>

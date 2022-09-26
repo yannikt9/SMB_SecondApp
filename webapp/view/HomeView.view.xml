@@ -1,7 +1,209 @@
-<mvc:View controllerName="project1.controller.HomeView"
-    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-        <content />
-    </Page>
+<mvc:View
+	controllerName="project1.controller.HomeView"
+	xmlns="sap.m"
+	xmlns:m="sap.suite.ui.microchart"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:layout="sap.ui.layout"
+	xmlns:f="sap.f"
+	xmlns:card="sap.f.cards"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+>
+	<f:DynamicPage id="home">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title
+						text="Standorte"
+						class="sapUiResponsiveContentPadding"
+					/>
+				</f:heading>
+				<f:content>
+				</f:content>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader backgroundDesign="Solid">
+				<f:content>
+					<FlexBox justifyContent="End">
+						<items>
+							<DateRangeSelection
+								id="DRS1"
+								width="13rem"
+								delimiter="{
+									path: '/delimiterDRS1'
+								}"
+								dateValue="{
+									path: '/dateValueDRS1'
+								}"
+								secondDateValue="{
+									path: '/secondDateValueDRS1'
+								}"
+								displayFormat="{
+									path: '/dateFormatDRS1'
+								}"
+							/>
+						</items>
+					</FlexBox>
+					<HBox/>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<layout:VerticalLayout
+				width="100%"
+				class="gridWrapper sapUiSmallMargin"
+			>
+				<layout:Grid containerQuery="true">
+					<f:Card>
+						<f:header>
+							<card:Header
+								title="Chur"
+								subtitle="Nr. 2050"
+								iconSrc="./img/Chur.png"
+								press=".onChartPressed"
+							/>
+						</f:header>
+						<f:content>
+							<VBox
+								height="10rem"
+								class="sapUiSmallMargin"
+								justifyContent="SpaceBetween"
+							>
+								<HBox justifyContent="SpaceAround">
+									<FlexBox
+										width="20rem"
+										height="10rem"
+										alignItems="Start"
+										justifyContent="SpaceBetween"
+									>
+										<viz:Popover id="idPopOver"/>
+										<viz:VizFrame
+											id="idVizFrame"
+											uiConfig="{
+												applicationSet: 'fiori'
+											}"
+											height="100%"
+											width="100%"
+											
+										>
+											<viz:dataset>
+												<viz.data:FlattenedDataset data="{orders>/Orders}">
+													<viz.data:dimensions>
+														<viz.data:DimensionDefinition
+															name="in Bearbeitung"
+															value="{orders>OverallDeliveryStatus}"
+														/>
+													</viz.data:dimensions>
+													<viz.data:dimensions>
+														<viz.data:DimensionDefinition
+															name="Erfasst"
+															value="{orders>OverallDeliveryStatus}"
+														/>
+													</viz.data:dimensions>
+													<viz.data:dimensions>
+														<viz.data:DimensionDefinition
+															name="Ausgeführt"
+															value="{orders>OverallDeliveryStatus}"
+														/>
+													</viz.data:dimensions>
+													<viz.data:measures>
+														<viz.data:MeasureDefinition
+															name="Revenue"
+															value="{orders>TotalNetAmount}"
+														/>
+													</viz.data:measures>
+												</viz.data:FlattenedDataset>
+											</viz:dataset>
+											<viz:feeds>
+												<viz.feeds:FeedItem
+													id="valueAxisFeed"
+													uid="valueAxis"
+													type="Measure"
+													values="Revenue"
+												/>
+												<viz.feeds:FeedItem
+													id="categoryAxisFeed"
+													uid="categoryAxis"
+													type="Dimension"
+													values="Week"
+												/>
+											</viz:feeds>
+										</viz:VizFrame>
+									</FlexBox>
+								</HBox>
+							</VBox>
+						</f:content>
+					</f:Card>
+					<f:Card>
+						<f:header>
+							<card:Header
+								title="St.Moritz"
+								subtitle="Nr. 2050"
+								iconSrc="./img/StMoritz.png"
+								press=".onChartPressed"
+							/>
+						</f:header>
+						<f:content>
+							<VBox
+								height="10rem"
+								class="sapUiSmallMargin"
+								justifyContent="SpaceBetween"
+							>
+								<HBox justifyContent="SpaceAround">
+									<FlexBox
+										width="20rem"
+										height="10rem"
+										alignItems="Start"
+										justifyContent="SpaceBetween"
+									>
+										<items>
+											<m:InteractiveDonutChart>
+												<m:segments>
+													<m:InteractiveDonutChartSegment
+														label="Ausgeführt"
+														value="{
+															path: '/orders/'
+														}"
+														displayedValue="40.0%"
+													/>
+													<m:InteractiveDonutChartSegment
+														label="in Bearbeitung"
+														value="21.5"
+														displayedValue="21.5%"
+													/>
+													<m:InteractiveDonutChartSegment
+														label="erfasst"
+														value="38.5"
+														displayedValue="38.5%"
+													/>
+												</m:segments>
+											</m:InteractiveDonutChart>
+										</items>
+									</FlexBox>
+								</HBox>
+							</VBox>
+						</f:content>
+					</f:Card>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</f:content>
+	</f:DynamicPage>
+	<!-- <f:DynamicPage id="home">
+		<headerContent>
+			<Image
+				src="img/Logo-SMB.png"
+				height="80%"
+			/>
+			<Title text="Standorte"/>
+		</headerContent>
+		<layout:VerticalLayout
+			width="100%"
+			class="gridWrapper sapUiSmallMargin"
+		>
+			<layout:Grid containerQuery="true">
+			</layout:Grid>
+		</layout:VerticalLayout>
+	</f:DynamicPage> -->
 </mvc:View>

@@ -1,0 +1,194 @@
+<mvc:View
+	controllerName="project1.controller.ThirdPage"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:layout="sap.ui.layout"
+	xmlns:f="sap.f"
+	displayBlock="true"
+	height="100%"
+	busyIndicatorDelay="0"
+>
+	<f:DynamicPage
+		id="dynamicPageId"
+		stickySubheaderProvider="iconTabBar"
+		class="sapUiNoContentPadding"
+		toggleHeaderOnTitleClick="{/titleClickable}"
+	>
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title text="Bestellung Nr. {orders>SalesOrder}"/>
+				</f:heading>
+				<f:breadcrumbs>
+					<Breadcrumbs>
+						<Link
+							text="Standorte"
+							href="./index.html"
+						/>
+						<Link
+							text="{orders>SalesOffice}"
+							href="./index.html#/secondPage/{orders>SalesOffice}"
+						/>
+					</Breadcrumbs>
+				</f:breadcrumbs>
+				<!-- <f:content>
+					<OverflowToolbar>
+						<GenericTag
+							text="SR"
+							status="Error"
+							press="onGenericTagPress"
+							design="StatusIconHidden"
+						>
+							<ObjectNumber
+								number="2"
+								unit="M"
+								emphasized="false"
+								state="Error"
+							/>
+						</GenericTag>
+					</OverflowToolbar>
+				</f:content> 
+				<f:actions>
+					<Button
+						text="Bearbeiten"
+						type="Emphasized"
+						press="toggleAreaPriority"
+					/>
+					<Button
+						text="Löschen"
+						type="Transparent"
+						press="deleteArea"
+					/>
+				</f:actions> -->
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader>
+				<layout:HorizontalLayout allowWrapping="true">
+					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+						<ObjectAttribute
+							title="Kunde"
+							text="{orders>SoldToParty}"
+						/>
+					</layout:VerticalLayout>
+					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+						<ObjectAttribute
+							title="Auftragsdatum"
+							text="{orders>SalesOrderDate}"
+						/>
+					</layout:VerticalLayout>
+					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+						<ObjectAttribute
+							title="Zahldatum"
+							text="{orders>SalesOrderDate}"
+						/>
+					</layout:VerticalLayout>
+					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+						<ObjectAttribute
+							title="Status"
+							text="{orders>OverallDeliveryStatus}"
+							emphasized="false"
+							state="Error"
+						/>
+					</layout:VerticalLayout>
+				</layout:HorizontalLayout>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<IconTabBar
+				id="iconTabBar"
+				class="sapUiResponsiveContentPadding"
+			>
+				<items>
+					<IconTabFilter text="Positionen">
+						<Table
+							id="idProductsTable"
+							sticky="HeaderToolbar,ColumnHeaders"
+							class="sapUiSmallNegativeMarginBeginEnd"
+							width="auto"
+						>
+							<!-- Titelspalte: Menge, ID, Produkt, Beschreibung, Auftragsdatum, Preis -->
+							<columns>
+								<Column width="12em">
+									<Text text="ID"/>
+								</Column>
+								<Column width="15em">
+									<Text text="Kunde"/>
+								</Column>
+								<Column width="15em">
+									<Text text="Datum"/>
+								</Column>
+								<Column
+									minScreenWidth="Tablet"
+									demandPopin="true"
+								>
+									<Text text="Status"/>
+								</Column>
+								<Column
+									demandPopin="true"
+									hAlign="End"
+								>
+									<Text text="Beschreibung"/>
+								</Column>
+								<Column hAlign="End">
+									<Text text="Preis"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem>
+									<cells>
+										<Text text="{orders>SalesOrder}"/>
+										<Text text="{orders>SoldToParty}"/>
+										<Text text="{orders>SalesOrderDate}"/>
+										<Text text="{orders>OverallDeliveryStatus}"/>
+										<Text text="nothing"/>
+										<ObjectNumber number="{
+											parts: [{
+												path: 'orders>TotalNetAmount'
+											}, {
+												path: 'view>/currency'
+											}],
+											type: 'sap.ui.model.type.Currency',
+											formatOptions: {
+												showMeasure: true
+											}
+										}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+							<!-- <items>
+								<ColumnListItem>
+									<cells>
+										<ObjectIdentifier
+											title="{Name}"
+											text="{ProductId}"
+										/>
+										<Text text="{SupplierName}"/>
+										<Text text="{Width} x {Depth} x {Height} {DimUnit}"/>
+										<ObjectNumber
+											number="{
+												parts: [{
+													path: 'Price'
+												}, {
+													path: 'CurrencyCode'
+												}],
+												type: 'sap.ui.model.type.Currency',
+												formatOptions: {
+													showMeasure: false
+												}
+											}"
+											unit="{CurrencyCode}"
+										/>
+									</cells>
+								</ColumnListItem>
+							</items> -->
+						</Table>
+					</IconTabFilter>
+					<!-- <IconTabFilter text="Attachments">
+						<Text text="Attachments go here ..."/>
+					</IconTabFilter>-->
+				</items>
+			</IconTabBar>
+		</f:content>
+	</f:DynamicPage>
+</mvc:View>
