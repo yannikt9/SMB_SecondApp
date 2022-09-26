@@ -85,12 +85,7 @@ sap.ui.define([
                     .setData({ stati: arraySalesOffices });
                 });
         
-                /* function sumArray(overallDeliveryStatus2010) {
-                  let sum = 0;
-                  overallDeliveryStatus2010.forEach(element => {
-                    sum+= element;
-                  });
-                } */
+                
               },
         
               onChartPressed: function (oEvent) {
