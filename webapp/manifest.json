@@ -86,8 +86,9 @@
       "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
+        "type":"View",
         "async": true,
-        "viewPath": "project1.view",
+        "path": "project1.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false

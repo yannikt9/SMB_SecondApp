@@ -1,5 +1,5 @@
 <mvc:View
-	controllerName="project1.controller.HomeView"
+	controllerName="project1.controller.Home"
 	xmlns="sap.m"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:layout="sap.ui.layout"

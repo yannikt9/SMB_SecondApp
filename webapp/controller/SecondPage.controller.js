@@ -1,5 +1,6 @@
-sap.ui.define([
-	"sap/base/Log",
+sap.ui.define(
+  [
+    "sap/base/Log",
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
@@ -9,8 +10,9 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "sap/ui/core/format/NumberFormat",
-], function(
-	Log,
+  ],
+  function (
+    Log,
     Controller,
     JSONModel,
     MessageToast,
@@ -19,12 +21,12 @@ sap.ui.define([
     UriParameters,
     FilterOperator,
     FilterType,
-    NumberFormat,
-) {
-	"use strict";
+    NumberFormat
+  ) {
+    "use strict";
 
-	return Controller.extend("project1.controller.SecondPage", {
-        _sLocation: "",
+    return Controller.extend("project1.controller.SecondPage", {
+      _sLocation: "",
       _sStatus: "",
 
       _onObjectMatched: function (oEvent) {
@@ -45,12 +47,12 @@ sap.ui.define([
           .getRoute("secondPage")
           .attachMatched(this._onObjectMatched, this);
 
-          this.getView().setModel(
-            new JSONModel({
-              currency: "CHF",
-            }),
-            "view"
-          );
+        this.getView().setModel(
+          new JSONModel({
+            currency: "CHF",
+          }),
+          "view"
+        );
       },
 
       onPaste: function (oEvent) {
@@ -101,5 +103,6 @@ sap.ui.define([
           .getBinding("items")
           .filter(aFilters, FilterType.Application);
       },
-	});
-});
+    });
+  }
+);

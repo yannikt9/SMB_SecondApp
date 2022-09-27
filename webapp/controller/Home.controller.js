@@ -10,12 +10,12 @@ sap.ui.define([
     function (Controller,JSONModel,formatMessage) {
         "use strict";
 
-        return Controller.extend("project1.controller.HomeView", {
+        return Controller.extend("project1.controller.Home", {
             onInit: function () {
                 let oSalesOfficeModel = new JSONModel("model/mockdata.json");
-                /* this.getView().setModel(new JSONModel(), "display"); */
-        
-                oSalesOfficeModel.dataLoaded().then(() => {
+                /* this.getView().setModel(new JSONModel(), "display");
+         */
+                /* oSalesOfficeModel.dataLoaded().then(() => {
                   let oData = oSalesOfficeModel.getData();
                   let setOfSalesOffices = new Set();
                   let arraySalesOffices = [];
@@ -24,7 +24,7 @@ sap.ui.define([
                     setOfSalesOffices.add(element.SalesOffice);
                   });
         
-                  /*  MODELNAME = display
+                   MODELNAME = display
                   {
                     stati: [
                       {
@@ -45,7 +45,7 @@ sap.ui.define([
                       } 
                     ]
                   }
-                */
+               
                   //[Arosa, Lenzerheide, Chur, St. Moriz, Laax, Davos]
                   setOfSalesOffices.forEach((element) => {
                     arraySalesOffices.push({
@@ -85,8 +85,16 @@ sap.ui.define([
                     .setData({ stati: arraySalesOffices });
                 });
         
+                function sumArray(overallDeliveryStatus2010) {
+                  let sum = 0;
+                  overallDeliveryStatus2010.forEach(element => {
+                    sum+= element;
+                  });
+                } */
+        
                 
               },
+              
         
               onChartPressed: function (oEvent) {
                 let oRouter = this.getOwnerComponent().getRouter();
