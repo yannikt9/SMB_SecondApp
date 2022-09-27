@@ -49,13 +49,14 @@ sap.ui.define(
             console.log(data);
           },
         });
-
         this.getView().setModel(
           new JSONModel({
             currency: "CHF",
           }),
           "view"
         );
+        
+
         /* let oModel = this.getOwnerComponent().getModel();
         oModel.read("/A_SalesOrder",{
           success:(data)=>{

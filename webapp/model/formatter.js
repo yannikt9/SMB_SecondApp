@@ -4,6 +4,6 @@ sap.ui.define([], function () {
   return {
     formatDate (dOrderDate){
         return dOrderDate.toLocaleDateString();
-    }
+    },
   };
 });

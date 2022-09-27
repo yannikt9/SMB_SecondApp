@@ -112,7 +112,18 @@
 									path: 'SalesOrderDate',
 									formatter: '.formatter.formatDate'
 								}"/>
-								<Text text="{TotalNetAmount}"/>
+								<!-- <Text text="{TotalNetAmount}"/> -->
+								<ObjectNumber number="{
+									parts: [{
+										path: 'TotalNetAmount'
+									}, {
+										path: 'view>/currency'
+									}],
+									type: 'sap.ui.model.type.Currency',
+									formatOptions: {
+										showMeasure: true
+									}
+								}"/>
 							</cells>
 						</ColumnListItem>
 					</items>
