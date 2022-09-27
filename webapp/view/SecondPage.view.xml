@@ -79,16 +79,16 @@
 					items="{/A_SalesOrder}"
 				>
 					<columns>
-						<Column width="5%">
+						<Column width="10%">
 							<Label text="Nummer"/>
 						</Column>
-						<Column width="25%">
+						<Column width="20%">
 							<Label text="Verkaufsbüro"/>
 						</Column>
-						<Column width="25%">
+						<Column width="20%">
 							<Label text="Status"/>
 						</Column>
-						<Column width="25%">
+						<Column width="20%">
 							<Label text="Kunde"/>
 						</Column>
 						<Column width="10%">
@@ -105,21 +105,14 @@
 						>
 							<cells>
 								<Text text="{SalesOrder}"/>
-								<Text text="{SalesOffice}"/>
+								<Text text="{SalesOrganization}"/>
 								<Text text="{OverallDeliveryStatus}"/>
 								<Text text="{SoldToParty}"/>
-								<Text text="{SalesOrderDate}"/>
-								<!-- <ObjectNumber number="{
-									parts: [{
-										path: 'orders>TotalNetAmount'
-									}, {
-										path: 'view>/currency'
-									}],
-									type: 'sap.ui.model.type.Currency',
-									formatOptions: {
-										showMeasure: true
-									}
-								}"/> -->
+								<Text text="{
+									path: 'SalesOrderDate',
+									formatter: '.formatter.formatDate'
+								}"/>
+								<Text text="{TotalNetAmount}"/>
 							</cells>
 						</ColumnListItem>
 					</items>

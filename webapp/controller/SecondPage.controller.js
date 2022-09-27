@@ -10,6 +10,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "sap/ui/core/format/NumberFormat",
+    "../model/formatter",
   ],
   function (
     Log,
@@ -21,11 +22,13 @@ sap.ui.define(
     UriParameters,
     FilterOperator,
     FilterType,
-    NumberFormat
+    NumberFormat,
+    formatter
   ) {
     "use strict";
 
     return Controller.extend("project1.controller.SecondPage", {
+      formatter: formatter,
       _sLocation: "",
       _sStatus: "",
 
@@ -40,9 +43,27 @@ sap.ui.define(
       },
       onInit: function () {
         // set explored app's demo model on this sample
-        var oJSONModel = new JSONModel("model/mockdata.json");
-        this.getView().setModel(oJSONModel, "orders");
-        let oRouter = this.getOwnerComponent().getRouter();
+        let oModel = this.getOwnerComponent().getModel();
+        oModel.read("/A_SalesOrder", {
+          success: (data) => {
+            console.log(data);
+          },
+        });
+
+        this.getView().setModel(
+          new JSONModel({
+            currency: "CHF",
+          }),
+          "view"
+        );
+        /* let oModel = this.getOwnerComponent().getModel();
+        oModel.read("/A_SalesOrder",{
+          success:(data)=>{
+            console.log(data);
+          }
+        }) */
+        /*  this.getView().setModel(oModel, "CustomerOrder"); */
+        /*  let oRouter = this.getOwnerComponent().getRouter();
         oRouter
           .getRoute("secondPage")
           .attachMatched(this._onObjectMatched, this);
@@ -52,7 +73,7 @@ sap.ui.define(
             currency: "CHF",
           }),
           "view"
-        );
+        ); */
       },
 
       onPaste: function (oEvent) {
