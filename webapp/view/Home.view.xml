@@ -1,0 +1,125 @@
+<mvc:View
+	controllerName="project1.controller.Home"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:layout="sap.ui.layout"
+	xmlns:f="sap.f"
+	xmlns:card="sap.f.cards"
+	xmlns:viz="sap.viz.ui5.controls"
+	xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data"
+>
+	<f:DynamicPage id="home">
+		<f:title>
+			<f:DynamicPageTitle>
+				<f:heading>
+					<Title
+						text="Standorte"
+						class="sapUiResponsiveContentPadding"
+					/>
+				</f:heading>
+				<f:content>
+				</f:content>
+			</f:DynamicPageTitle>
+		</f:title>
+		<f:header>
+			<f:DynamicPageHeader backgroundDesign="Solid">
+				<f:content>
+					<FlexBox justifyContent="End">
+						<items>
+							<DateRangeSelection
+								id="DRS1"
+								width="13rem"
+								delimiter="{
+									path: '/delimiterDRS1'
+								}"
+								dateValue="{
+									path: '/dateValueDRS1'
+								}"
+								secondDateValue="{
+									path: '/secondDateValueDRS1'
+								}"
+								displayFormat="{
+									path: '/dateFormatDRS1'
+								}"
+							/>
+						</items>
+					</FlexBox>
+				</f:content>
+			</f:DynamicPageHeader>
+		</f:header>
+		<f:content>
+			<layout:Grid
+				containerQuery="true"
+				class="sapUiSmallMarginTop"
+				content="{display>/stati}"
+			>
+				<layout:content>
+					<f:Card>
+						<f:header>
+							<card:Header
+								title="{display>SalesOffice}"
+								iconSrc="./img/Chur.png"
+								press=".onChartPressed"
+							/>
+						</f:header>
+						<f:content>
+							<viz:VizFrame
+								id="idVizFrame"
+								uiConfig="{
+									applicationSet: 'fiori'
+								}"
+								vizProperties="{
+									title: {
+										visible: 'false'
+									}
+								}"
+								height="20rem"
+								width="30rem"
+								vizType="donut"
+							>
+								<viz:dataset>
+									<viz.data:FlattenedDataset data="{display>Statuses}">
+										<viz.data:dimensions>
+											<viz.data:DimensionDefinition
+												name="Status"
+												value="{display>status}"
+											/>
+										</viz.data:dimensions>
+										<viz.data:measures>
+											<viz.data:MeasureDefinition
+												name="Anzahl"
+												value="{display>anzahl}"
+											/>
+										</viz.data:measures>
+									</viz.data:FlattenedDataset>
+								</viz:dataset>
+								<viz:feeds>
+									<viz.feeds:FeedItem
+										uid="size"
+										type="Measure"
+										values="Anzahl"
+									/>
+									<viz.feeds:FeedItem
+										uid="color"
+										type="Dimension"
+										values="Status"
+									/>
+								</viz:feeds>
+							</viz:VizFrame>
+						</f:content>
+					</f:Card>
+				</layout:content>
+			</layout:Grid>
+		</f:content>
+	</f:DynamicPage>
+	<!-- <f:DynamicPage id="home">
+		<headerContent>
+			<Image
+				src="img/Logo-SMB.png"
+				height="80%"
+			/>
+			<Title text="Standorte"/>
+		</headerContent>
+	</f:DynamicPage> -->
+</mvc:View>

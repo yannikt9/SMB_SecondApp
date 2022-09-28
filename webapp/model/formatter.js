@@ -5,6 +5,7 @@ sap.ui.define([], function () {
     formatDate (dOrderDate){
         return dOrderDate.toLocaleDateString();
     },
+<<<<<<< HEAD
 
     statusText (sStatus){
       let resourceBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -13,5 +14,7 @@ sap.ui.define([], function () {
           return resource
       }
     }
+=======
+>>>>>>> main
   };
 });

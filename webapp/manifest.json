@@ -86,28 +86,45 @@
       "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
+        "type":"View",
         "async": true,
-        "viewPath": "project1.view",
+        "path": "project1.view",
         "controlAggregation": "pages",
         "controlId": "app",
         "clearControlAggregation": false
       },
       "routes": [
         {
-          "name": "RouteHomeView",
-          "pattern": ":?query:",
-          "target": [
-            "TargetHomeView"
-          ]
+          "name": "home",
+          "pattern": "",
+          "target": "home"
+        },
+        {
+          "name": "secondPage",
+          "pattern": "secondPage/{location}",
+          "target": "secondPage"
+        },
+        {
+          "name": "thirdPage",
+          "pattern": "thirdPage/{orders}",
+          "target": "thirdPage"
         }
       ],
       "targets": {
-        "TargetHomeView": {
-          "viewType": "XML",
-          "transition": "slide",
-          "clearControlAggregation": false,
-          "viewId": "HomeView",
-          "viewName": "HomeView"
+        "home": {
+          "id": "home",
+          "name": "Home",
+          "level": 1
+        },
+        "secondPage": {
+          "id": "secondPage",
+          "name": "SecondPage",
+          "level": 1
+        },
+        "thirdPage": {
+          "id": "thirdPage",
+          "name": "thirdPage",
+          "level": 1
         }
       }
     },
@@ -116,6 +133,18 @@
       "type": "XML",
       "async": true,
       "id": "App"
+    },
+    "config": {
+      "sample": {
+        "stretch": true,
+        "files": [
+          "SecondPage.view.xml",
+          "SecondPage.controller.js",
+          "ThirdPage.view.xml",
+          "ThirdPage.controller.js",
+          "manifest.json"
+        ]
+      }
     }
   }
 }
