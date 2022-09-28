@@ -1,30 +1,17 @@
-sap.ui.define([
+sap.ui.define(
+  [
     "sap/ui/core/mvc/Controller",
-    "sap/base/strings/formatMessage",
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/FilterOperator",
-],
-    /**
-     * @param {typeof sap.ui.core.mvc.Controller} Controller
-     */
-    function (Controller,JSONModel,formatMessage) {
-        "use strict";
+  ],
+  /**
+   * @param {typeof sap.ui.core.mvc.Controller} Controller
+   */
+  function (Controller, JSONModel, FilterOperator) {
+    "use strict";
 
-        return Controller.extend("project1.controller.Home", {
-            onInit: function () {
-                let oSalesOfficeModel = new JSONModel("model/mockdata.json");
-                /* this.getView().setModel(new JSONModel(), "display");
-         */
-                /* oSalesOfficeModel.dataLoaded().then(() => {
-                  let oData = oSalesOfficeModel.getData();
-                  let setOfSalesOffices = new Set();
-                  let arraySalesOffices = [];
-        
-                  oData.Orders.forEach((element) => {
-                    setOfSalesOffices.add(element.SalesOffice);
-                  });
-        
-                   MODELNAME = display
+    return Controller.extend("project1.controller.Home", {
+      /* MODELNAME = display
                   {
                     stati: [
                       {
@@ -45,63 +32,76 @@ sap.ui.define([
                       } 
                     ]
                   }
-               
-                  //[Arosa, Lenzerheide, Chur, St. Moriz, Laax, Davos]
-                  setOfSalesOffices.forEach((element) => {
-                    arraySalesOffices.push({
-                      SalesOffice: element,
-                      Statuses: [
-                        {
-                          status: "In Bearbeitung",
-                          anzahl: oData.Orders.filter((e) => {
-                            let condition1 = element === e.SalesOffice;
-                            let condition2 =
-                              "In Bearbeitung" === e.OverallDeliveryStatus;
-                            return condition1 && condition2;
-                          }).length,
-                        },
-                        {
-                          status: "Ausgeführt",
-                          anzahl: oData.Orders.filter((e) => {
-                            let condition1 = element === e.SalesOffice;
-                            let condition2 = "Ausgeführt" === e.OverallDeliveryStatus;
-                            return condition1 && condition2;
-                          }).length,
-                        },
-                        {
-                          status: "Erfasst",
-                          anzahl: oData.Orders.filter((e) => {
-                            let condition1 = element === e.SalesOffice;
-                            let condition2 = "Erfasst" === e.OverallDeliveryStatus;
-                            return condition1 && condition2;
-                          }).length,
-                        },
-                      ],
-                    });
-                  });
-                  console.log(arraySalesOffices);
-                  this.getView()
-                    .getModel("display")
-                    .setData({ stati: arraySalesOffices });
-                });
-        
-                function sumArray(overallDeliveryStatus2010) {
-                  let sum = 0;
-                  overallDeliveryStatus2010.forEach(element => {
-                    sum+= element;
-                  });
-                } */
-        
-                
-              },
-              
-        
-              onChartPressed: function (oEvent) {
-                let oRouter = this.getOwnerComponent().getRouter();
-        
-                oRouter.navTo("secondPage", {
-                  location: oEvent.getSource().getTitle(),
-                });
-              },
+                  [Arosa, Lenzerheide, Chur, St. Moriz, Laax, Davos] */
+      onInit: function () {
+        let oSalesOfficeModel = this.getOwnerComponent().getModel();
+        this.getView().setModel(new JSONModel(), "display");
+        oSalesOfficeModel.read("/A_SalesOrder", {
+          success: (data) => {
+            let setOfSalesOffices = new Set(
+              data.results.map((element) => element.SalesOrganization)
+            );
+            let arraySalesOffices = [];
+            console.log(data);
+
+            setOfSalesOffices.forEach((element) => {
+              arraySalesOffices.push({
+                SalesOffice: element,
+                Statuses: [
+                  {
+                    status: "A",
+                    anzahl: data.results.filter((e) => {
+                      let condition1 = element === e.SalesOffice;
+                      let condition2 = "A" === e.OverallDeliveryStatus;
+                      return condition1 && condition2;
+                    }).length,
+                  },
+                  {
+                    status: "B",
+                    anzahl: data.results.filter((e) => {
+                      let condition1 = element === e.SalesOffice;
+                      let condition2 = "B" === e.OverallDeliveryStatus;
+                      return condition1 && condition2;
+                    }).length,
+                  },
+                  {
+                    status: "C",
+                    anzahl: data.results.filter((e) => {
+                      let condition1 = element === e.SalesOffice;
+                      let condition2 = "C" === e.OverallDeliveryStatus;
+                      return condition1 && condition2;
+                    }).length,
+                  },
+                ],
+              });
+              console.log(arraySalesOffices);
+              this.getView()
+                .getModel("display")
+                .setData({ stati: arraySalesOffices });
+            });
+            console.log(setOfSalesOffices);
+            console.log(data);
+          },
         });
+
+        /* this.getView().setModel(
+          new JSONModel({
+            currency: "EUR",
+          }),
+          "view"
+        ); */
+
+        /* this.getView().setModel(new JSONModel(), "display");
+         */
+      },
+
+      onChartPressed: function (oEvent) {
+        let oRouter = this.getOwnerComponent().getRouter();
+
+        oRouter.navTo("secondPage", {
+          location: oEvent.getSource().getTitle(),
+        });
+      },
     });
+  }
+);
