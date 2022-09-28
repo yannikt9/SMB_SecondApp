@@ -2,19 +2,22 @@ sap.ui.define([], function () {
   "use strict";
 
   return {
-    formatDate (dOrderDate){
-        return dOrderDate.toLocaleDateString();
+    formatDate(dOrderDate) {
+      return dOrderDate.toLocaleDateString();
     },
-<<<<<<< HEAD
 
-    statusText (sStatus){
+    statusText(sStatus) {
       let resourceBundle = this.getView().getModel("i18n").getResourceBundle();
-      switch(sStatus){
+      switch (sStatus) {
         case "A":
-          return resource
+          return resourceBundle.getText("invoiceStatusA");
+        case "B":
+          return resourceBundle.getText("invoiceStatusB");
+        case "C": 
+        return resourceBundle.getText("invoiceStatusC");
+        default:
+          return sStatus;
       }
-    }
-=======
->>>>>>> main
+    },
   };
 });

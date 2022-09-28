@@ -106,13 +106,15 @@
 							<cells>
 								<Text text="{SalesOrder}"/>
 								<Text text="{SalesOrganization}"/>
-								<Text text="{OverallDeliveryStatus}"/>
+								<Text text="{
+									path: 'OverallDeliveryStatus',
+									formatter: '.formatter.statusText'
+								}"/>
 								<Text text="{SoldToParty}"/>
 								<Text text="{
 									path: 'SalesOrderDate',
 									formatter: '.formatter.formatDate'
 								}"/>
-								<!-- <Text text="{TotalNetAmount}"/> -->
 								<ObjectNumber number="{
 									parts: [{
 										path: 'TotalNetAmount'
