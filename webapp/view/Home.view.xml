@@ -42,6 +42,7 @@
 								displayFormat="{
 									path: '/dateFormatDRS1'
 								}"
+								change=".onDateRangeSelect"
 							/>
 						</items>
 					</FlexBox>
@@ -65,11 +66,17 @@
 						</f:header>
 						<f:content>
 							<viz:VizFrame
+								xmlns="sap.viz"
 								id="idVizFrame"
 								uiConfig="{
 									applicationSet: 'fiori'
 								}"
 								vizProperties="{
+									plotArea: {
+										dataLabel: {
+											visible: 'true'
+										}
+									},
 									title: {
 										visible: 'false'
 									}
