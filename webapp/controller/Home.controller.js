@@ -49,25 +49,25 @@ sap.ui.define(
                 SalesOffice: element,
                 Statuses: [
                   {
-                    status: "A",
+                    status: "Erfasst",
                     anzahl: data.results.filter((e) => {
-                      let condition1 = element === e.SalesOffice;
+                      let condition1 = element === e.SalesOrganization;
                       let condition2 = "A" === e.OverallDeliveryStatus;
                       return condition1 && condition2;
                     }).length,
                   },
                   {
-                    status: "B",
+                    status: "In Bearbeitung",
                     anzahl: data.results.filter((e) => {
-                      let condition1 = element === e.SalesOffice;
+                      let condition1 = element === e.SalesOrganization;
                       let condition2 = "B" === e.OverallDeliveryStatus;
                       return condition1 && condition2;
                     }).length,
                   },
                   {
-                    status: "C",
+                    status: "Ausgeführt",
                     anzahl: data.results.filter((e) => {
-                      let condition1 = element === e.SalesOffice;
+                      let condition1 = element === e.SalesOrganization;
                       let condition2 = "C" === e.OverallDeliveryStatus;
                       return condition1 && condition2;
                     }).length,
@@ -80,16 +80,11 @@ sap.ui.define(
                 .setData({ stati: arraySalesOffices });
             });
             console.log(setOfSalesOffices);
-            console.log(data);
+            
           },
         });
 
-        /* this.getView().setModel(
-          new JSONModel({
-            currency: "EUR",
-          }),
-          "view"
-        ); */
+        
 
         /* this.getView().setModel(new JSONModel(), "display");
          */
