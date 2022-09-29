@@ -16,7 +16,7 @@ sap.ui.define([], function () {
         case "C": 
         return resourceBundle.getText("invoiceStatusC");
         default:
-          return sStatus;
+          return "Offen";
       }
     },
   };
