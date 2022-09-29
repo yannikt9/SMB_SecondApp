@@ -25,6 +25,7 @@ sap.ui.define(
       _sStatus: "",
       _dSelectedDate: "",
       _dSelectedSecondDate: "",
+      _aFilters: [],
 
       _convertStatus: function (sStatus) {
         switch (sStatus) {
@@ -38,15 +39,6 @@ sap.ui.define(
       },
       onInit: function () {
         // set explored app's demo model on this sample
-        let oModel = this.getOwnerComponent().getModel();
-        oModel.read("/A_SalesOrder", {});
-
-        this.getView().setModel(
-          new JSONModel({
-            currency: "CHF",
-          }),
-          "view"
-        );
 
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter
@@ -86,9 +78,9 @@ sap.ui.define(
       },
 
       _applyFilters() {
-        let aFilters = [];
+        this._aFilters = [];
         if (this._sLocation) {
-          aFilters.push(
+          this._aFilters.push(
             new Filter(
               "SalesOrganization",
               FilterOperator.Contains,
@@ -97,7 +89,7 @@ sap.ui.define(
           );
         }
         if (this._sStatus) {
-          aFilters.push(
+          this._aFilters.push(
             new Filter(
               "OverallDeliveryStatus",
               FilterOperator.Contains,
@@ -106,7 +98,7 @@ sap.ui.define(
           );
         }
         if (this._dSelectedSecondDate && this._dSelectedDate) {
-          aFilters.push(
+          this._aFilters.push(
             new Filter(
               "SalesOrderDate",
               FilterOperator.BT,
@@ -118,7 +110,12 @@ sap.ui.define(
         this.getView()
           .byId("orderTable")
           .getBinding("items")
-          .filter(aFilters, FilterType.Application);
+          .filter(this._aFilters, FilterType.Application);
+      },
+
+      deleteButtonPressed: function (oEvent) {
+        this._aFilters = [];
+        this.getView().byId("orderTable").getBinding("items").filter(this._aFilters, FilterType.Application);
       },
     });
   }
