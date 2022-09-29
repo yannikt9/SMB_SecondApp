@@ -9,13 +9,7 @@ sap.ui.define(
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (
-    Controller,
-    JSONModel,
-    Filter,
-    FilterOperator,
-    MessageBox
-  ) {
+  function (Controller, JSONModel, Filter, FilterOperator, MessageBox) {
     "use strict";
 
     return Controller.extend("project1.controller.Home", {
@@ -39,7 +33,20 @@ sap.ui.define(
                 );
               }
               console.log(data);
-
+                  /* MODELNAME = results
+                  {
+                    stati: [
+                      {
+                        standort: Arosa,
+                        statuses : [
+                          {status: inBearbeitung, anzahl: 7 }
+                          {status: abgeschlossen, anzahl: 7 }
+                          {status: offen, anzahl: 7 }
+                        ]
+                      },
+                    ]
+                  }
+                  [Arosa, Lenzerheide, Chur, St. Moriz, Laax, Davos] */
               setOfSalesOffices.forEach((element) => {
                 arraySalesOffices.push({
                   SalesOffice: element,
@@ -78,31 +85,9 @@ sap.ui.define(
             },
           });
       },
-      /* MODELNAME = results
-                  {
-                    stati: [
-                      {
-                        standort: Arosa,
-                        statuses : [
-                          {status: inBearbeitung, anzahl: 7 }
-                          {status: abgeschlossen, anzahl: 7 }
-                          {status: offen, anzahl: 7 }
-                        ]
-                      },
-                    ]
-                  }
-                  [Arosa, Lenzerheide, Chur, St. Moriz, Laax, Davos] */
       onInit: function () {
         this.getView().setModel(new JSONModel(), "display");
         this._setData();
-      },
-
-      onChartPressed: function (oEvent) {
-        let oRouter = this.getOwnerComponent().getRouter();
-
-        oRouter.navTo("secondPage", {
-          location: oEvent.getSource().getTitle(),
-        });
       },
 
       onDateRangeSelect: function (oEvent) {
@@ -114,6 +99,14 @@ sap.ui.define(
         this._setData(
           new Filter("SalesOrderDate", FilterOperator.BT, dStartDate, dEndDate)
         );
+      },
+
+      onChartPressed: function (oEvent) {
+        let oRouter = this.getOwnerComponent().getRouter();
+
+        oRouter.navTo("secondPage", {
+          location: oEvent.getSource().getTitle(),
+        });
       },
     });
   }
