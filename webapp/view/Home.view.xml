@@ -42,6 +42,7 @@
 								displayFormat="{
 									path: '/dateFormatDRS1'
 								}"
+								change=".onDateRangeSelect"
 							/>
 						</items>
 					</FlexBox>
@@ -59,17 +60,23 @@
 						<f:header>
 							<card:Header
 								title="{display>SalesOffice}"
-								iconSrc="./img/Chur.png"
+								iconSrc="./world.png"
 								press=".onChartPressed"
 							/>
 						</f:header>
 						<f:content>
 							<viz:VizFrame
+								xmlns="sap.viz"
 								id="idVizFrame"
 								uiConfig="{
 									applicationSet: 'fiori'
 								}"
 								vizProperties="{
+									plotArea: {
+										dataLabel: {
+											visible: 'true'
+										}
+									},
 									title: {
 										visible: 'false'
 									}
@@ -113,13 +120,4 @@
 			</layout:Grid>
 		</f:content>
 	</f:DynamicPage>
-	<!-- <f:DynamicPage id="home">
-		<headerContent>
-			<Image
-				src="img/Logo-SMB.png"
-				height="80%"
-			/>
-			<Title text="Standorte"/>
-		</headerContent>
-	</f:DynamicPage> -->
 </mvc:View>
