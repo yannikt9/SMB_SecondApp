@@ -1,28 +1,16 @@
 sap.ui.define(
-  [
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel",
-    "sap/f/library",
-    "sap/ui/core/Fragment",
-  ],
-  function (Controller, JSONModel) {
+  ["sap/ui/core/mvc/Controller", "../model/formatter"],
+  function (Controller, formatter) {
     "use strict";
 
     return Controller.extend("project1.controller.ThirdPage", {
+		formatter: formatter,
+		_sResults: "",
+
       getPage: function () {
         return this.byId("dynamicPageId");
       },
       onInit: function () {
-        let oModel = this.getOwnerComponent().getModel();
-        oModel.read("/A_SalesOrder", {});
-
-        this.getView().setModel(
-          new JSONModel({
-            currency: "CHF",
-          }),
-          "view"
-        );
-
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter
           .getRoute("thirdPage")
@@ -32,11 +20,11 @@ sap.ui.define(
         let path = window.decodeURIComponent(
           oEvent.getParameter("arguments").results
         );
-        console.log(path);
+        this._sResults = path;
         this.getView().bindElement({
           path: path,
-          model: "results",
         });
+        console.log(path);
       },
       toggleAreaPriority: function () {
         var oTitle = this.getPage().getTitle(),

@@ -17,7 +17,10 @@
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title text="Bestellung Nr. {SalesOrder}"/>
+					<Title
+						id="thirdPageTitle"
+						text="Bestellung Nr. {SalesOrder}"
+					/>
 				</f:heading>
 				<f:breadcrumbs>
 					<Breadcrumbs>
@@ -62,19 +65,28 @@
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="Auftragsdatum"
-							text="{PricingDate}"
+							text="{
+								path: 'PricingDate',
+								formatter: '.formatter.formatDate'
+							}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="Zahldatum"
-							text="{SalesOrderDate}"
+							text="{
+								path: 'SalesOrderDate',
+								formatter: '.formatter.formatDate'
+							}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="Status"
-							text="{OverallDeliveryStatus}"
+							text="{
+								path: 'OverallDeliveryStatus',
+								formatter: '.formatter.statusText'
+							}"
 						/>
 					</layout:VerticalLayout>
 				</layout:HorizontalLayout>
@@ -125,14 +137,20 @@
 									<cells>
 										<Text text="{SalesOrder}"/>
 										<Text text="{SoldToParty}"/>
-										<Text text="{SalesOrderDate}"/>
-										<Text text="{OverallDeliveryStatus}"/>
+										<Text text="{
+											path: 'SalesOrderDate',
+											formatter: '.formatter.formatDate'
+										}"/>
+										<Text text="{
+											path: 'OverallDeliveryStatus',
+											formatter: '.formatter.statusText'
+										}"/>
 										<Text text="nothing"/>
 										<ObjectNumber number="{
 											parts: [{
-												path: 'results>TotalNetAmount'
+												path: 'TotalNetAmount'
 											}, {
-												path: 'view>/currency'
+												path: 'TransactionCurrency'
 											}],
 											type: 'sap.ui.model.type.Currency',
 											formatOptions: {

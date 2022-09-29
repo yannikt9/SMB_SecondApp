@@ -3,7 +3,8 @@ sap.ui.define([], function () {
 
   return {
     formatDate(dOrderDate) {
-      return dOrderDate.toLocaleDateString();
+      let dDate = new Date(dOrderDate);
+      return dDate.toLocaleDateString();
     },
 
     statusText(sStatus) {
@@ -13,8 +14,8 @@ sap.ui.define([], function () {
           return resourceBundle.getText("invoiceStatusA");
         case "B":
           return resourceBundle.getText("invoiceStatusB");
-        case "C": 
-        return resourceBundle.getText("invoiceStatusC");
+        case "C":
+          return resourceBundle.getText("invoiceStatusC");
         default:
           return "Offen";
       }
