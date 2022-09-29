@@ -17,7 +17,7 @@
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title text="Bestellung Nr. {orders>SalesOrder}"/>
+					<Title text="Bestellung Nr. {SalesOrder}"/>
 				</f:heading>
 				<f:breadcrumbs>
 					<Breadcrumbs>
@@ -26,8 +26,8 @@
 							href="./index.html"
 						/>
 						<Link
-							text="{orders>SalesOffice}"
-							href="./index.html#/secondPage/{orders>SalesOffice}"
+							text="{SalesOrganization}"
+							href="./index.html#/secondPage/{SalesOrganization}"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
@@ -47,19 +47,7 @@
 							/>
 						</GenericTag>
 					</OverflowToolbar>
-				</f:content> 
-				<f:actions>
-					<Button
-						text="Bearbeiten"
-						type="Emphasized"
-						press="toggleAreaPriority"
-					/>
-					<Button
-						text="Löschen"
-						type="Transparent"
-						press="deleteArea"
-					/>
-				</f:actions> -->
+				</f:content>  -->
 			</f:DynamicPageTitle>
 		</f:title>
 		<f:header>
@@ -68,27 +56,25 @@
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="Kunde"
-							text="{orders>SoldToParty}"
+							text="{SoldToParty}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="Auftragsdatum"
-							text="{orders>SalesOrderDate}"
+							text="{PricingDate}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="Zahldatum"
-							text="{orders>SalesOrderDate}"
+							text="{SalesOrderDate}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="Status"
-							text="{orders>OverallDeliveryStatus}"
-							emphasized="false"
-							state="Error"
+							text="{OverallDeliveryStatus}"
 						/>
 					</layout:VerticalLayout>
 				</layout:HorizontalLayout>
@@ -137,14 +123,14 @@
 							<items>
 								<ColumnListItem>
 									<cells>
-										<Text text="{orders>SalesOrder}"/>
-										<Text text="{orders>SoldToParty}"/>
-										<Text text="{orders>SalesOrderDate}"/>
-										<Text text="{orders>OverallDeliveryStatus}"/>
+										<Text text="{SalesOrder}"/>
+										<Text text="{SoldToParty}"/>
+										<Text text="{SalesOrderDate}"/>
+										<Text text="{OverallDeliveryStatus}"/>
 										<Text text="nothing"/>
 										<ObjectNumber number="{
 											parts: [{
-												path: 'orders>TotalNetAmount'
+												path: 'results>TotalNetAmount'
 											}, {
 												path: 'view>/currency'
 											}],
