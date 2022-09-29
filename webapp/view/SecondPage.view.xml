@@ -85,34 +85,36 @@
 						<Column width="20%">
 							<Label text="Verkaufsbüro"/>
 						</Column>
-						<Column width="20%">
+						<Column width="25%">
 							<Label text="Status"/>
 						</Column>
 						<Column width="20%">
 							<Label text="Kunde"/>
 						</Column>
-						<Column width="10%">
+						<Column width="15%" hAlign="End">
 							<Label text="Datum"/>
 						</Column>
-						<Column width="10%">
+						<Column width="10%" hAlign="End">
 							<Label text="Betrag"/>
 						</Column>
 					</columns>
 					<items>
 						<ColumnListItem
-							type="Active"
+							type="Navigation"
 							press=".onRowPressed"
 						>
 							<cells>
 								<Text text="{SalesOrder}"/>
 								<Text text="{SalesOrganization}"/>
-								<Text text="{OverallDeliveryStatus}"/>
+								<Text text="{
+									path: 'OverallDeliveryStatus',
+									formatter: '.formatter.statusText'
+								}"/>
 								<Text text="{SoldToParty}"/>
 								<Text text="{
 									path: 'SalesOrderDate',
 									formatter: '.formatter.formatDate'
 								}"/>
-								<!-- <Text text="{TotalNetAmount}"/> -->
 								<ObjectNumber number="{
 									parts: [{
 										path: 'TotalNetAmount'
