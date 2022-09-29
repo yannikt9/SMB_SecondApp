@@ -71,7 +71,8 @@ sap.ui.define(
       },
 
       onRowPressed: function (oEvent) {
-        let oItem = oEvent.getSource().getBindingContext("orders").getPath();
+        let oItem = oEvent.getSource().getBindingContext().getPath();
+        console.log(oItem);
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter.navTo("thirdPage", {
           orders: window.encodeURIComponent(oItem),
