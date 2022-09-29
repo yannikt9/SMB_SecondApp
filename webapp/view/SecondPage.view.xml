@@ -62,9 +62,21 @@
 						</ComboBox>
 						<HBox width="100%"/>
 						<DateRangeSelection
+							id="dateSelection"
 							width="13rem"
-							minDate=""
-							secondDateValue=""
+							delimiter="{
+								path: '/delimiterDRS1'
+							}"
+							dateValue="{
+								path: '/dateValueDRS1'
+							}"
+							secondDateValue="{
+								path: '/secondDateValueDRS1'
+							}"
+							displayFormat="{
+								path: '/dateFormatDRS1'
+							}"
+							change=".onDateChanged"
 						/>
 					</FlexBox>
 				</f:content>
@@ -91,10 +103,16 @@
 						<Column width="20%">
 							<Label text="Kunde"/>
 						</Column>
-						<Column width="15%" hAlign="End">
+						<Column
+							width="15%"
+							hAlign="End"
+						>
 							<Label text="Datum"/>
 						</Column>
-						<Column width="10%" hAlign="End">
+						<Column
+							width="10%"
+							hAlign="End"
+						>
 							<Label text="Betrag"/>
 						</Column>
 					</columns>

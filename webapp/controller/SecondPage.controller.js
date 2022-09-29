@@ -23,11 +23,13 @@ sap.ui.define(
       formatter: formatter,
       _sLocation: "",
       _sStatus: "",
+      _dSelectedDate: "",
+      _dSelectedSecondDate: "",
 
       _convertStatus: function (sStatus) {
         switch (sStatus) {
           case "Ausgeführt":
-            return  "A";
+            return "A";
           case "Erfasst":
             return "B";
           case "In Bearbeitung":
@@ -57,17 +59,21 @@ sap.ui.define(
         this._sLocation = location;
         this._applyFilters();
       },
-      onPaste: function (oEvent) {
-        var aData = oEvent.getParameter("data");
-        MessageToast.show("Pasted Data: " + aData);
-      },
-
       onStatusChanged: function (oEvent) {
         let oComboBox = this.byId("idSelectStatus");
         let chosenKey = oComboBox.getSelectedKey();
 
         this._sStatus = chosenKey;
         this._applyFilters();
+      },
+      onDateChanged: function (oEvent) {
+        this._dSelectedDate = oEvent.getSource().getDateValue();
+        this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
+        this._applyFilters();
+      },
+      onPaste: function (oEvent) {
+        var aData = oEvent.getParameter("data");
+        MessageToast.show("Pasted Data: " + aData);
       },
 
       onRowPressed: function (oEvent) {
@@ -91,12 +97,21 @@ sap.ui.define(
           );
         }
         if (this._sStatus) {
-          console.log(this._sStatus);
           aFilters.push(
             new Filter(
               "OverallDeliveryStatus",
               FilterOperator.Contains,
               this._convertStatus(this._sStatus)
+            )
+          );
+        }
+        if (this._dSelectedSecondDate && this._dSelectedDate) {
+          aFilters.push(
+            new Filter(
+              "SalesOrderDate",
+              FilterOperator.BT,
+              this._dSelectedDate,
+              this._dSelectedSecondDate
             )
           );
         }
