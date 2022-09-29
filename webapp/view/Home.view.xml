@@ -60,7 +60,7 @@
 						<f:header>
 							<card:Header
 								title="{display>SalesOffice}"
-								iconSrc="./world.png"
+								iconSrc="./img/world.png"
 								press=".onChartPressed"
 							/>
 						</f:header>
