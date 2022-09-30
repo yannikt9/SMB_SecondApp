@@ -4,8 +4,8 @@ sap.ui.define(
     "use strict";
 
     return Controller.extend("project1.controller.ThirdPage", {
-		formatter: formatter,
-		_sResults: "",
+      formatter: formatter,
+      _sResults: "",
 
       getPage: function () {
         return this.byId("dynamicPageId");

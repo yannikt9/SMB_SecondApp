@@ -130,9 +130,7 @@ sap.ui.define(
 
         oRouter.navTo("secondPage", {
           location: oEvent.getSource().getTitle(),
-          dateRange: window.encodeURIComponent(
-            this._dateRangeConvert(),
-          ),
+          dateRange: window.encodeURIComponent(this._dateRangeConvert()),
         });
       },
     });
