@@ -61,9 +61,13 @@
 							</items>
 						</ComboBox>
 						<HBox width="1%"/>
-						<Button press=".deleteButtonPressed" text="Alle Filter löschen"/>
+						<Button
+							press=".deleteButtonPressed"
+							text="Alle Filter löschen"
+						/>
 						<HBox width="100%"/>
 						<DateRangeSelection
+							placeholder="von - bis"
 							id="dateSelection"
 							width="13rem"
 							delimiter="{

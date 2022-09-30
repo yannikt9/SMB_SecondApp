@@ -28,6 +28,7 @@
 					<FlexBox justifyContent="End">
 						<items>
 							<DateRangeSelection
+								placeholder="von - bis"
 								id="DRS1"
 								width="13rem"
 								delimiter="{
@@ -59,8 +60,10 @@
 					<f:Card>
 						<f:header>
 							<card:Header
-								title="{path:'display>SalesOffice',
-									formatter:'.formatter.formatSO'}"
+								title="{
+									path: 'display>SalesOffice',
+									formatter: '.formatter.formatSO'
+								}"
 								iconSrc="./img/world.png"
 								press=".onChartPressed"
 							/>
