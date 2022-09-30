@@ -23,11 +23,14 @@ sap.ui.define(
       formatter: formatter,
       _sLocation: "",
       _sStatus: "",
+      _dSelectedDate: "",
+      _dSelectedSecondDate: "",
+      _aFilters: [],
 
       _convertStatus: function (sStatus) {
         switch (sStatus) {
           case "Ausgeführt":
-            return  "A";
+            return "A";
           case "Erfasst":
             return "B";
           case "In Bearbeitung":
@@ -36,15 +39,6 @@ sap.ui.define(
       },
       onInit: function () {
         // set explored app's demo model on this sample
-        let oModel = this.getOwnerComponent().getModel();
-        oModel.read("/A_SalesOrder", {});
-
-        this.getView().setModel(
-          new JSONModel({
-            currency: "CHF",
-          }),
-          "view"
-        );
 
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter
@@ -57,17 +51,21 @@ sap.ui.define(
         this._sLocation = location;
         this._applyFilters();
       },
-      onPaste: function (oEvent) {
-        var aData = oEvent.getParameter("data");
-        MessageToast.show("Pasted Data: " + aData);
-      },
-
       onStatusChanged: function (oEvent) {
         let oComboBox = this.byId("idSelectStatus");
         let chosenKey = oComboBox.getSelectedKey();
 
         this._sStatus = chosenKey;
         this._applyFilters();
+      },
+      onDateChanged: function (oEvent) {
+        this._dSelectedDate = oEvent.getSource().getDateValue();
+        this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
+        this._applyFilters();
+      },
+      onPaste: function (oEvent) {
+        var aData = oEvent.getParameter("data");
+        MessageToast.show("Pasted Data: " + aData);
       },
 
       onRowPressed: function (oEvent) {
@@ -80,9 +78,9 @@ sap.ui.define(
       },
 
       _applyFilters() {
-        let aFilters = [];
+        this._aFilters = [];
         if (this._sLocation) {
-          aFilters.push(
+          this._aFilters.push(
             new Filter(
               "SalesOrganization",
               FilterOperator.Contains,
@@ -91,8 +89,7 @@ sap.ui.define(
           );
         }
         if (this._sStatus) {
-          console.log(this._sStatus);
-          aFilters.push(
+          this._aFilters.push(
             new Filter(
               "OverallDeliveryStatus",
               FilterOperator.Contains,
@@ -100,10 +97,25 @@ sap.ui.define(
             )
           );
         }
+        if (this._dSelectedSecondDate && this._dSelectedDate) {
+          this._aFilters.push(
+            new Filter(
+              "SalesOrderDate",
+              FilterOperator.BT,
+              this._dSelectedDate,
+              this._dSelectedSecondDate
+            )
+          );
+        }
         this.getView()
           .byId("orderTable")
           .getBinding("items")
-          .filter(aFilters, FilterType.Application);
+          .filter(this._aFilters, FilterType.Application);
+      },
+
+      deleteButtonPressed: function (oEvent) {
+        this._aFilters = [];
+        this.getView().byId("orderTable").getBinding("items").filter(this._aFilters, FilterType.Application);
       },
     });
   }
