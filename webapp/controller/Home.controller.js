@@ -5,16 +5,33 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
-    "../model/formatter"
+    "../model/formatter",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, JSONModel, Filter, FilterOperator, MessageBox, formatter) {
+  function (
+    Controller,
+    JSONModel,
+    Filter,
+    FilterOperator,
+    MessageBox,
+    formatter
+  ) {
     "use strict";
 
     return Controller.extend("project1.controller.Home", {
       formatter: formatter,
+      dStartDate: "",
+      dEndDate: "",
+
+      _dateRangeConvert: function () {
+        if (this.dStartDate !== "") {
+          return `${this.dStartDate}!${this.dEndDate}`;
+        }
+        return "";
+      },
+
       /**
        *
        * @param {sap.ui.model.Filter} [oFilter]
@@ -35,7 +52,7 @@ sap.ui.define(
                 );
               }
               console.log(data);
-                  /* MODELNAME = results
+              /* MODELNAME = results
                   {
                     stati: [
                       {
@@ -93,13 +110,18 @@ sap.ui.define(
       },
 
       onDateRangeSelect: function (oEvent) {
-        let dStartDate = oEvent.getSource().getDateValue();
-        let dEndDate = oEvent.getSource().getSecondDateValue();
-        if (dStartDate === null) {
+        this.dStartDate = oEvent.getSource().getDateValue();
+        this.dEndDate = oEvent.getSource().getSecondDateValue();
+        if (this.dStartDate === null) {
           return;
         }
         this._setData(
-          new Filter("SalesOrderDate", FilterOperator.BT, dStartDate, dEndDate)
+          new Filter(
+            "SalesOrderDate",
+            FilterOperator.BT,
+            this.dStartDate,
+            this.dEndDate
+          )
         );
       },
 
@@ -108,6 +130,9 @@ sap.ui.define(
 
         oRouter.navTo("secondPage", {
           location: oEvent.getSource().getTitle(),
+          dateRange: window.encodeURIComponent(
+            this._dateRangeConvert(),
+          ),
         });
       },
     });
