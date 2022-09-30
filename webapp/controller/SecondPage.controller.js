@@ -96,7 +96,7 @@ sap.ui.define(
         console.log(oItem);
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter.navTo("thirdPage", {
-          orders: window.encodeURIComponent(oItem),
+          results: window.encodeURIComponent(oItem),
         });
       },
 

@@ -3,7 +3,8 @@ sap.ui.define([], function () {
 
   return {
     formatDate(dOrderDate) {
-      return dOrderDate.toLocaleDateString();
+      let dDate = new Date(dOrderDate);
+      return dDate.toLocaleDateString();
     },
 
     statusText(sStatus) {
