@@ -28,7 +28,7 @@
 					<FlexBox justifyContent="End">
 						<items>
 							<DateRangeSelection
-								placeholder="von -bis"
+								placeholder="von - bis"
 								id="DRS1"
 								width="13rem"
 								delimiter="{
