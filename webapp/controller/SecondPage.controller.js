@@ -29,11 +29,11 @@ sap.ui.define(
 
       _convertStatus: function (sStatus) {
         switch (sStatus) {
-          case "Ausgeführt":
-            return "A";
           case "Erfasst":
+            return "A";
+          case " Bearbeitung":
             return "B";
-          case "In Bearbeitung":
+          case "Ausgeführt":
             return "C";
         }
       },
@@ -71,7 +71,7 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         let location = oEvent.getParameter("arguments").location;
         this.getView().byId("secondPageTitle").setText(location);
-        this._sLocation = _convertLocation(location);
+        this._sLocation = this._convertLocation(location);
         this._applyFilters();
       },
       onStatusChanged: function (oEvent) {
