@@ -115,7 +115,12 @@ sap.ui.define(
 
       deleteButtonPressed: function (oEvent) {
         this._aFilters = [];
-        this.getView().byId("orderTable").getBinding("items").filter(this._aFilters, FilterType.Application);
+        this.getView()
+          .byId("orderTable")
+          .getBinding("items")
+          .filter(this._aFilters, FilterType.Application);
+        this.getView().byId("idSelectStatus").setSelectedKey("");
+        this.getView().byId("dateSelection").setValue(null);
       },
     });
   }
