@@ -5,14 +5,16 @@ sap.ui.define(
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
+    "../model/formatter"
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
    */
-  function (Controller, JSONModel, Filter, FilterOperator, MessageBox) {
+  function (Controller, JSONModel, Filter, FilterOperator, MessageBox, formatter) {
     "use strict";
 
     return Controller.extend("project1.controller.Home", {
+      formatter: formatter,
       /**
        *
        * @param {sap.ui.model.Filter} [oFilter]

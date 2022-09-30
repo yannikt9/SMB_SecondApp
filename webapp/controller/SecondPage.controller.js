@@ -29,12 +29,35 @@ sap.ui.define(
 
       _convertStatus: function (sStatus) {
         switch (sStatus) {
-          case "Ausgeführt":
-            return "A";
           case "Erfasst":
+            return "A";
+          case " Bearbeitung":
             return "B";
-          case "In Bearbeitung":
+          case "Ausgeführt":
             return "C";
+        }
+      },
+
+      _convertLocation(sLocation) {
+        switch (sLocation) {
+          case "InlandVerkOrg. DE":
+            return "1010";
+          case "InlandVerkOrg. US":
+            return "1710";
+          case "St. Moritz":
+            return "2010";
+          case "Arosa":
+            return "2020";
+          case "Laax":
+            return "2030";
+          case "Davos":
+            return "2040";
+          case "Chur":
+            return "2050";
+          case "Lenzerheide":
+            return "2060";
+          case "Interlaken":
+            return "2099";
         }
       },
       onInit: function () {
@@ -48,7 +71,7 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         let location = oEvent.getParameter("arguments").location;
         this.getView().byId("secondPageTitle").setText(location);
-        this._sLocation = location;
+        this._sLocation = this._convertLocation(location);
         this._applyFilters();
       },
       onStatusChanged: function (oEvent) {
@@ -115,7 +138,12 @@ sap.ui.define(
 
       deleteButtonPressed: function (oEvent) {
         this._aFilters = [];
-        this.getView().byId("orderTable").getBinding("items").filter(this._aFilters, FilterType.Application);
+        this.getView()
+          .byId("orderTable")
+          .getBinding("items")
+          .filter(this._aFilters, FilterType.Application);
+        this.getView().byId("idSelectStatus").setSelectedKey("");
+        this.getView().byId("dateSelection").setValue(null);
       },
     });
   }
