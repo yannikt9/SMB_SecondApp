@@ -37,6 +37,29 @@ sap.ui.define(
             return "C";
         }
       },
+
+      _convertLocation(sLocation) {
+        switch (sLocation) {
+          case "InlandVerkOrg. DE":
+            return "1010";
+          case "InlandVerkOrg. US":
+            return "1710";
+          case "St. Moritz":
+            return "2010";
+          case "Arosa":
+            return "2020";
+          case "Laax":
+            return "2030";
+          case "Davos":
+            return "2040";
+          case "Chur":
+            return "2050";
+          case "Lenzerheide":
+            return "2060";
+          case "Interlaken":
+            return "2099";
+        }
+      },
       onInit: function () {
         // set explored app's demo model on this sample
 
@@ -48,7 +71,7 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         let location = oEvent.getParameter("arguments").location;
         this.getView().byId("secondPageTitle").setText(location);
-        this._sLocation = location;
+        this._sLocation = _convertLocation(location);
         this._applyFilters();
       },
       onStatusChanged: function (oEvent) {

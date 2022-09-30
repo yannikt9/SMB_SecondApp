@@ -59,7 +59,8 @@
 					<f:Card>
 						<f:header>
 							<card:Header
-								title="{display>SalesOffice}"
+								title="{path:'display>SalesOffice',
+									formatter:'.formatter.formatSO'}"
 								iconSrc="./img/world.png"
 								press=".onChartPressed"
 							/>
