@@ -7,15 +7,6 @@ sap.ui.define(
       formatter: formatter,
       _sResults: "",
 
-      getPage: function () {
-        return this.byId("dynamicPageId");
-      },
-      onInit: function () {
-        let oRouter = this.getOwnerComponent().getRouter();
-        oRouter
-          .getRoute("thirdPage")
-          .attachPatternMatched(this._onObjectMatched, this);
-      },
       _onObjectMatched: function (oEvent) {
         let path = window.decodeURIComponent(
           oEvent.getParameter("arguments").results
@@ -26,6 +17,18 @@ sap.ui.define(
         });
         console.log(path);
       },
+
+      onInit: function () {
+        let oRouter = this.getOwnerComponent().getRouter();
+        oRouter
+          .getRoute("thirdPage")
+          .attachPatternMatched(this._onObjectMatched, this);
+      },
+
+      getPage: function () {
+        return this.byId("dynamicPageId");
+      },
+      
       toggleAreaPriority: function () {
         var oTitle = this.getPage().getTitle(),
           sNewPrimaryArea =

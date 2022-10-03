@@ -20,7 +20,7 @@ sap.ui.define(
     return Controller.extend("project1.controller.SecondPage", {
       formatter: formatter,
       _sLocation: "",
-      _sStatus: "",
+      _sStatus: [],
       _dSelectedDate: "",
       _dSelectedSecondDate: "",
       _aFilters: [],
@@ -29,7 +29,7 @@ sap.ui.define(
         switch (sStatus) {
           case "Erfasst":
             return "A";
-          case " Bearbeitung":
+          case "In Bearbeitung":
             return "B";
           case "Ausgeführt":
             return "C";
@@ -89,9 +89,13 @@ sap.ui.define(
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
+        this._sStatus = oEvent
+          .getParameter("arguments")
+          .selectedStatus.split(",");
 
         this._dSelectedDate = dateRange.split("!")[0];
         this._dSelectedSecondDate = dateRange.split("!")[1];
+        /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
         this.getView().byId("idSelectSalesOrganization").setPlaceholder(location);
@@ -99,11 +103,10 @@ sap.ui.define(
         this._applyFilters();
 
       },
-      onStatusChanged: function (oEvent) {
-        let oComboBox = this.byId("idSelectStatus");
-        let chosenKey = oComboBox.getSelectedKey();
-
-        this._sStatus = chosenKey;
+      handleSelectionChange: function (oEvent) {
+        this._sStatus = oEvent.getSource().getSelectedKeys();
+      },
+      handleSelectionFinish: function () {
         this._applyFilters();
       },
       onDateChanged: function (oEvent) {
@@ -145,14 +148,16 @@ sap.ui.define(
             )
           );
         }
-        if (this._sStatus) {
-          this._aFilters.push(
-            new Filter(
-              "OverallDeliveryStatus",
-              FilterOperator.Contains,
-              this._convertStatus(this._sStatus)
-            )
-          );
+        if (this._sStatus.length !== 0) {
+          this._sStatus.forEach((element) => {
+            this._aFilters.push(
+              new Filter(
+                "OverallDeliveryStatus",
+                FilterOperator.Contains,
+                this._convertStatus(element)
+              )
+            );
+          });
         }
         if (this._dSelectedSecondDate && this._dSelectedDate) {
           this._aFilters.push(
@@ -170,14 +175,23 @@ sap.ui.define(
           .filter(this._aFilters, FilterType.Application);
       },
 
+<<<<<<< HEAD
       deleteButtonPressed: function (oEvent) {
         this._aFilters = this._aFilters.filter((e)=> e.sPath === "SalesOrganization");
+=======
+      deleteButtonPressed: function () {
+        this._aFilters = [];
+>>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
         this.getView()
           .byId("orderTable")
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
+<<<<<<< HEAD
         this.getView().byId("idSelectStatus").setSelectedKey("");
         this.getView().byId("idSelectSalesOrganization").setSelectedKey("");
+=======
+        this.getView().byId("idSelectStatus").setSelectedKeys(null);
+>>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
         this.getView().byId("dateSelection").setValue(null);
       },
     });

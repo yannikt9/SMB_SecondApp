@@ -19,7 +19,7 @@
 				<f:heading>
 					<Title
 						id="thirdPageTitle"
-						text="Bestellung Nr. {SalesOrder}"
+						text="{SalesOrder}"
 					/>
 				</f:heading>
 				<f:breadcrumbs>
@@ -36,23 +36,6 @@
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
-				<!-- <f:content>
-					<OverflowToolbar>
-						<GenericTag
-							text="SR"
-							status="Error"
-							press="onGenericTagPress"
-							design="StatusIconHidden"
-						>
-							<ObjectNumber
-								number="2"
-								unit="M"
-								emphasized="false"
-								state="Error"
-							/>
-						</GenericTag>
-					</OverflowToolbar>
-				</f:content>  -->
 			</f:DynamicPageTitle>
 		</f:title>
 		<f:header>
@@ -107,7 +90,6 @@
 							class="sapUiSmallNegativeMarginBeginEnd"
 							width="auto"
 						>
-							<!-- Titelspalte: Menge, ID, Produkt, Beschreibung, Auftragsdatum, Preis -->
 							<columns>
 								<Column width="12em">
 									<Text text="ID"/>
@@ -162,37 +144,8 @@
 									</cells>
 								</ColumnListItem>
 							</items>
-							<!-- <items>
-								<ColumnListItem>
-									<cells>
-										<ObjectIdentifier
-											title="{Name}"
-											text="{ProductId}"
-										/>
-										<Text text="{SupplierName}"/>
-										<Text text="{Width} x {Depth} x {Height} {DimUnit}"/>
-										<ObjectNumber
-											number="{
-												parts: [{
-													path: 'Price'
-												}, {
-													path: 'CurrencyCode'
-												}],
-												type: 'sap.ui.model.type.Currency',
-												formatOptions: {
-													showMeasure: false
-												}
-											}"
-											unit="{CurrencyCode}"
-										/>
-									</cells>
-								</ColumnListItem>
-							</items> -->
 						</Table>
 					</IconTabFilter>
-					<!-- <IconTabFilter text="Attachments">
-						<Text text="Attachments go here ..."/>
-					</IconTabFilter>-->
 				</items>
 			</IconTabBar>
 		</f:content>

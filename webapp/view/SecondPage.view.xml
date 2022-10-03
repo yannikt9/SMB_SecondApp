@@ -40,11 +40,16 @@
 						level="H2"
 					/>
 					<FlexBox>
+<<<<<<< HEAD
 						<HBox width="97%"/>
 						<ComboBox
+=======
+						<MultiComboBox
+>>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
 							id="idSelectStatus"
 							placeholder="Status"
-							change="onStatusChanged"
+							selectionChange="handleSelectionChange"
+							selectionFinish="handleSelectionFinish"
 						>
 							<items>
 								<core:Item
@@ -60,7 +65,7 @@
 									text="Erfasst"
 								/>
 							</items>
-						</ComboBox>
+						</MultiComboBox>
 						<HBox width="1%"/>
 						<ComboBox
 							id="idSelectSalesOrganization"

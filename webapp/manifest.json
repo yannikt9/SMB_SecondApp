@@ -101,7 +101,7 @@
         },
         {
           "name": "secondPage",
-          "pattern": "secondPage/{location}/:dateRange:",
+          "pattern": "secondPage/{location}/:dateRange:/:selectedStatus:",
           "target": "secondPage"
         },
         {
