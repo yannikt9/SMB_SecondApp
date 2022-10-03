@@ -115,6 +115,7 @@ sap.ui.define(
         let oComboBox = this.byId("idSelectSalesOrganization");
         let chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
+        oComboBox.setPlaceholder(this._convertLocation(this._sLocation));
         this.getView()
           .byId("secondPageTitle")
           .setText(this._convertLocation(this._sLocation));
