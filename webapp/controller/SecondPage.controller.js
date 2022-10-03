@@ -56,6 +56,24 @@ sap.ui.define(
             return "2060";
           case "Interlaken":
             return "2099";
+          case "1010":
+            return "InlandVerkOrg. DE";
+          case "1710":
+            return "InlandVerkOrg. US";
+          case "2099":
+            return "Interlaken";
+          case "2040":
+            return "Davos";
+          case "2060":
+            return "Lenzerheide";
+          case "2050":
+            return "Chur";
+          case "2020":
+            return "Arosa";
+          case "2030":
+            return "Laax";
+          case "2010":
+            return "St. Moritz";
         }
       },
       onInit: function () {
@@ -69,6 +87,7 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         let location = oEvent.getParameter("arguments").location;
         this.getView().byId("secondPageTitle").setText(location);
+        this.getView().byId("idSelectSalesOrganization").setPlaceholder(location);
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
       },
@@ -82,6 +101,15 @@ sap.ui.define(
       onDateChanged: function (oEvent) {
         this._dSelectedDate = oEvent.getSource().getDateValue();
         this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
+        this._applyFilters();
+      },
+      onSalesOrganizationChanged: function (oEvent) {
+        let oComboBox = this.byId("idSelectSalesOrganization");
+        let chosenKey = oComboBox.getSelectedKey();
+        this._sLocation = chosenKey;
+        this.getView()
+          .byId("secondPageTitle")
+          .setText(this._convertLocation(this._sLocation));
         this._applyFilters();
       },
       onPaste: function (oEvent) {
@@ -128,6 +156,7 @@ sap.ui.define(
             )
           );
         }
+        console.log(this._aFilters)
         this.getView()
           .byId("orderTable")
           .getBinding("items")
@@ -135,12 +164,13 @@ sap.ui.define(
       },
 
       deleteButtonPressed: function (oEvent) {
-        this._aFilters = [];
+        this._aFilters = this._aFilters.filter((e)=> e.sPath === "SalesOrganization");
         this.getView()
           .byId("orderTable")
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
         this.getView().byId("idSelectStatus").setSelectedKey("");
+        this.getView().byId("idSelectSalesOrganization").setSelectedKey("");
         this.getView().byId("dateSelection").setValue(null);
       },
     });
