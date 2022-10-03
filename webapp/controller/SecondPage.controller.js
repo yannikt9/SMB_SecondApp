@@ -86,10 +86,19 @@ sap.ui.define(
       },
       _onObjectMatched: function (oEvent) {
         let location = oEvent.getParameter("arguments").location;
+        let dateRange = window.decodeURIComponent(
+          oEvent.getParameter("arguments").dateRange
+        );
+
+        this._dSelectedDate = dateRange.split("!")[0];
+        this._dSelectedSecondDate = dateRange.split("!")[1];
+
         this.getView().byId("secondPageTitle").setText(location);
         this.getView().byId("idSelectSalesOrganization").setPlaceholder(location);
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
+
+        console.log(dateRange.split("!"));
       },
       onStatusChanged: function (oEvent) {
         let oComboBox = this.byId("idSelectStatus");
