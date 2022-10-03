@@ -40,10 +40,11 @@
 						level="H2"
 					/>
 					<FlexBox>
-						<ComboBox
+						<MultiComboBox
 							id="idSelectStatus"
 							placeholder="Status"
-							change="onStatusChanged"
+							selectionChange="handleSelectionChange"
+							selectionFinish="handleSelectionFinish"
 						>
 							<items>
 								<core:Item
@@ -59,7 +60,7 @@
 									text="Erfasst"
 								/>
 							</items>
-						</ComboBox>
+						</MultiComboBox>
 						<HBox width="1%"/>
 						<Button
 							press=".deleteButtonPressed"

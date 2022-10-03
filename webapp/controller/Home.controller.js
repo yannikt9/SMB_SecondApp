@@ -24,6 +24,7 @@ sap.ui.define(
       formatter: formatter,
       dStartDate: "",
       dEndDate: "",
+      _sStatus: [],
 
       /**
        * If a start date has been selected, converts start- and end-date into unitary template string to pass on in URL
@@ -138,6 +139,13 @@ sap.ui.define(
       },
 
       /**
+       * upon selection of status pushes selected statuses in 
+       */
+      onSelectData: function (oEvent) {
+        this._sStatus.push(oEvent.getParameter("data")[0].data.Status);
+      },
+
+      /**
        * When chart header gets pressed, navigates to second Page and passes selected date range in URL
        * @param {} oEvent
        */
@@ -147,6 +155,7 @@ sap.ui.define(
         oRouter.navTo("secondPage", {
           location: oEvent.getSource().getTitle(),
           dateRange: window.encodeURIComponent(this._dateRangeConvert()),
+          selectedStatus: this._sStatus.toString(),
         });
       },
     });

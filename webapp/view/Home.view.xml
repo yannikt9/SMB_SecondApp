@@ -85,9 +85,10 @@
 										visible: 'false'
 									}
 								}"
+								vizType="donut"
+								selectData=".onSelectData"
 								height="20rem"
 								width="30rem"
-								vizType="donut"
 							>
 								<viz:dataset>
 									<viz.data:FlattenedDataset data="{display>Statuses}">

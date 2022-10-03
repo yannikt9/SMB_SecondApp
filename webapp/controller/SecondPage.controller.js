@@ -20,7 +20,7 @@ sap.ui.define(
     return Controller.extend("project1.controller.SecondPage", {
       formatter: formatter,
       _sLocation: "",
-      _sStatus: "",
+      _sStatus: [],
       _dSelectedDate: "",
       _dSelectedSecondDate: "",
       _aFilters: [],
@@ -29,7 +29,7 @@ sap.ui.define(
         switch (sStatus) {
           case "Erfasst":
             return "A";
-          case " Bearbeitung":
+          case "In Bearbeitung":
             return "B";
           case "Ausgeführt":
             return "C";
@@ -71,6 +71,9 @@ sap.ui.define(
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
+        this._sStatus = oEvent
+          .getParameter("arguments")
+          .selectedStatus.split(",");
 
         this._dSelectedDate = dateRange.split("!")[0];
         this._dSelectedSecondDate = dateRange.split("!")[1];
@@ -80,13 +83,11 @@ sap.ui.define(
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
 
-        console.log(dateRange.split("!"));
       },
-      onStatusChanged: function (oEvent) {
-        let oComboBox = this.byId("idSelectStatus");
-        let chosenKey = oComboBox.getSelectedKey();
-
-        this._sStatus = chosenKey;
+      handleSelectionChange: function (oEvent) {
+        this._sStatus = oEvent.getSource().getSelectedKeys();
+      },
+      handleSelectionFinish: function () {
         this._applyFilters();
       },
       onDateChanged: function (oEvent) {
@@ -101,7 +102,6 @@ sap.ui.define(
 
       onRowPressed: function (oEvent) {
         let oItem = oEvent.getSource().getBindingContext().getPath();
-        console.log(oItem);
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter.navTo("thirdPage", {
           results: window.encodeURIComponent(oItem),
@@ -119,14 +119,16 @@ sap.ui.define(
             )
           );
         }
-        if (this._sStatus) {
-          this._aFilters.push(
-            new Filter(
-              "OverallDeliveryStatus",
-              FilterOperator.Contains,
-              this._convertStatus(this._sStatus)
-            )
-          );
+        if (this._sStatus.length !== 0) {
+          this._sStatus.forEach((element) => {
+            this._aFilters.push(
+              new Filter(
+                "OverallDeliveryStatus",
+                FilterOperator.Contains,
+                this._convertStatus(element)
+              )
+            );
+          });
         }
         if (this._dSelectedSecondDate && this._dSelectedDate) {
           this._aFilters.push(
@@ -144,13 +146,13 @@ sap.ui.define(
           .filter(this._aFilters, FilterType.Application);
       },
 
-      deleteButtonPressed: function (oEvent) {
+      deleteButtonPressed: function () {
         this._aFilters = [];
         this.getView()
           .byId("orderTable")
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
-        this.getView().byId("idSelectStatus").setSelectedKey("");
+        this.getView().byId("idSelectStatus").setSelectedKeys(null);
         this.getView().byId("dateSelection").setValue(null);
       },
     });
