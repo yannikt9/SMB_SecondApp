@@ -98,7 +98,6 @@ sap.ui.define(
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
 
-        console.log(dateRange.split("!"));
       },
       onStatusChanged: function (oEvent) {
         let oComboBox = this.byId("idSelectStatus");
@@ -128,7 +127,6 @@ sap.ui.define(
 
       onRowPressed: function (oEvent) {
         let oItem = oEvent.getSource().getBindingContext().getPath();
-        console.log(oItem);
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter.navTo("thirdPage", {
           results: window.encodeURIComponent(oItem),
@@ -165,7 +163,6 @@ sap.ui.define(
             )
           );
         }
-        console.log(this._aFilters)
         this.getView()
           .byId("orderTable")
           .getBinding("items")
