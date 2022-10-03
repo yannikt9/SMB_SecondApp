@@ -74,6 +74,7 @@ sap.ui.define(
 
         this._dSelectedDate = dateRange.split("!")[0];
         this._dSelectedSecondDate = dateRange.split("!")[1];
+        /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
         this._sLocation = this._convertLocation(location);
