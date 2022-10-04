@@ -29,8 +29,10 @@
 							href="./index.html"
 						/>
 						<Link
-							text="{SalesOrganization}"
-							href="./index.html#/secondPage/{SalesOrganization}"
+							text="{path:'SalesOrganization',
+							formatter:'.formatter.formatSO'}"
+							href="./index.html#/secondPage/{path:'SalesOrganization',
+						formatter:'.formatter.formatSO'}"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>

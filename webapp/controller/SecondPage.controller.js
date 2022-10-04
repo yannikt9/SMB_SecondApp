@@ -58,6 +58,24 @@ sap.ui.define(
             return "2060";
           case "Interlaken":
             return "2099";
+          case "1010":
+            return "InlandVerkOrg. DE";
+          case "1710":
+            return "InlandVerkOrg. US";
+          case "2099":
+            return "Interlaken";
+          case "2040":
+            return "Davos";
+          case "2060":
+            return "Lenzerheide";
+          case "2050":
+            return "Chur";
+          case "2020":
+            return "Arosa";
+          case "2030":
+            return "Laax";
+          case "2010":
+            return "St. Moritz";
         }
       },
       onInit: function () {
@@ -84,6 +102,7 @@ sap.ui.define(
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
+        this.getView().byId("idSelectSalesOrganization").setPlaceholder(location);
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
       },
@@ -96,6 +115,16 @@ sap.ui.define(
       onDateChanged: function (oEvent) {
         this._dSelectedDate = oEvent.getSource().getDateValue();
         this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
+        this._applyFilters();
+      },
+      onSalesOrganizationChanged: function (oEvent) {
+        let oComboBox = this.byId("idSelectSalesOrganization");
+        let chosenKey = oComboBox.getSelectedKey();
+        this._sLocation = chosenKey;
+        oComboBox.setPlaceholder(this._convertLocation(this._sLocation));
+        this.getView()
+          .byId("secondPageTitle")
+          .setText(this._convertLocation(this._sLocation));
         this._applyFilters();
       },
       onPaste: function (oEvent) {
@@ -149,13 +178,23 @@ sap.ui.define(
           .filter(this._aFilters, FilterType.Application);
       },
 
+<<<<<<< HEAD
+      deleteButtonPressed: function (oEvent) {
+        this._aFilters = this._aFilters.filter((e)=> e.sPath === "SalesOrganization");
+=======
       deleteButtonPressed: function () {
         this._aFilters = [];
+>>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
         this.getView()
           .byId("orderTable")
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
+<<<<<<< HEAD
+        this.getView().byId("idSelectStatus").setSelectedKey("");
+        this.getView().byId("idSelectSalesOrganization").setSelectedKey("");
+=======
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
+>>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
         this.getView().byId("dateSelection").setValue(null);
       },
 

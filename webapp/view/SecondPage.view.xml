@@ -36,11 +36,16 @@
 			<f:DynamicPageHeader>
 				<f:content>
 					<Title
-						text="Optionen: "
+						text="Filteroptionen: "
 						level="H2"
 					/>
 					<FlexBox>
+<<<<<<< HEAD
+						<HBox width="97%"/>
+						<ComboBox
+=======
 						<MultiComboBox
+>>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
 							id="idSelectStatus"
 							placeholder="Status"
 							selectionChange="handleSelectionChange"
@@ -62,11 +67,52 @@
 							</items>
 						</MultiComboBox>
 						<HBox width="1%"/>
-						<Button
-							press=".deleteButtonPressed"
-							text="Alle Filter löschen"
-						/>
-						<HBox width="100%"/>
+						<ComboBox
+							id="idSelectSalesOrganization"
+							placeholder="Verkaufsbüro"
+							change=".onSalesOrganizationChanged"
+							width="13rem"
+						>
+							<items>
+								<core:Item
+									key="1010"
+									text="InlandVerkOrg. DE"
+								/>
+								<core:Item
+									key="1710"
+									text="InlandVerkOrg. US"
+								/>
+								<core:Item
+									key="2010"
+									text="St. Moritz"
+								/>
+								<core:Item
+									key="2020"
+									text="Arosa"
+								/>
+								<core:Item
+									key="2030"
+									text="Laax"
+								/>
+								<core:Item
+									key="2040"
+									text="Davos"
+								/>
+								<core:Item
+									key="2050"
+									text="Chur"
+								/>
+								<core:Item
+									key="2060"
+									text="Lenzerheide"
+								/>
+								<core:Item
+									key="2099"
+									text="Interlaken"
+								/>
+							</items>
+						</ComboBox>
+						<HBox width="1%"/>
 						<DateRangeSelection
 							placeholder="von - bis"
 							id="dateSelection"
@@ -84,6 +130,12 @@
 								path: '/dateFormatDRS1'
 							}"
 							change=".onDateChanged"
+						/>
+						<HBox width="1%"/>
+						<Button
+							press=".deleteButtonPressed"
+							text="Alle Filter löschen"
+							
 						/>
 					</FlexBox>
 				</f:content>
