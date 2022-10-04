@@ -40,12 +40,8 @@
 						level="H2"
 					/>
 					<FlexBox>
-<<<<<<< HEAD
 						<HBox width="97%"/>
-						<ComboBox
-=======
 						<MultiComboBox
->>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
 							id="idSelectStatus"
 							placeholder="Status"
 							selectionChange="handleSelectionChange"
