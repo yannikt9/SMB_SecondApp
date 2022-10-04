@@ -83,6 +83,12 @@
 									},
 									title: {
 										visible: 'false'
+									},
+									interaction:{
+										selectability:{
+											plotLassoSelection: 'false'
+										},
+										enableDeselectAll: 'false'
 									}
 								}"
 								vizType="donut"

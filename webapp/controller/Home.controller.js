@@ -179,7 +179,6 @@ sap.ui.define(
       onChartPressed: function (oEvent) {
         let oRouter = this.getOwnerComponent().getRouter();
 
-        
         oRouter.navTo("secondPage", {
           location: oEvent.getSource().getTitle(),
           dateRange: window.encodeURIComponent(this._dateRangeConvert()),
