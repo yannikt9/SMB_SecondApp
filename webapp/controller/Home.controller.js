@@ -30,10 +30,11 @@ sap.ui.define(
 
       _onRouteMatched: function () {
         this._sStatus = [];
+        console.log(this._sStatus);
         this.getView()
           .byId("idVizFrame")
           .vizSelection([], { clearSelection: true });
-          console.log("viz frame prolly didn't refresh here");
+        /* console.log("viz frame prolly didn't refresh here"); */
       },
 
       /**
@@ -159,7 +160,17 @@ sap.ui.define(
        * upon selection of a status pushes it into private Array sStatus
        */
       onSelectData: function (oEvent) {
-        this._sStatus.push(oEvent.getParameter("data")[0].data.Status);
+        let status = oEvent.getParameter("data")[0].data.Status;
+        if (!this._sStatus.includes(status)) {
+          this._sStatus.push(status);
+        }
+        console.log(this._sStatus);
+      },
+
+      onDeselectData: function (oEvent) {
+        let status = oEvent.getParameter("data")[0].data.Status;
+        this._sStatus = this._sStatus.filter((element) => element !== status);
+        console.log(this._sStatus);
       },
 
       /**

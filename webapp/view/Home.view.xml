@@ -87,6 +87,7 @@
 								}"
 								vizType="donut"
 								selectData=".onSelectData"
+								deselectData=".onDeselectData"
 								height="20rem"
 								width="30rem"
 								

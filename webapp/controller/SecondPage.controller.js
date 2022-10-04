@@ -87,22 +87,31 @@ sap.ui.define(
           .attachPatternMatched(this._onObjectMatched, this);
       },
       _onObjectMatched: function (oEvent) {
+        this._sStatus = [];
         let location = oEvent.getParameter("arguments").location;
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
-        
-          this._sStatus = oEvent
-            .getParameter("arguments")
-            .selectedStatus.split(",");
-        
 
-        this._dSelectedDate = dateRange.split("!")[0];
-        this._dSelectedSecondDate = dateRange.split("!")[1];
+        let status = oEvent.getParameter("arguments").selectedStatus;
+        if (status) {
+          this._sStatus = window
+            .decodeURIComponent(oEvent.getParameter("arguments").selectedStatus)
+            .split(",");
+          console.log(this._sStatus);
+        }
+
+        if (dateRange) {
+          this._dSelectedDate = dateRange.split("!")[0];
+          this._dSelectedSecondDate = dateRange.split("!")[1];
+        }
+
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
-        this.getView().byId("idSelectSalesOrganization").setPlaceholder(location);
+        this.getView()
+          .byId("idSelectSalesOrganization")
+          .setPlaceholder(location);
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
       },
@@ -179,7 +188,9 @@ sap.ui.define(
       },
 
       deleteButtonPressed: function (oEvent) {
-        this._aFilters = this._aFilters.filter((e)=> e.sPath === "SalesOrganization");
+        this._aFilters = this._aFilters.filter(
+          (e) => e.sPath === "SalesOrganization"
+        );
         this.getView()
           .byId("orderTable")
           .getBinding("items")
