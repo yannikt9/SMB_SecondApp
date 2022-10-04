@@ -178,23 +178,14 @@ sap.ui.define(
           .filter(this._aFilters, FilterType.Application);
       },
 
-<<<<<<< HEAD
       deleteButtonPressed: function (oEvent) {
         this._aFilters = this._aFilters.filter((e)=> e.sPath === "SalesOrganization");
-=======
-      deleteButtonPressed: function () {
-        this._aFilters = [];
->>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
         this.getView()
           .byId("orderTable")
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
-<<<<<<< HEAD
-        this.getView().byId("idSelectStatus").setSelectedKey("");
         this.getView().byId("idSelectSalesOrganization").setSelectedKey("");
-=======
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
->>>>>>> 7fa103c35fd98ed0180eef8b6e8336c3bb0274d1
         this.getView().byId("dateSelection").setValue(null);
       },
 
