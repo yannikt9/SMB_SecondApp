@@ -170,7 +170,6 @@ sap.ui.define(
       onDeselectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
         this._sStatus = this._sStatus.filter((element) => element !== status);
-        console.log(this._sStatus);
       },
 
       /**
@@ -179,8 +178,8 @@ sap.ui.define(
        */
       onChartPressed: function (oEvent) {
         let oRouter = this.getOwnerComponent().getRouter();
-        /* oEvent.getSource().vizSelection([], { clearSelection: true }); */
-        /* this.getView().byId("idVizFrame").destroyFeeds(); */
+
+        
         oRouter.navTo("secondPage", {
           location: oEvent.getSource().getTitle(),
           dateRange: window.encodeURIComponent(this._dateRangeConvert()),
