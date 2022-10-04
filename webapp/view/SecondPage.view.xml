@@ -131,7 +131,7 @@
 						<Button
 							press=".deleteButtonPressed"
 							text="Alle Filter löschen"
-							
+							type="Emphasized"
 						/>
 					</FlexBox>
 				</f:content>

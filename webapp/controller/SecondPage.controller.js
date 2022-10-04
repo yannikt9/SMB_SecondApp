@@ -89,19 +89,20 @@ sap.ui.define(
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
-        this._sStatus = oEvent
+        /* this._sStatus = oEvent
           .getParameter("arguments")
-          .selectedStatus.split(",");
+          .selectedStatus.split(","); */
 
         this._dSelectedDate = dateRange.split("!")[0];
         this._dSelectedSecondDate = dateRange.split("!")[1];
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
-        this.getView().byId("idSelectSalesOrganization").setPlaceholder(location);
+        this.getView()
+          .byId("idSelectSalesOrganization")
+          .setPlaceholder(location);
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
-
       },
       handleSelectionChange: function (oEvent) {
         this._sStatus = oEvent.getSource().getSelectedKeys();
@@ -123,10 +124,7 @@ sap.ui.define(
           .byId("secondPageTitle")
           .setText(this._convertLocation(this._sLocation));
         this._applyFilters();
-      },
-      onPaste: function (oEvent) {
-        var aData = oEvent.getParameter("data");
-        MessageToast.show("Pasted Data: " + aData);
+        console.log(this._aFilters);
       },
 
       onRowPressed: function (oEvent) {
@@ -176,14 +174,13 @@ sap.ui.define(
       },
 
       deleteButtonPressed: function (oEvent) {
-        this._aFilters = this._aFilters.filter((e)=> e.sPath === "SalesOrganization");
-        this.getView()
-          .byId("orderTable")
-          .getBinding("items")
-          .filter(this._aFilters, FilterType.Application);
-        this.getView().byId("idSelectStatus").setSelectedKey("");
-        this.getView().byId("idSelectSalesOrganization").setSelectedKey("");
+        this._sStatus = [];
+        this._dSelectedDate = null;
+        this._applyFilters();
+        this.getView().byId("idSelectStatus").setSelectedKeys(null);
+        this.getView().byId("idSelectSalesOrganization").setSelectedKey(null);
         this.getView().byId("dateSelection").setValue(null);
+        console.log(this._aFilters);
       },
     });
   }
