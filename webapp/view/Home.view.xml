@@ -89,6 +89,7 @@
 								selectData=".onSelectData"
 								height="20rem"
 								width="30rem"
+								
 							>
 								<viz:dataset>
 									<viz.data:FlattenedDataset data="{display>Statuses}">

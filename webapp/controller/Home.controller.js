@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
     "../model/formatter",
+    "sap/ui/core/UIComponent",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -16,7 +17,8 @@ sap.ui.define(
     Filter,
     FilterOperator,
     MessageBox,
-    formatter
+    formatter,
+    UIComponent
   ) {
     "use strict";
 
@@ -25,6 +27,14 @@ sap.ui.define(
       dStartDate: "",
       dEndDate: "",
       _sStatus: [],
+
+      _onRouteMatched: function () {
+        this._sStatus = [];
+        this.getView()
+          .byId("idVizFrame")
+          .vizSelection([], { clearSelection: true });
+          console.log("viz frame prolly didn't refresh here");
+      },
 
       /**
        * If a start date has been selected, converts start- and end-date into unitary template string to pass on in URL
@@ -109,10 +119,17 @@ sap.ui.define(
           });
       },
 
+      getRouter() {
+        return UIComponent.getRouterFor(this);
+      },
+
       /**
        * Sets model "display" and appeals to set Data function to fill it with appropriate data
        */
       onInit: function () {
+        this.getRouter()
+          .getRoute("home")
+          .attachMatched(this._onRouteMatched, this);
         this.getView().setModel(new JSONModel(), "display");
         this._setData();
       },
@@ -139,7 +156,7 @@ sap.ui.define(
       },
 
       /**
-       * upon selection of status pushes selected statuses in 
+       * upon selection of a status pushes it into private Array sStatus
        */
       onSelectData: function (oEvent) {
         this._sStatus.push(oEvent.getParameter("data")[0].data.Status);
@@ -151,7 +168,8 @@ sap.ui.define(
        */
       onChartPressed: function (oEvent) {
         let oRouter = this.getOwnerComponent().getRouter();
-
+        /* oEvent.getSource().vizSelection([], { clearSelection: true }); */
+        /* this.getView().byId("idVizFrame").destroyFeeds(); */
         oRouter.navTo("secondPage", {
           location: oEvent.getSource().getTitle(),
           dateRange: window.encodeURIComponent(this._dateRangeConvert()),

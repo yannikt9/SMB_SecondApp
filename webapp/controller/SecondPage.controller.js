@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "../model/formatter",
+    "sap/ui/core/routing/History",
   ],
   function (
     Controller,
@@ -13,7 +14,8 @@ sap.ui.define(
     Filter,
     FilterOperator,
     FilterType,
-    formatter
+    formatter,
+    History
   ) {
     "use strict";
 
@@ -71,9 +73,11 @@ sap.ui.define(
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
-        this._sStatus = oEvent
-          .getParameter("arguments")
-          .selectedStatus.split(",");
+        
+          this._sStatus = oEvent
+            .getParameter("arguments")
+            .selectedStatus.split(",");
+        
 
         this._dSelectedDate = dateRange.split("!")[0];
         this._dSelectedSecondDate = dateRange.split("!")[1];
@@ -82,7 +86,6 @@ sap.ui.define(
         this.getView().byId("secondPageTitle").setText(location);
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
-
       },
       handleSelectionChange: function (oEvent) {
         this._sStatus = oEvent.getSource().getSelectedKeys();
@@ -154,6 +157,18 @@ sap.ui.define(
           .filter(this._aFilters, FilterType.Application);
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
         this.getView().byId("dateSelection").setValue(null);
+      },
+
+      onNavBack: function (oEvent) {
+        var oHistory = History.getInstance();
+        var sPreviousHash = oHistory.getPreviousHash();
+
+        if (sPreviousHash !== undefined) {
+          window.history.go(-1);
+        } else {
+          var oRouter = this.getOwnerComponent().getRouter();
+          oRouter.navTo("home", {});
+        }
       },
     });
   }
