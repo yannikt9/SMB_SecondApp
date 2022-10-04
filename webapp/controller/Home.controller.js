@@ -126,20 +126,21 @@ sap.ui.define(
         this.dStartDate = oEvent.getSource().getDateValue();
         this.dEndDate = oEvent.getSource().getSecondDateValue();
         if (this.dStartDate === null) {
-          return;
+          this._setData(null);
+        } else {
+          this._setData(
+            new Filter(
+              "SalesOrderDate",
+              FilterOperator.BT,
+              this.dStartDate,
+              this.dEndDate
+            )
+          );
         }
-        this._setData(
-          new Filter(
-            "SalesOrderDate",
-            FilterOperator.BT,
-            this.dStartDate,
-            this.dEndDate
-          )
-        );
       },
 
       /**
-       * upon selection of status pushes selected statuses in 
+       * upon selection of status pushes selected statuses in
        */
       onSelectData: function (oEvent) {
         this._sStatus.push(oEvent.getParameter("data")[0].data.Status);
@@ -158,6 +159,7 @@ sap.ui.define(
           selectedStatus: this._sStatus.toString(),
         });
       },
+
     });
   }
 );

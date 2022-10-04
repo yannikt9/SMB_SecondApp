@@ -1,20 +1,12 @@
 sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
-    "sap/m/MessageToast",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "../model/formatter",
   ],
-  function (
-    Controller,
-    MessageToast,
-    Filter,
-    FilterOperator,
-    FilterType,
-    formatter
-  ) {
+  function (Controller, Filter, FilterOperator, FilterType, formatter) {
     "use strict";
 
     return Controller.extend("project1.controller.SecondPage", {
@@ -98,6 +90,15 @@ sap.ui.define(
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
+        if (this._dSelectedSecondDate && this._dSelectedDate !== null) {
+          this.getView()
+            .byId("dateSelection")
+            .setPlaceholder(
+              new Date(this._dSelectedDate).toLocaleDateString() +
+                " - " +
+                new Date(this._dSelectedSecondDate).toLocaleDateString()
+            );
+        }
         this.getView()
           .byId("idSelectSalesOrganization")
           .setPlaceholder(location);
@@ -124,7 +125,6 @@ sap.ui.define(
           .byId("secondPageTitle")
           .setText(this._convertLocation(this._sLocation));
         this._applyFilters();
-        console.log(this._aFilters);
       },
 
       onRowPressed: function (oEvent) {
@@ -176,11 +176,11 @@ sap.ui.define(
       deleteButtonPressed: function (oEvent) {
         this._sStatus = [];
         this._dSelectedDate = null;
+        this._dSelectedSecondDate = null;
         this._applyFilters();
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
         this.getView().byId("idSelectSalesOrganization").setSelectedKey(null);
-        this.getView().byId("dateSelection").setValue(null);
-        console.log(this._aFilters);
+        this.getView().byId("dateSelection").setValue(null).setPlaceholder("von - bis");
       },
     });
   }
