@@ -7,6 +7,7 @@ sap.ui.define(
     "sap/m/MessageBox",
     "../model/formatter",
     "sap/ui/core/UIComponent",
+    "sap/m/BusyIndicator",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -18,7 +19,8 @@ sap.ui.define(
     FilterOperator,
     MessageBox,
     formatter,
-    UIComponent
+    UIComponent,
+    BusyIndicator
   ) {
     "use strict";
 
@@ -63,6 +65,7 @@ sap.ui.define(
               let setOfSalesOffices = new Set(
                 data.results.map((element) => element.SalesOrganization)
               );
+              console.log(data.results);
               let arraySalesOffices = [];
               if (data.results.length === 0) {
                 return MessageBox.warning(
@@ -122,6 +125,28 @@ sap.ui.define(
           });
       },
 
+      /* hideBusyIndicator: function () {
+        BusyIndicator.hide();
+      },
+
+      showBusyIndicator: function (iDuration, iDelay) {
+        BusyIndicator.show(iDelay);
+
+        if (iDuration && iDuration > 0) {
+          if (this._sTimeoutId) {
+            clearTimeout(this._sTimeoutId);
+            this._sTimeoutId = null;
+          }
+
+          this._sTimeoutId = setTimeout(
+            function () {
+              this.hideBusyIndicator();
+            }.bind(this),
+            iDuration
+          );
+        }
+      }, */
+
       /**
        * Gets Router
        * @returns router
@@ -139,6 +164,7 @@ sap.ui.define(
           .attachMatched(this._onRouteMatched, this);
         this.getView().setModel(new JSONModel(), "display");
         this._setData();
+
       },
 
       /**
@@ -164,22 +190,13 @@ sap.ui.define(
       },
 
       /**
-<<<<<<< HEAD
-       * upon selection of status pushes selected statuses in
-=======
-<<<<<<< HEAD
        * upon selection of a status pushes it into private filtering Array sStatus
-=======
-       * upon selection of status pushes selected statuses in
->>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
->>>>>>> f5db6308da71f0d71f127ecb4ad70a7803149052
        */
       onSelectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
         if (!this._sStatus.includes(status)) {
           this._sStatus.push(status);
         }
-        console.log(this._sStatus);
       },
 
       /**
@@ -204,7 +221,6 @@ sap.ui.define(
           selectedStatus: this._sStatus.toString(),
         });
       },
-
     });
   }
 );

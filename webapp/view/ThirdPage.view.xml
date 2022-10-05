@@ -122,7 +122,9 @@
 											path: 'OverallDeliveryStatus',
 											formatter: '.formatter.statusText'
 										}"/>
-										<Text text="something"/>
+										<Text text="{
+											path: 'IncotermsTransferLocation'
+										}"/>
 										<ObjectNumber number="{
 											parts: [{
 												path: 'TotalNetAmount'
