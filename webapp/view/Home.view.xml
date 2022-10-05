@@ -84,8 +84,8 @@
 									title: {
 										visible: 'false'
 									},
-									interaction:{
-										selectability:{
+									interaction: {
+										selectability: {
 											plotLassoSelection: 'false'
 										},
 										enableDeselectAll: 'false'
@@ -96,7 +96,6 @@
 								deselectData=".onDeselectData"
 								height="20rem"
 								width="30rem"
-								
 							>
 								<viz:dataset>
 									<viz.data:FlattenedDataset data="{display>Statuses}">

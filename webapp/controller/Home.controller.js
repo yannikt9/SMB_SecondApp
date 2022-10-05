@@ -36,7 +36,7 @@ sap.ui.define(
         this.getView()
           .byId("idVizFrame")
           .vizSelection([], { clearSelection: true });
-        /* console.log("viz frame prolly didn't refresh here"); */
+        console.log("viz frame prolly didn't refresh here");
       },
 
       /**
@@ -175,13 +175,13 @@ sap.ui.define(
 
       /**
        * deletes selected status from filter Array upon deselection
-       * @param {} oEvent 
+       * @param {} oEvent
        */
       onDeselectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
         this._sStatus = this._sStatus.filter((element) => element !== status);
       },
-      
+
       /**
        * When chart header gets pressed, navigates to second Page and passes selected date range in URL
        * @param {} oEvent
@@ -195,7 +195,6 @@ sap.ui.define(
           selectedStatus: this._sStatus.toString(),
         });
       },
-
     });
   }
 );

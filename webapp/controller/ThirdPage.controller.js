@@ -29,6 +29,8 @@ sap.ui.define(
         oRouter
           .getRoute("thirdPage")
           .attachPatternMatched(this._onObjectMatched, this);
+
+          this._assignValueState(OverallDeliveryStatus);
       },
 
       /**
@@ -50,6 +52,10 @@ sap.ui.define(
               : DynamicPageTitleArea.Begin;
         oTitle.setPrimaryArea(sNewPrimaryArea);
       },
+
+      onNavBack : function (oEvent) {
+        window.history(-1);
+      }
     });
   }
 );

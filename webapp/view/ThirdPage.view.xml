@@ -29,10 +29,11 @@
 							href="./index.html"
 						/>
 						<Link
-							text="{path:'SalesOrganization',
-							formatter:'.formatter.formatSO'}"
-							href="./index.html#/secondPage/{path:'SalesOrganization',
-						formatter:'.formatter.formatSO'}"
+							text="{
+								path: 'SalesOrganization',
+								formatter: '.formatter.formatSO'
+							}"
+							press=".onNavBack"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
@@ -51,22 +52,14 @@
 						<ObjectAttribute
 							title="Auftragsdatum"
 							text="{
-								path: 'PricingDate',
-								formatter: '.formatter.formatDate'
-							}"
-						/>
-					</layout:VerticalLayout>
-					<layout:VerticalLayout class="sapUiMediumMarginEnd">
-						<ObjectAttribute
-							title="Zahldatum"
-							text="{
 								path: 'SalesOrderDate',
 								formatter: '.formatter.formatDate'
 							}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
-						<ObjectAttribute
+						<ObjectStatus
+							id="statusText"
 							title="Status"
 							text="{
 								path: 'OverallDeliveryStatus',
@@ -129,7 +122,7 @@
 											path: 'OverallDeliveryStatus',
 											formatter: '.formatter.statusText'
 										}"/>
-										<Text text="nothing"/>
+										<Text text="something"/>
 										<ObjectNumber number="{
 											parts: [{
 												path: 'TotalNetAmount'

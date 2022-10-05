@@ -98,7 +98,6 @@ sap.ui.define(
           this._sStatus = window
             .decodeURIComponent(oEvent.getParameter("arguments").selectedStatus)
             .split(",");
-          console.log(this._sStatus);
         }
 
         if (dateRange) {
@@ -201,15 +200,15 @@ sap.ui.define(
       },
 
       onNavBack: function (oEvent) {
-        let oHistory = History.getInstance();
+        /* let oHistory = History.getInstance();
         let sPreviousHash = oHistory.getPreviousHash();
 
-        if (sPreviousHash !== undefined) {
+        if (sPreviousHash !== undefined) { */
           window.history.go(-1);
-        } else {
+        /* } else {
           let oRouter = this.getOwnerComponent().getRouter();
-          oRouter.navTo("home", {});
-        }
+          oRouter.navTo("home", {}); 
+        }*/
       },
     });
   }
