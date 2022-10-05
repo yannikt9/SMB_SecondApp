@@ -141,7 +141,6 @@
 			<ScrollContainer>
 				<Table
 					id="orderTable"
-					paste="onPaste"
 					ariaLabelledBy="title"
 					items="{/A_SalesOrder}"
 				>
