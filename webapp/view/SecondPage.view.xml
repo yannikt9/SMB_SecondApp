@@ -46,6 +46,7 @@
 							placeholder="Status"
 							selectionChange="handleSelectionChange"
 							selectionFinish="handleSelectionFinish"
+							width="13rem"
 						>
 							<items>
 								<core:Item
