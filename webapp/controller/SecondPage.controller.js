@@ -16,7 +16,11 @@ sap.ui.define(
       _dSelectedDate: "",
       _dSelectedSecondDate: "",
       _aFilters: [],
-
+      /**
+       * converts statusCharacter into string and vice versa
+       * @param {} sStatus
+       * @returns statusString
+       */
       _convertStatus: function (sStatus) {
         switch (sStatus) {
           case "Erfasst":
@@ -27,7 +31,11 @@ sap.ui.define(
             return "C";
         }
       },
-
+      /**
+       * converts locationNumbers into string and vice versa
+       * @param {} sLocation
+       * @returns locationNumber and locationString
+       */
       _convertLocation(sLocation) {
         switch (sLocation) {
           case "InlandVerkOrg. DE":
@@ -68,6 +76,10 @@ sap.ui.define(
             return "St. Moritz";
         }
       },
+      /**
+       * routing to second page
+       * loading the right data by decoding the uri parameters
+       */
       onInit: function () {
         // set explored app's demo model on this sample
 
@@ -105,12 +117,20 @@ sap.ui.define(
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
       },
+      /**
+       * change selected status and filter
+       * @param {} oEvent 
+       */
       handleSelectionChange: function (oEvent) {
         this._sStatus = oEvent.getSource().getSelectedKeys();
       },
       handleSelectionFinish: function () {
         this._applyFilters();
       },
+      /**
+       * change date and filter
+       * @param {} oEvent 
+       */
       onDateChanged: function (oEvent) {
         this._dSelectedDate = oEvent.getSource().getDateValue();
         this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
@@ -180,7 +200,10 @@ sap.ui.define(
         this._applyFilters();
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
         this.getView().byId("idSelectSalesOrganization").setSelectedKey(null);
-        this.getView().byId("dateSelection").setValue(null).setPlaceholder("von - bis");
+        this.getView()
+          .byId("dateSelection")
+          .setValue(null)
+          .setPlaceholder("von - bis");
       },
     });
   }

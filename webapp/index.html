@@ -13,6 +13,11 @@
       #container-uiarea {
         height: 100%;
       }
+      #busyIndicator {
+        position: absolute;
+        top: 20%;
+        left: 40%;
+         }
     </style>
     <script
       id="sap-ui-bootstrap"
@@ -31,8 +36,15 @@
       data-sap-ui-manifest-uri="./manifest.json"
       data-sap-ui-componentName="project1"
     ></script>
+    <script
+      id="locate-reuse-libs"
+      src="./utils/locate-reuse-libs.js"
+      data-sap-ui-manifest-uri="./manifest.json"
+      data-sap-ui-componentName="app"
+    ></script>
   </head>
   <body class="sapUiBody sapUiSizeCompact" id="content">
+    <div id="busyIndicator"><img src="img/Simons-Backflip-unscreen.gif" /></div>
     <div
       data-sap-ui-component
       data-name="project1"
