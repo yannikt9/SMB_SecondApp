@@ -28,9 +28,11 @@ sap.ui.define(
       dEndDate: "",
       _sStatus: [],
 
+      /**
+       * empties private filtering Array _sStatus and clears selected statuses in viz Frame
+       */
       _onRouteMatched: function () {
         this._sStatus = [];
-        console.log(this._sStatus);
         this.getView()
           .byId("idVizFrame")
           .vizSelection([], { clearSelection: true });
@@ -120,6 +122,10 @@ sap.ui.define(
           });
       },
 
+      /**
+       * Gets Router
+       * @returns router
+       */
       getRouter() {
         return UIComponent.getRouterFor(this);
       },
@@ -157,7 +163,7 @@ sap.ui.define(
       },
 
       /**
-       * upon selection of a status pushes it into private Array sStatus
+       * upon selection of a status pushes it into private filtering Array sStatus
        */
       onSelectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
@@ -167,11 +173,15 @@ sap.ui.define(
         console.log(this._sStatus);
       },
 
+      /**
+       * deletes selected status from filter Array upon deselection
+       * @param {} oEvent 
+       */
       onDeselectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
         this._sStatus = this._sStatus.filter((element) => element !== status);
       },
-
+      
       /**
        * When chart header gets pressed, navigates to second Page and passes selected date range in URL
        * @param {} oEvent
@@ -185,6 +195,7 @@ sap.ui.define(
           selectedStatus: this._sStatus.toString(),
         });
       },
+
     });
   }
 );

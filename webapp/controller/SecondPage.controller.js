@@ -201,13 +201,13 @@ sap.ui.define(
       },
 
       onNavBack: function (oEvent) {
-        var oHistory = History.getInstance();
-        var sPreviousHash = oHistory.getPreviousHash();
+        let oHistory = History.getInstance();
+        let sPreviousHash = oHistory.getPreviousHash();
 
         if (sPreviousHash !== undefined) {
           window.history.go(-1);
         } else {
-          var oRouter = this.getOwnerComponent().getRouter();
+          let oRouter = this.getOwnerComponent().getRouter();
           oRouter.navTo("home", {});
         }
       },
