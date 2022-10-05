@@ -7,19 +7,7 @@ sap.ui.define(
     "../model/formatter",
     "sap/ui/core/routing/History",
   ],
-<<<<<<< HEAD
-  function (
-    Controller,
-    MessageToast,
-    Filter,
-    FilterOperator,
-    FilterType,
-    formatter,
-    History
-  ) {
-=======
   function (Controller, Filter, FilterOperator, FilterType, formatter) {
->>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
     "use strict";
 
     return Controller.extend("project1.controller.SecondPage", {
@@ -107,12 +95,9 @@ sap.ui.define(
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
-<<<<<<< HEAD
-=======
         /* this._sStatus = oEvent
           .getParameter("arguments")
           .selectedStatus.split(","); */
->>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
 
         let status = oEvent.getParameter("arguments").selectedStatus;
         if (status) {
@@ -129,8 +114,6 @@ sap.ui.define(
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
-<<<<<<< HEAD
-=======
         if (this._dSelectedSecondDate && this._dSelectedDate !== null) {
           this.getView()
             .byId("dateSelection")
@@ -140,7 +123,6 @@ sap.ui.define(
                 new Date(this._dSelectedSecondDate).toLocaleDateString()
             );
         }
->>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
         this.getView()
           .byId("idSelectSalesOrganization")
           .setPlaceholder(location);
@@ -224,18 +206,6 @@ sap.ui.define(
       },
 
       deleteButtonPressed: function (oEvent) {
-<<<<<<< HEAD
-        this._aFilters = this._aFilters.filter(
-          (e) => e.sPath === "SalesOrganization"
-        );
-        this.getView()
-          .byId("orderTable")
-          .getBinding("items")
-          .filter(this._aFilters, FilterType.Application);
-        this.getView().byId("idSelectSalesOrganization").setSelectedKey("");
-        this.getView().byId("idSelectStatus").setSelectedKeys(null);
-        this.getView().byId("dateSelection").setValue(null);
-=======
         this._sStatus = [];
         this._dSelectedDate = null;
         this._dSelectedSecondDate = null;
@@ -246,7 +216,6 @@ sap.ui.define(
           .byId("dateSelection")
           .setValue(null)
           .setPlaceholder("von - bis");
->>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
       },
 
       onNavBack: function (oEvent) {

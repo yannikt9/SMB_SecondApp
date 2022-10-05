@@ -29,8 +29,6 @@ sap.ui.define(
         oRouter
           .getRoute("thirdPage")
           .attachPatternMatched(this._onObjectMatched, this);
-
-          this._assignValueState(OverallDeliveryStatus);
       },
 
       /**
