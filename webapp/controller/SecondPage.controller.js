@@ -1,13 +1,13 @@
 sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
-    "sap/m/MessageToast",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "../model/formatter",
     "sap/ui/core/routing/History",
   ],
+<<<<<<< HEAD
   function (
     Controller,
     MessageToast,
@@ -17,6 +17,9 @@ sap.ui.define(
     formatter,
     History
   ) {
+=======
+  function (Controller, Filter, FilterOperator, FilterType, formatter) {
+>>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
     "use strict";
 
     return Controller.extend("project1.controller.SecondPage", {
@@ -26,7 +29,11 @@ sap.ui.define(
       _dSelectedDate: "",
       _dSelectedSecondDate: "",
       _aFilters: [],
-
+      /**
+       * converts statusCharacter into string and vice versa
+       * @param {} sStatus
+       * @returns statusString
+       */
       _convertStatus: function (sStatus) {
         switch (sStatus) {
           case "Erfasst":
@@ -37,7 +44,11 @@ sap.ui.define(
             return "C";
         }
       },
-
+      /**
+       * converts locationNumbers into string and vice versa
+       * @param {} sLocation
+       * @returns locationNumber and locationString
+       */
       _convertLocation(sLocation) {
         switch (sLocation) {
           case "InlandVerkOrg. DE":
@@ -78,6 +89,10 @@ sap.ui.define(
             return "St. Moritz";
         }
       },
+      /**
+       * routing to second page
+       * loading the right data by decoding the uri parameters
+       */
       onInit: function () {
         // set explored app's demo model on this sample
 
@@ -92,6 +107,12 @@ sap.ui.define(
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
+<<<<<<< HEAD
+=======
+        /* this._sStatus = oEvent
+          .getParameter("arguments")
+          .selectedStatus.split(","); */
+>>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
 
         let status = oEvent.getParameter("arguments").selectedStatus;
         if (status) {
@@ -108,18 +129,38 @@ sap.ui.define(
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
+<<<<<<< HEAD
+=======
+        if (this._dSelectedSecondDate && this._dSelectedDate !== null) {
+          this.getView()
+            .byId("dateSelection")
+            .setPlaceholder(
+              new Date(this._dSelectedDate).toLocaleDateString() +
+                " - " +
+                new Date(this._dSelectedSecondDate).toLocaleDateString()
+            );
+        }
+>>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
         this.getView()
           .byId("idSelectSalesOrganization")
           .setPlaceholder(location);
         this._sLocation = this._convertLocation(location);
         this._applyFilters();
       },
+      /**
+       * change selected status and filter
+       * @param {} oEvent 
+       */
       handleSelectionChange: function (oEvent) {
         this._sStatus = oEvent.getSource().getSelectedKeys();
       },
       handleSelectionFinish: function () {
         this._applyFilters();
       },
+      /**
+       * change date and filter
+       * @param {} oEvent 
+       */
       onDateChanged: function (oEvent) {
         this._dSelectedDate = oEvent.getSource().getDateValue();
         this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
@@ -134,10 +175,6 @@ sap.ui.define(
           .byId("secondPageTitle")
           .setText(this._convertLocation(this._sLocation));
         this._applyFilters();
-      },
-      onPaste: function (oEvent) {
-        var aData = oEvent.getParameter("data");
-        MessageToast.show("Pasted Data: " + aData);
       },
 
       onRowPressed: function (oEvent) {
@@ -187,6 +224,7 @@ sap.ui.define(
       },
 
       deleteButtonPressed: function (oEvent) {
+<<<<<<< HEAD
         this._aFilters = this._aFilters.filter(
           (e) => e.sPath === "SalesOrganization"
         );
@@ -197,6 +235,18 @@ sap.ui.define(
         this.getView().byId("idSelectSalesOrganization").setSelectedKey("");
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
         this.getView().byId("dateSelection").setValue(null);
+=======
+        this._sStatus = [];
+        this._dSelectedDate = null;
+        this._dSelectedSecondDate = null;
+        this._applyFilters();
+        this.getView().byId("idSelectStatus").setSelectedKeys(null);
+        this.getView().byId("idSelectSalesOrganization").setSelectedKey(null);
+        this.getView()
+          .byId("dateSelection")
+          .setValue(null)
+          .setPlaceholder("von - bis");
+>>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
       },
 
       onNavBack: function (oEvent) {

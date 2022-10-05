@@ -150,20 +150,25 @@ sap.ui.define(
         this.dStartDate = oEvent.getSource().getDateValue();
         this.dEndDate = oEvent.getSource().getSecondDateValue();
         if (this.dStartDate === null) {
-          return;
+          this._setData(null);
+        } else {
+          this._setData(
+            new Filter(
+              "SalesOrderDate",
+              FilterOperator.BT,
+              this.dStartDate,
+              this.dEndDate
+            )
+          );
         }
-        this._setData(
-          new Filter(
-            "SalesOrderDate",
-            FilterOperator.BT,
-            this.dStartDate,
-            this.dEndDate
-          )
-        );
       },
 
       /**
+<<<<<<< HEAD
        * upon selection of a status pushes it into private filtering Array sStatus
+=======
+       * upon selection of status pushes selected statuses in
+>>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
        */
       onSelectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
@@ -195,6 +200,7 @@ sap.ui.define(
           selectedStatus: this._sStatus.toString(),
         });
       },
+
     });
   }
 );
