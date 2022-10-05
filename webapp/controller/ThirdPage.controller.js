@@ -7,6 +7,10 @@ sap.ui.define(
       formatter: formatter,
       _sResults: "",
 
+      /**
+       * decodes passed over Sales Order
+       * @param {} oEvent 
+       */
       _onObjectMatched: function (oEvent) {
         let path = window.decodeURIComponent(
           oEvent.getParameter("arguments").results
@@ -15,9 +19,11 @@ sap.ui.define(
         this.getView().bindElement({
           path: path,
         });
-        console.log(path);
       },
 
+      /**
+       * attaches decoded passed over Sales Order to third page
+       */
       onInit: function () {
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter
@@ -25,18 +31,29 @@ sap.ui.define(
           .attachPatternMatched(this._onObjectMatched, this);
       },
 
+      /**
+       * gets page
+       * @returns page by ID
+       */
       getPage: function () {
         return this.byId("dynamicPageId");
       },
       
+      /**
+       * sets title
+       */
       toggleAreaPriority: function () {
-        var oTitle = this.getPage().getTitle(),
+        let oTitle = this.getPage().getTitle(),
           sNewPrimaryArea =
             oTitle.getPrimaryArea() === DynamicPageTitleArea.Begin
               ? DynamicPageTitleArea.Middle
               : DynamicPageTitleArea.Begin;
         oTitle.setPrimaryArea(sNewPrimaryArea);
       },
+
+      onNavBack : function (oEvent) {
+        window.history(-1);
+      }
     });
   }
 );

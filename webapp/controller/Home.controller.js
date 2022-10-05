@@ -6,6 +6,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/m/MessageBox",
     "../model/formatter",
+    "sap/ui/core/UIComponent",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -16,7 +17,8 @@ sap.ui.define(
     Filter,
     FilterOperator,
     MessageBox,
-    formatter
+    formatter,
+    UIComponent
   ) {
     "use strict";
 
@@ -25,6 +27,17 @@ sap.ui.define(
       dStartDate: "",
       dEndDate: "",
       _sStatus: [],
+
+      /**
+       * empties private filtering Array _sStatus and clears selected statuses in viz Frame
+       */
+      _onRouteMatched: function () {
+        this._sStatus = [];
+        this.getView()
+          .byId("idVizFrame")
+          .vizSelection([], { clearSelection: true });
+        console.log("viz frame prolly didn't refresh here");
+      },
 
       /**
        * If a start date has been selected, converts start- and end-date into unitary template string to pass on in URL
@@ -110,9 +123,20 @@ sap.ui.define(
       },
 
       /**
+       * Gets Router
+       * @returns router
+       */
+      getRouter() {
+        return UIComponent.getRouterFor(this);
+      },
+
+      /**
        * Sets model "display" and appeals to set Data function to fill it with appropriate data
        */
       onInit: function () {
+        this.getRouter()
+          .getRoute("home")
+          .attachMatched(this._onRouteMatched, this);
         this.getView().setModel(new JSONModel(), "display");
         this._setData();
       },
@@ -140,10 +164,31 @@ sap.ui.define(
       },
 
       /**
+<<<<<<< HEAD
        * upon selection of status pushes selected statuses in
+=======
+<<<<<<< HEAD
+       * upon selection of a status pushes it into private filtering Array sStatus
+=======
+       * upon selection of status pushes selected statuses in
+>>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
+>>>>>>> f5db6308da71f0d71f127ecb4ad70a7803149052
        */
       onSelectData: function (oEvent) {
-        this._sStatus.push(oEvent.getParameter("data")[0].data.Status);
+        let status = oEvent.getParameter("data")[0].data.Status;
+        if (!this._sStatus.includes(status)) {
+          this._sStatus.push(status);
+        }
+        console.log(this._sStatus);
+      },
+
+      /**
+       * deletes selected status from filter Array upon deselection
+       * @param {} oEvent
+       */
+      onDeselectData: function (oEvent) {
+        let status = oEvent.getParameter("data")[0].data.Status;
+        this._sStatus = this._sStatus.filter((element) => element !== status);
       },
 
       /**
