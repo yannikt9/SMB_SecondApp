@@ -51,30 +51,6 @@ sap.ui.define(
           .getRoute("thirdPage")
           .attachPatternMatched(this._onObjectMatched, this);
       },
-
-      /**
-       * gets page
-       * @returns page by ID
-       */
-      getPage: function () {
-        return this.byId("dynamicPageId");
-      },
-
-      /**
-       * sets title
-       */
-      toggleAreaPriority: function () {
-        let oTitle = this.getPage().getTitle(),
-          sNewPrimaryArea =
-            oTitle.getPrimaryArea() === DynamicPageTitleArea.Begin
-              ? DynamicPageTitleArea.Middle
-              : DynamicPageTitleArea.Begin;
-        oTitle.setPrimaryArea(sNewPrimaryArea);
-      },
-
-      onNavBack: function (oEvent) {
-        window.history(-1);
-      },
     });
   }
 );
