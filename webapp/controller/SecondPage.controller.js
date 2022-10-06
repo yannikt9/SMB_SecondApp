@@ -155,7 +155,6 @@ sap.ui.define(
        * @param {} oEvent
        */
       onRowPressed: function (oEvent) {
-        debugger;
         let oItem = oEvent.getSource().getBindingContext().getPath();
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter.navTo("thirdPage", {

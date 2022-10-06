@@ -139,8 +139,8 @@
 										<!-- 	type: 'sap.ui.model.type.Currency',
 											formatOptions: {
 												showMeasure: true
-											} -->
-										}"/>
+											} 
+										}"/>-->
 									</cells>
 								</ColumnListItem>
 							</items>
