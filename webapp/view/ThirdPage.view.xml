@@ -55,15 +55,6 @@
 						<ObjectAttribute
 							title="Auftragsdatum"
 							text="{
-								path: 'PricingDate',
-								formatter: '.formatter.formatDate'
-							}"
-						/>
-					</layout:VerticalLayout>
-					<layout:VerticalLayout class="sapUiMediumMarginEnd">
-						<ObjectAttribute
-							title="Zahldatum"
-							text="{
 								path: 'SalesOrderDate',
 								formatter: '.formatter.formatDate'
 							}"

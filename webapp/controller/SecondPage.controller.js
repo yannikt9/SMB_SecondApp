@@ -5,6 +5,7 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "../model/formatter",
+    "sap/ui/core/routing/History",
   ],
   function (Controller, Filter, FilterOperator, FilterType, formatter) {
     "use strict";
@@ -89,6 +90,7 @@ sap.ui.define(
           .attachPatternMatched(this._onObjectMatched, this);
       },
       _onObjectMatched: function (oEvent) {
+        this._sStatus = [];
         let location = oEvent.getParameter("arguments").location;
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
@@ -97,8 +99,6 @@ sap.ui.define(
           .getParameter("arguments")
           .selectedStatus.split(","); */
 
-        this._dSelectedDate = dateRange.split("!")[0];
-        this._dSelectedSecondDate = dateRange.split("!")[1];
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
