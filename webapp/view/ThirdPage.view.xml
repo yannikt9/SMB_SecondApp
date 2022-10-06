@@ -25,7 +25,7 @@
 				<f:breadcrumbs>
 					<Breadcrumbs>
 						<Link
-							text="Standorte"
+							text="{i18n>headerTitle}"
 							href="./index.html"
 						/>
 						<Link
@@ -44,13 +44,13 @@
 				<layout:HorizontalLayout allowWrapping="true">
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
-							title="Kunde"
+							title="{i18n>soldToParty}"
 							text="{SoldToParty}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
-							title="Auftragsdatum"
+							title="{i18n>salesOrderDate}"
 							text="{
 								path: 'SalesOrderDate',
 								formatter: '.formatter.formatDate'
@@ -60,7 +60,7 @@
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectStatus
 							id="statusText"
-							title="Status"
+							title="{i18n>deliveryStatus}"
 							text="{
 								path: 'OverallDeliveryStatus',
 								formatter: '.formatter.statusText'
@@ -76,7 +76,7 @@
 				class="sapUiResponsiveContentPadding"
 			>
 				<items>
-					<IconTabFilter text="Positionen">
+					<IconTabFilter text="{i18n>purchasePositions}">
 						<Table
 							id="idProductsTable"
 							sticky="HeaderToolbar,ColumnHeaders"
@@ -85,28 +85,28 @@
 						>
 							<columns>
 								<Column width="12em">
-									<Text text="ID"/>
+									<Text text="{i18n>salesOrder}"/>
 								</Column>
 								<Column width="15em">
-									<Text text="Kunde"/>
+									<Text text="{i18n>soldToParty}"/>
 								</Column>
 								<Column width="15em">
-									<Text text="Datum"/>
+									<Text text="{i18n>salesOrderDate}"/>
 								</Column>
 								<Column
 									minScreenWidth="Tablet"
 									demandPopin="true"
 								>
-									<Text text="Status"/>
+									<Text text="{i18n>deliveryStatus}"/>
 								</Column>
 								<Column
 									demandPopin="true"
 									hAlign="End"
 								>
-									<Text text="Beschreibung"/>
+									<Text text="{i18n>productDescription}"/>
 								</Column>
 								<Column hAlign="End">
-									<Text text="Preis"/>
+									<Text text="{i18n>totalNetAmount}"/>
 								</Column>
 							</columns>
 							<items>
