@@ -31,7 +31,7 @@ sap.ui.define(
        * @returns one template String with two values separated by an exclamation mark for ease of future separation
        */
       _dateRangeConvert: function () {
-        if (this.dStartDate !== "") {
+        if (this.dStartDate) {
           return `${this.dStartDate}!${this.dEndDate}`;
         }
         return "";
@@ -159,7 +159,6 @@ sap.ui.define(
           selectedStatus: this._sStatus.toString(),
         });
       },
-
     });
   }
 );
