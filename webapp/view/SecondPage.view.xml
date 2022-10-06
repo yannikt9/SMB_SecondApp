@@ -51,15 +51,15 @@
 							<items>
 								<core:Item
 									key="Ausgeführt"
-									text="{i18m>invoiceStatusC}"
+									text="{i18n>invoiceStatusC}"
 								/>
 								<core:Item
 									key="In Bearbeitung"
-									text="{i18m>invoiceStatusB}"
+									text="{i18n>invoiceStatusB}"
 								/>
 								<core:Item
 									key="Erfasst"
-									text="{i18m>invoiceStatusA}"
+									text="{i18n>invoiceStatusA}"
 								/>
 							</items>
 						</MultiComboBox>
