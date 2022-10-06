@@ -7,6 +7,7 @@ sap.ui.define(
     "sap/m/MessageBox",
     "../model/formatter",
     "sap/ui/core/UIComponent",
+    "sap/ui/core/BusyIndicator",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -18,7 +19,8 @@ sap.ui.define(
     FilterOperator,
     MessageBox,
     formatter,
-    UIComponent
+    UIComponent,
+    BusyIndicator
   ) {
     "use strict";
 
@@ -64,14 +66,17 @@ sap.ui.define(
                 data.results.map((element) => element.SalesOrganization)
               );
               let arraySalesOffices = [];
+              let resources = this.getView()
+                .getModel("i18n")
+                .getResourceBundle();
               if (data.results.length === 0) {
                 return MessageBox.warning(
-                  "In dieser Zeitspanne gab es keine Bestellungen"
+                  resources.getText("noOrdersInTimeSpan")
                 );
               }
 
-              /* model name = results */
-              /* {
+              /* model name = results
+              {
                     stati: [
                       {
                         standort: Arosa,
@@ -83,7 +88,6 @@ sap.ui.define(
                       },
                     ]
                   } */
-
               setOfSalesOffices.forEach((element) => {
                 arraySalesOffices.push({
                   SalesOffice: element,
@@ -118,6 +122,7 @@ sap.ui.define(
                   .getModel("display")
                   .setData({ stati: arraySalesOffices });
               });
+              this.hideBusyIndicator();
             },
           });
       },
@@ -130,6 +135,14 @@ sap.ui.define(
         return UIComponent.getRouterFor(this);
       },
 
+      hideBusyIndicator: function () {
+        BusyIndicator.hide();
+      },
+
+      showBusyIndicator: function () {
+        BusyIndicator.show(1000);
+      },
+
       /**
        * Sets model "display" and appeals to set Data function to fill it with appropriate data
        */
@@ -137,6 +150,7 @@ sap.ui.define(
         this.getRouter()
           .getRoute("home")
           .attachMatched(this._onRouteMatched, this);
+          this.showBusyIndicator();
         this.getView().setModel(new JSONModel(), "display");
         this._setData();
       },
@@ -164,22 +178,13 @@ sap.ui.define(
       },
 
       /**
-<<<<<<< HEAD
-       * upon selection of status pushes selected statuses in
-=======
-<<<<<<< HEAD
        * upon selection of a status pushes it into private filtering Array sStatus
-=======
-       * upon selection of status pushes selected statuses in
->>>>>>> 1a7f2acfd9b90a1356d8e6b8e90c94bb9cd49d3d
->>>>>>> f5db6308da71f0d71f127ecb4ad70a7803149052
        */
       onSelectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
         if (!this._sStatus.includes(status)) {
           this._sStatus.push(status);
         }
-        console.log(this._sStatus);
       },
 
       /**

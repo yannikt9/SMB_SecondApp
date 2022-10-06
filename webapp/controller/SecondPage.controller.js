@@ -222,6 +222,10 @@ sap.ui.define(
           .setValue(null)
           .setPlaceholder("von - bis");
       },
+
+      onNavBack: function (oEvent) {
+        window.history(-1);
+      }
     });
   }
 );
