@@ -47,7 +47,7 @@ sap.ui.define(
        */
       _dateRangeConvert: function () {
         if (this.dStartDate) {
-          return `${this.dStartDate}!${this.dEndDate}`;
+          return `${this.dStartDate.getTime()}!${this.dEndDate.getTime()}`;
         }
         return "";
       },
@@ -77,17 +77,18 @@ sap.ui.define(
 
               /* model name = results
               {
-                    stati: [
-                      {
-                        standort: Arosa,
-                        statuses : [
-                          {status: "Erfasst", quantity: 7}
-                          {status: "In Bearbeitung", quantity: 7}
-                          {status: "Ausgeführt", quantity: 7}
-                        ]
-                      },
+                stati: [
+                  {
+                    standort: Arosa,
+                    statuses : [
+                      {status: "Erfasst", quantity: 7}
+                      {status: "In Bearbeitung", quantity: 7}
+                      {status: "Ausgeführt", quantity: 7}
                     ]
-                  } */
+                  },
+                ]
+              } */
+              
               setOfSalesOffices.forEach((element) => {
                 arraySalesOffices.push({
                   SalesOffice: element,
@@ -185,6 +186,7 @@ sap.ui.define(
         if (!this._sStatus.includes(status)) {
           this._sStatus.push(status);
         }
+        console.log(this._sStatus);
       },
 
       /**

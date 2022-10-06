@@ -95,10 +95,11 @@ sap.ui.define(
         let dateRange = window.decodeURIComponent(
           oEvent.getParameter("arguments").dateRange
         );
-        /* this._sStatus = oEvent
-          .getParameter("arguments")
-          .selectedStatus.split(","); */
-
+        if (oEvent.getParameter("arguments").selectedStatus) {
+          this._sStatus = oEvent
+            .getParameter("arguments")
+            .selectedStatus.split("!");
+        }
         /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
         this.getView().byId("secondPageTitle").setText(location);
@@ -202,8 +203,8 @@ sap.ui.define(
           .filter(this._aFilters, FilterType.Application);
       },
       /**
-       * delete all filters and set values to null / event handler
-       * @param {} oEvent 
+       * empties filters
+       * @param {} oEvent
        */
       deleteButtonPressed: function (oEvent) {
         this._sStatus = [];
@@ -220,7 +221,7 @@ sap.ui.define(
 
       onNavBack: function (oEvent) {
         window.history(-1);
-      }
+      },
     });
   }
 );
