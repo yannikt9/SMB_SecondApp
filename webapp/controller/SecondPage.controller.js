@@ -118,8 +118,8 @@ sap.ui.define(
         this._applyFilters();
       },
       /**
-       * change selected status and filter
-       * @param {} oEvent 
+       * change selected status and filter / event handler
+       * @param {} oEvent
        */
       handleSelectionChange: function (oEvent) {
         this._sStatus = oEvent.getSource().getSelectedKeys();
@@ -128,14 +128,18 @@ sap.ui.define(
         this._applyFilters();
       },
       /**
-       * change date and filter
-       * @param {} oEvent 
+       * change date and filter / event handler
+       * @param {} oEvent
        */
       onDateChanged: function (oEvent) {
         this._dSelectedDate = oEvent.getSource().getDateValue();
         this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
         this._applyFilters();
       },
+      /**
+       * change salesOrganization / event handler
+       * @param {} oEvent
+       */
       onSalesOrganizationChanged: function (oEvent) {
         let oComboBox = this.byId("idSelectSalesOrganization");
         let chosenKey = oComboBox.getSelectedKey();
@@ -146,7 +150,10 @@ sap.ui.define(
           .setText(this._convertLocation(this._sLocation));
         this._applyFilters();
       },
-
+      /**
+       * load third page by clicking on table row / event handler
+       * @param {} oEvent
+       */
       onRowPressed: function (oEvent) {
         let oItem = oEvent.getSource().getBindingContext().getPath();
         let oRouter = this.getOwnerComponent().getRouter();
@@ -154,7 +161,9 @@ sap.ui.define(
           results: window.encodeURIComponent(oItem),
         });
       },
-
+      /**
+       * function to create a filter array by checking if values are given
+       */
       _applyFilters() {
         this._aFilters = [];
         if (this._sLocation) {
@@ -192,7 +201,10 @@ sap.ui.define(
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
       },
-
+      /**
+       * delete all filters and set values to null / event handler
+       * @param {} oEvent 
+       */
       deleteButtonPressed: function (oEvent) {
         this._sStatus = [];
         this._dSelectedDate = null;
