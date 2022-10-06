@@ -7,7 +7,7 @@ sap.ui.define(
     "sap/m/MessageBox",
     "../model/formatter",
     "sap/ui/core/UIComponent",
-    "sap/m/BusyIndicator",
+    "sap/ui/core/BusyIndicator",
   ],
   /**
    * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -65,16 +65,18 @@ sap.ui.define(
               let setOfSalesOffices = new Set(
                 data.results.map((element) => element.SalesOrganization)
               );
-              console.log(data.results);
               let arraySalesOffices = [];
+              let resources = this.getView()
+                .getModel("i18n")
+                .getResourceBundle();
               if (data.results.length === 0) {
                 return MessageBox.warning(
-                  "In dieser Zeitspanne gab es keine Bestellungen"
+                  resources.getText("noOrdersInTimeSpan")
                 );
               }
 
-              /* model name = results */
-              /* {
+              /* model name = results
+              {
                     stati: [
                       {
                         standort: Arosa,
@@ -86,7 +88,6 @@ sap.ui.define(
                       },
                     ]
                   } */
-
               setOfSalesOffices.forEach((element) => {
                 arraySalesOffices.push({
                   SalesOffice: element,
@@ -121,31 +122,10 @@ sap.ui.define(
                   .getModel("display")
                   .setData({ stati: arraySalesOffices });
               });
+              this.hideBusyIndicator();
             },
           });
       },
-
-      /* hideBusyIndicator: function () {
-        BusyIndicator.hide();
-      },
-
-      showBusyIndicator: function (iDuration, iDelay) {
-        BusyIndicator.show(iDelay);
-
-        if (iDuration && iDuration > 0) {
-          if (this._sTimeoutId) {
-            clearTimeout(this._sTimeoutId);
-            this._sTimeoutId = null;
-          }
-
-          this._sTimeoutId = setTimeout(
-            function () {
-              this.hideBusyIndicator();
-            }.bind(this),
-            iDuration
-          );
-        }
-      }, */
 
       /**
        * Gets Router
@@ -155,6 +135,14 @@ sap.ui.define(
         return UIComponent.getRouterFor(this);
       },
 
+      hideBusyIndicator: function () {
+        BusyIndicator.hide();
+      },
+
+      showBusyIndicator: function () {
+        BusyIndicator.show(1000);
+      },
+
       /**
        * Sets model "display" and appeals to set Data function to fill it with appropriate data
        */
@@ -162,9 +150,9 @@ sap.ui.define(
         this.getRouter()
           .getRoute("home")
           .attachMatched(this._onRouteMatched, this);
+          this.showBusyIndicator();
         this.getView().setModel(new JSONModel(), "display");
         this._setData();
-
       },
 
       /**

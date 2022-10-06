@@ -139,71 +139,74 @@
 			</f:DynamicPageHeader>
 		</f:header>
 		<f:content>
-			<ScrollContainer>
-				<Table
-					id="orderTable"
-					ariaLabelledBy="title"
-					items="{/A_SalesOrder}"
-				>
-					<columns>
-						<Column width="10%">
-							<Label text="{i18n>salesOrder}"/>
-						</Column>
-						<Column width="20%">
-							<Label text="{i18n>salesOrganization}"/>
-						</Column>
-						<Column width="25%">
-							<Label text="{i18n>deliveryStatus}"/>
-						</Column>
-						<Column width="20%">
-							<Label text="{i18n>soldToParty}"/>
-						</Column>
-						<Column
-							width="15%"
-							hAlign="End"
-						>
-							<Label text="{i18n>salesOrderDate}"/>
-						</Column>
-						<Column
-							width="10%"
-							hAlign="End"
-						>
-							<Label text="{i18n>totalNetAmount}"/>
-						</Column>
-					</columns>
-					<items>
-						<ColumnListItem
-							type="Navigation"
-							press=".onRowPressed"
-						>
-							<cells>
-								<Text text="{SalesOrder}"/>
-								<Text text="{SalesOrganization}"/>
-								<Text text="{
-									path: 'OverallDeliveryStatus',
-									formatter: '.formatter.statusText'
-								}"/>
-								<Text text="{SoldToParty}"/>
-								<Text text="{
-									path: 'SalesOrderDate',
-									formatter: '.formatter.formatDate'
-								}"/>
-								<ObjectNumber number="{
-									parts: [{
-										path: 'TotalNetAmount'
-									}, {
-										path: 'TransactionCurrency'
-									}],
-									type: 'sap.ui.model.type.Currency',
-									formatOptions: {
-										showMeasure: true
-									}
-								}"/>
-							</cells>
-						</ColumnListItem>
-					</items>
-				</Table>
-			</ScrollContainer>
+			<Table
+				class="sapFDynamicPageAlignContent sapUiSmallMargin"
+				id="orderTable"
+				ariaLabelledBy="title"
+				items="{/A_SalesOrder}"
+				width="auto"
+				growing="true"
+				growingScrollToLoad="true"
+				growingThreshold="50"
+			>
+				<columns>
+					<Column width="10%">
+						<Label text="{i18n>salesOrder}"/>
+					</Column>
+					<Column width="20%">
+						<Label text="{i18n>salesOrganization}"/>
+					</Column>
+					<Column width="25%">
+						<Label text="{i18n>deliveryStatus}"/>
+					</Column>
+					<Column width="20%">
+						<Label text="{i18n>soldToParty}"/>
+					</Column>
+					<Column
+						width="15%"
+						hAlign="End"
+					>
+						<Label text="{i18n>salesOrderDate}"/>
+					</Column>
+					<Column
+						width="10%"
+						hAlign="End"
+					>
+						<Label text="{i18n>totalNetAmount}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem
+						type="Navigation"
+						press=".onRowPressed"
+					>
+						<cells>
+							<Text text="{SalesOrder}"/>
+							<Text text="{SalesOrganization}"/>
+							<Text text="{
+								path: 'OverallDeliveryStatus',
+								formatter: '.formatter.statusText'
+							}"/>
+							<Text text="{SoldToParty}"/>
+							<Text text="{
+								path: 'SalesOrderDate',
+								formatter: '.formatter.formatDate'
+							}"/>
+							<ObjectNumber number="{
+								parts: [{
+									path: 'TotalNetAmount'
+								}, {
+									path: 'TransactionCurrency'
+								}],
+								type: 'sap.ui.model.type.Currency',
+								formatOptions: {
+									showMeasure: true
+								}
+							}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
 		</f:content>
 	</f:DynamicPage>
 </mvc:View>
