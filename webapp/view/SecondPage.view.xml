@@ -25,7 +25,7 @@
 				<f:breadcrumbs>
 					<Breadcrumbs>
 						<Link
-							text="Standorte"
+							text="{i18n>headerTitle}"
 							press=".onNavBack"
 						/>
 					</Breadcrumbs>
@@ -36,14 +36,14 @@
 			<f:DynamicPageHeader>
 				<f:content>
 					<Title
-						text="Filteroptionen: "
+						text="{i18n>filterOptions}"
 						level="H2"
 					/>
 					<FlexBox>
 						<HBox width="97%"/>
 						<MultiComboBox
 							id="idSelectStatus"
-							placeholder="Status"
+							placeholder="{i18n>deliveryStatus}"
 							selectionChange="handleSelectionChange"
 							selectionFinish="handleSelectionFinish"
 							width="13rem"
@@ -51,22 +51,22 @@
 							<items>
 								<core:Item
 									key="Ausgeführt"
-									text="Ausgeführt"
+									text="{i18n>invoiceStatusC}"
 								/>
 								<core:Item
 									key="In Bearbeitung"
-									text="In Bearbeitung"
+									text="{i18n>invoiceStatusB}"
 								/>
 								<core:Item
 									key="Erfasst"
-									text="Erfasst"
+									text="{i18n>invoiceStatusA}"
 								/>
 							</items>
 						</MultiComboBox>
 						<HBox width="1%"/>
 						<ComboBox
 							id="idSelectSalesOrganization"
-							placeholder="Verkaufsbüro"
+							placeholder="{i18n>salesOrganization}"
 							change=".onSalesOrganizationChanged"
 							width="13rem"
 						>
@@ -111,7 +111,7 @@
 						</ComboBox>
 						<HBox width="1%"/>
 						<DateRangeSelection
-							placeholder="von - bis"
+							placeholder="{i18n>calendar}"
 							id="dateSelection"
 							width="13rem"
 							delimiter="{
@@ -139,47 +139,51 @@
 			</f:DynamicPageHeader>
 		</f:header>
 		<f:content>
-			<ScrollContainer>
-				<Table
-					id="orderTable"
-					ariaLabelledBy="title"
-					items="{/A_SalesOrder}"
-				>
-					<columns>
-						<Column width="10%">
-							<Label text="Nummer"/>
-						</Column>
-						<Column width="20%">
-							<Label text="Verkaufsbüro"/>
-						</Column>
-						<Column width="25%">
-							<Label text="Status"/>
-						</Column>
-						<Column width="20%">
-							<Label text="Kunde"/>
-						</Column>
-						<Column
-							width="15%"
-							hAlign="End"
-						>
-							<Label text="Datum"/>
-						</Column>
-						<Column
-							width="10%"
-							hAlign="End"
-						>
-							<Label text="Betrag"/>
-						</Column>
-					</columns>
-					<items>
-						<ColumnListItem
-							type="Navigation"
-							press=".onRowPressed"
-						>
-							<cells>
-								<Text text="{SalesOrder}"/>
-								<Text text="{SalesOrganization}"/>
-								<ObjectStatus
+			<Table
+				class="sapFDynamicPageAlignContent sapUiSmallMargin"
+				id="orderTable"
+				ariaLabelledBy="title"
+				items="{/A_SalesOrder}"
+				width="auto"
+				growing="true"
+				growingScrollToLoad="true"
+				growingThreshold="50"
+			>
+				<columns>
+					<Column width="10%">
+						<Label text="{i18n>salesOrder}"/>
+					</Column>
+					<Column width="20%">
+						<Label text="{i18n>salesOrganization}"/>
+					</Column>
+					<Column width="25%">
+						<Label text="{i18n>deliveryStatus}"/>
+					</Column>
+					<Column width="20%">
+						<Label text="{i18n>soldToParty}"/>
+					</Column>
+					<Column
+						width="15%"
+						hAlign="End"
+					>
+						<Label text="{i18n>salesOrderDate}"/>
+					</Column>
+					<Column
+						width="10%"
+						hAlign="End"
+					>
+						<Label text="{i18n>totalNetAmount}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem
+						type="Navigation"
+						press=".onRowPressed"
+					>
+						<cells>
+							<Text text="{SalesOrder}"/>
+							<Text text="{SalesOrganization}"/>
+							<ObjectStatus
 									text="{
 										path: 'OverallDeliveryStatus',
 										formatter: '.formatter.statusText'
@@ -189,27 +193,26 @@
 										formatter: '.formatter.colorSetter'
 									}"
 								/>
-								<Text text="{SoldToParty}"/>
-								<Text text="{
-									path: 'SalesOrderDate',
-									formatter: '.formatter.formatDate'
-								}"/>
-								<ObjectNumber number="{
-									parts: [{
-										path: 'TotalNetAmount'
-									}, {
-										path: 'TransactionCurrency'
-									}],
-									type: 'sap.ui.model.type.Currency',
-									formatOptions: {
-										showMeasure: true
-									}
-								}"/>
-							</cells>
-						</ColumnListItem>
-					</items>
-				</Table>
-			</ScrollContainer>
+							<Text text="{SoldToParty}"/>
+							<Text text="{
+								path: 'SalesOrderDate',
+								formatter: '.formatter.formatDate'
+							}"/>
+							<ObjectNumber number="{
+								parts: [{
+									path: 'TotalNetAmount'
+								}, {
+									path: 'TransactionCurrency'
+								}],
+								type: 'sap.ui.model.type.Currency',
+								formatOptions: {
+									showMeasure: true
+								}
+							}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
 		</f:content>
 	</f:DynamicPage>
 </mvc:View>

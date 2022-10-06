@@ -14,7 +14,7 @@
 			<f:DynamicPageTitle>
 				<f:heading>
 					<Title
-						text="Standorte"
+						text="{i18n>headerTitle}"
 						class="sapUiResponsiveContentPadding"
 					/>
 				</f:heading>
@@ -28,7 +28,7 @@
 					<FlexBox justifyContent="End">
 						<items>
 							<DateRangeSelection
-								placeholder="von - bis"
+								placeholder="{i18n>calendar}"
 								id="DRS1"
 								width="13rem"
 								delimiter="{
@@ -101,13 +101,13 @@
 									<viz.data:FlattenedDataset data="{display>Statuses}">
 										<viz.data:dimensions>
 											<viz.data:DimensionDefinition
-												name="Status"
+												name="{i18n>dimensionDefinition}"
 												value="{display>status}"
 											/>
 										</viz.data:dimensions>
 										<viz.data:measures>
 											<viz.data:MeasureDefinition
-												name="Anzahl"
+												name="{i18n>measureDefinition}"
 												value="{display>quantity}"
 											/>
 										</viz.data:measures>
@@ -132,4 +132,5 @@
 			</layout:Grid>
 		</f:content>
 	</f:DynamicPage>
+
 </mvc:View>
