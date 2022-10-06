@@ -69,6 +69,12 @@
 							}"
 						/>
 					</layout:VerticalLayout>
+					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+						<ObjectAttribute
+							title="Kunde in Text"
+							text="{bpModel>/BusinessPartnerName}"
+						/>
+					</layout:VerticalLayout>
 				</layout:HorizontalLayout>
 			</f:DynamicPageHeader>
 		</f:header>

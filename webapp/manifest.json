@@ -24,6 +24,14 @@
           "localUri": "localService/metadata.xml",
           "odataVersion": "2.0"
         }
+      },
+      "secondSource": {
+        "uri": "/sap/opu/odata/sap/API_BUSINESS_PARTNER/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "2.0"
+        }
       }
     }
   },
@@ -73,6 +81,11 @@
         "dataSource": "mainService",
         "preload": true,
         "settings": {}
+      },
+      "secondSource": {
+        "dataSource": "secondSource",
+        "preload": true,
+        "settings": {}
       }
     },
     "resources": {
@@ -86,7 +99,7 @@
       "config": {
         "routerClass": "sap.m.routing.Router",
         "viewType": "XML",
-        "type":"View",
+        "type": "View",
         "async": true,
         "path": "project1.view",
         "controlAggregation": "pages",
@@ -106,7 +119,7 @@
         },
         {
           "name": "thirdPage",
-          "pattern": "thirdPage/{results}",
+          "pattern": "thirdPage/{results}/{businessPartner}",
           "target": "thirdPage"
         }
       ],

@@ -155,10 +155,15 @@ sap.ui.define(
        * @param {} oEvent
        */
       onRowPressed: function (oEvent) {
+        debugger;
         let oItem = oEvent.getSource().getBindingContext().getPath();
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter.navTo("thirdPage", {
           results: window.encodeURIComponent(oItem),
+          businessPartner: this.getView()
+            .getModel()
+            .getObject(oEvent.getSource().getBindingContext().getPath())
+            .SoldToParty,
         });
       },
       /**
@@ -203,7 +208,7 @@ sap.ui.define(
       },
       /**
        * delete all filters and set values to null / event handler
-       * @param {} oEvent 
+       * @param {} oEvent
        */
       deleteButtonPressed: function (oEvent) {
         this._sStatus = [];
