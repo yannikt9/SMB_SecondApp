@@ -130,11 +130,11 @@
 										<Text text="{
 											path: 'IncotermsTransferLocation'
 										}"/>
-										<!-- 	type: 'sap.ui.model.type.Currency',
+										<!-- type: 'sap.ui.model.type.Currency',
 											formatOptions: {
-												showMeasure: true
-											} -->
-										}"/>
+												showMeasure: 'true'
+											} 
+										}"/> -->
 									</cells>
 								</ColumnListItem>
 							</items>
