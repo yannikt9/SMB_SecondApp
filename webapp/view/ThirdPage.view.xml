@@ -29,10 +29,14 @@
 							href="./index.html"
 						/>
 						<Link
-							text="{path:'SalesOrganization',
-							formatter:'.formatter.formatSO'}"
-							href="./index.html#/secondPage/{path:'SalesOrganization',
-						formatter:'.formatter.formatSO'}"
+							text="{
+								path: 'SalesOrganization',
+								formatter: '.formatter.formatSO'
+							}"
+							href="./index.html#/secondPage/{
+								path: 'SalesOrganization',
+								formatter: '.formatter.formatSO'
+							}"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
@@ -66,7 +70,7 @@
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
-						<ObjectAttribute
+						<ObjectStatus
 							title="Status"
 							text="{
 								path: 'OverallDeliveryStatus',
@@ -125,10 +129,20 @@
 											path: 'SalesOrderDate',
 											formatter: '.formatter.formatDate'
 										}"/>
-										<Text text="{
+										<ObjectStatus
+											text="{
+												path: 'OverallDeliveryStatus',
+												formatter: '.formatter.statusText'
+											}"
+											state="{
+												path: 'OverallDeliveryStatus',
+												formatter: '.formatter.colorSetter'
+											}"
+										/>
+										<!-- <Text text="{
 											path: 'OverallDeliveryStatus',
 											formatter: '.formatter.statusText'
-										}"/>
+										}"/> -->
 										<Text text="nothing"/>
 										<ObjectNumber number="{
 											parts: [{

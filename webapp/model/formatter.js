@@ -44,5 +44,18 @@ sap.ui.define([], function () {
           return resourceBundle.getText("SO9");
       }
     },
+
+    colorSetter(sStatus) {
+      switch (sStatus) {
+        case "C":
+          return "Success";
+        case "A":
+          return "Warning";
+        case "B":
+          return "Information";
+        default:
+          return "Error";
+      }
+    },
   };
 });

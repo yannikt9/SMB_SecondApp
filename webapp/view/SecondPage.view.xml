@@ -179,10 +179,16 @@
 							<cells>
 								<Text text="{SalesOrder}"/>
 								<Text text="{SalesOrganization}"/>
-								<Text text="{
-									path: 'OverallDeliveryStatus',
-									formatter: '.formatter.statusText'
-								}"/>
+								<ObjectStatus
+									text="{
+										path: 'OverallDeliveryStatus',
+										formatter: '.formatter.statusText'
+									}"
+									state="{
+										path: 'OverallDeliveryStatus',
+										formatter: '.formatter.colorSetter'
+									}"
+								/>
 								<Text text="{SoldToParty}"/>
 								<Text text="{
 									path: 'SalesOrderDate',
