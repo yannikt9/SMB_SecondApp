@@ -1,16 +1,16 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "../model/formatter",
     "sap/ui/core/routing/History",
   ],
-  function (Controller, Filter, FilterOperator, FilterType, formatter) {
+  function (BaseController, Filter, FilterOperator, FilterType, formatter) {
     "use strict";
 
-    return Controller.extend("project1.controller.SecondPage", {
+    return BaseController.extend("project1.controller.SecondPage", {
       formatter: formatter,
       _sLocation: "",
       _sStatus: [],
@@ -35,51 +35,7 @@ sap.ui.define(
             return "C";
         }
       },
-      /**
-       * converts locationNumbers into string and vice versa
-       * @param {} sLocation
-       * @returns locationNumber and locationString
-       */
-      _convertLocation(sLocation) {
-        switch (sLocation) {
-          case "InlandVerkOrg. DE":
-            return "1010";
-          case "InlandVerkOrg. US":
-            return "1710";
-          case "St. Moritz":
-            return "2010";
-          case "Arosa":
-            return "2020";
-          case "Laax":
-            return "2030";
-          case "Davos":
-            return "2040";
-          case "Chur":
-            return "2050";
-          case "Lenzerheide":
-            return "2060";
-          case "Interlaken":
-            return "2099";
-          case "1010":
-            return "InlandVerkOrg. DE";
-          case "1710":
-            return "InlandVerkOrg. US";
-          case "2099":
-            return "Interlaken";
-          case "2040":
-            return "Davos";
-          case "2060":
-            return "Lenzerheide";
-          case "2050":
-            return "Chur";
-          case "2020":
-            return "Arosa";
-          case "2030":
-            return "Laax";
-          case "2010":
-            return "St. Moritz";
-        }
-      },
+
       /**
        * routing to second page
        * loading the right data by decoding the uri parameters
@@ -95,8 +51,13 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         this._sStatus = [];
         let args = oEvent.getParameter("arguments");
-        let dateRange = oEvent.getParameter("arguments").dateRange;
-        this.getView().byId("secondPageTitle").setText(args.location);
+        console.log(args.location);
+        this.getView()
+          .byId("dateSelection")
+          .setPlaceholder(this._resources().getText("calendar"));
+        this.getView()
+          .byId("secondPageTitle")
+          .setText(this.convertLocation(args.location));
         if (args.selectedStatus) {
           this._sStatus = oEvent
             .getParameter("arguments")
@@ -105,25 +66,18 @@ sap.ui.define(
 
         if (args.dateRange) {
           this._dStartDate = new Date(parseInt(dateRange.split("!")[0]));
-          this._dEndDate = new Date(
-            parseInt(dateRange.split("!")[1])
-          );
+          this._dEndDate = new Date(parseInt(dateRange.split("!")[1]));
 
           this.getView()
             .byId("dateSelection")
             .setValue(
               `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
-        } else {
-          this.getView()
-            .byId("dateSelection")
-            .setValue(null)
-            .setPlaceholder(this._resources.getText("calendar"));
         }
         this.getView()
           .byId("idSelectSalesOrganization")
-          .setValue(args.location);
-        this._sLocation = this._convertLocation(args.location);
+          .setSelectedKey(args.location);
+        this._sLocation = args.location;
         this._applyFilters();
       },
       /**
@@ -153,10 +107,10 @@ sap.ui.define(
         let oComboBox = this.byId("idSelectSalesOrganization");
         let chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
-        oComboBox.setValue(this._convertLocation(this._sLocation));
+        oComboBox.setValue(this.convertLocation(this._sLocation));
         this.getView()
           .byId("secondPageTitle")
-          .setText(this._convertLocation(this._sLocation));
+          .setText(this.convertLocation(this._sLocation));
         this._applyFilters();
       },
       /**

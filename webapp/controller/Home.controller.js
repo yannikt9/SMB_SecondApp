@@ -1,6 +1,6 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
@@ -9,11 +9,8 @@ sap.ui.define(
     "sap/ui/core/UIComponent",
     "sap/ui/core/BusyIndicator",
   ],
-  /**
-   * @param {typeof sap.ui.core.mvc.Controller} Controller
-   */
   function (
-    Controller,
+    BaseController,
     JSONModel,
     Filter,
     FilterOperator,
@@ -24,7 +21,7 @@ sap.ui.define(
   ) {
     "use strict";
 
-    return Controller.extend("project1.controller.Home", {
+    return BaseController.extend("project1.controller.Home", {
       formatter: formatter,
       dStartDate: "",
       dEndDate: "",
@@ -53,7 +50,8 @@ sap.ui.define(
       },
 
       /**
-       * Sets Data with applied Filters, sieves through data to create a set of all Sales Offices, passes "results" dataset through Sales Office set and notes how many times each status has been called for in separate Array called "arraySalesOffices"
+       * Sets Data with applied Filters, sieves through data to create a set of all Sales Offices, passes "results" dataset
+       * through Sales Office set and notes how many times each status has been called for in separate Array called "arraySalesOffices"
        * @param {sap.ui.model.Filter} [oFilter]
        */
       _setData: function (oFilter) {
@@ -88,7 +86,7 @@ sap.ui.define(
                   },
                 ]
               } */
-              
+
               setOfSalesOffices.forEach((element) => {
                 arraySalesOffices.push({
                   SalesOffice: element,
@@ -129,29 +127,13 @@ sap.ui.define(
       },
 
       /**
-       * Gets Router
-       * @returns router
-       */
-      getRouter() {
-        return UIComponent.getRouterFor(this);
-      },
-
-      hideBusyIndicator: function () {
-        BusyIndicator.hide();
-      },
-
-      showBusyIndicator: function () {
-        BusyIndicator.show(1000);
-      },
-
-      /**
        * Sets model "display" and appeals to set Data function to fill it with appropriate data
        */
       onInit: function () {
         this.getRouter()
           .getRoute("home")
           .attachMatched(this._onRouteMatched, this);
-          this.showBusyIndicator();
+        this.showBusyIndicator();
         this.getView().setModel(new JSONModel(), "display");
         this._setData();
       },
@@ -199,17 +181,28 @@ sap.ui.define(
       },
 
       /**
-       * When chart header gets pressed, navigates to second Page and passes selected date range in URL
+       * When chart header gets pressed, navigates to second Page and passes selected date range in URL as templatestring
        * @param {} oEvent
        */
       onChartPressed: function (oEvent) {
         let oRouter = this.getOwnerComponent().getRouter();
 
         oRouter.navTo("secondPage", {
-          location: oEvent.getSource().getTitle(),
+          location: this.convertLocation(oEvent.getSource().getTitle()),
           dateRange: this._dateRangeConvert(),
           selectedStatus: this._sStatus.toString(),
         });
+      },
+      getRouter() {
+        return UIComponent.getRouterFor(this);
+      },
+
+      hideBusyIndicator: function () {
+        BusyIndicator.hide();
+      },
+
+      showBusyIndicator: function () {
+        BusyIndicator.show(1000);
       },
     });
   }
