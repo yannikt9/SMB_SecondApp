@@ -17,24 +17,6 @@ sap.ui.define(
       _dStartDate: "",
       _dEndDate: "",
       _aFilters: [],
-      _resources: function () {
-        return this.getView().getModel("i18n").getResourceBundle();
-      },
-      /**
-       * converts statusCharacter into string and vice versa
-       * @param {} sStatus
-       * @returns statusString
-       */
-      _convertStatus: function (sStatus) {
-        switch (sStatus) {
-          case "Erfasst":
-            return "A";
-          case "In Bearbeitung":
-            return "B";
-          case "Ausgeführt":
-            return "C";
-        }
-      },
 
       /**
        * routing to second page
@@ -54,19 +36,19 @@ sap.ui.define(
         console.log(args.location);
         this.getView()
           .byId("dateSelection")
-          .setPlaceholder(this._resources().getText("calendar"));
+          .setPlaceholder(this.resources().getText("calendar"));
         this.getView()
           .byId("secondPageTitle")
           .setText(this.convertLocation(args.location));
         if (args.selectedStatus) {
           this._sStatus = oEvent
             .getParameter("arguments")
-            .selectedStatus.split("!");
+            .selectedStatus.split(",");
         }
 
         if (args.dateRange) {
-          this._dStartDate = new Date(parseInt(dateRange.split("!")[0]));
-          this._dEndDate = new Date(parseInt(dateRange.split("!")[1]));
+          this._dStartDate = new Date(parseInt(args.dateRange.split("!")[0]));
+          this._dEndDate = new Date(parseInt(args.dateRange.split("!")[1]));
 
           this.getView()
             .byId("dateSelection")
@@ -74,6 +56,10 @@ sap.ui.define(
               `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
         }
+        this.getView()
+          .byId("idSelectStatus")
+          .setSelectedKeys(args.selectedStatus);
+          console.log("multiple keys problem");
         this.getView()
           .byId("idSelectSalesOrganization")
           .setSelectedKey(args.location);
@@ -144,7 +130,7 @@ sap.ui.define(
               new Filter(
                 "OverallDeliveryStatus",
                 FilterOperator.Contains,
-                this._convertStatus(element)
+                this.convertStatus(element)
               )
             );
           });
@@ -179,7 +165,7 @@ sap.ui.define(
         this.getView()
           .byId("dateSelection")
           .setValue(null)
-          .setPlaceholder(this._resources.getText("calendar"));
+          .setPlaceholder(this.resources().getText("calendar"));
       },
 
       onNavBack: function (oEvent) {

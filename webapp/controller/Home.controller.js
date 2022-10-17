@@ -64,12 +64,9 @@ sap.ui.define(
                 data.results.map((element) => element.SalesOrganization)
               );
               let arraySalesOffices = [];
-              let resources = this.getView()
-                .getModel("i18n")
-                .getResourceBundle();
               if (data.results.length === 0) {
                 return MessageBox.warning(
-                  resources.getText("noOrdersInTimeSpan")
+                  this.resources().getText("noOrdersInTimeSpan")
                 );
               }
 
@@ -92,7 +89,7 @@ sap.ui.define(
                   SalesOffice: element,
                   Statuses: [
                     {
-                      status: "Erfasst",
+                      status: this.resources().getText("invoiceStatusA"),
                       quantity: data.results.filter((e) => {
                         let condition1 = element === e.SalesOrganization;
                         let condition2 = "A" === e.OverallDeliveryStatus;
@@ -100,7 +97,7 @@ sap.ui.define(
                       }).length,
                     },
                     {
-                      status: "In Bearbeitung",
+                      status: this.resources().getText("invoiceStatusB"),
                       quantity: data.results.filter((e) => {
                         let condition1 = element === e.SalesOrganization;
                         let condition2 = "B" === e.OverallDeliveryStatus;
@@ -108,7 +105,7 @@ sap.ui.define(
                       }).length,
                     },
                     {
-                      status: "Ausgeführt",
+                      status: this.resources().getText("invoiceStatusC"),
                       quantity: data.results.filter((e) => {
                         let condition1 = element === e.SalesOrganization;
                         let condition2 = "C" === e.OverallDeliveryStatus;
