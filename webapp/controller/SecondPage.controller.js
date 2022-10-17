@@ -14,9 +14,12 @@ sap.ui.define(
       formatter: formatter,
       _sLocation: "",
       _sStatus: [],
-      _dSelectedDate: "",
-      _dSelectedSecondDate: "",
+      _dStartDate: "",
+      _dEndDate: "",
       _aFilters: [],
+      _resources: function () {
+        return this.getView().getModel("i18n").getResourceBundle();
+      },
       /**
        * converts statusCharacter into string and vice versa
        * @param {} sStatus
@@ -91,31 +94,36 @@ sap.ui.define(
       },
       _onObjectMatched: function (oEvent) {
         this._sStatus = [];
-        let location = oEvent.getParameter("arguments").location;
-        let dateRange = window.decodeURIComponent(
-          oEvent.getParameter("arguments").dateRange
-        );
-        if (oEvent.getParameter("arguments").selectedStatus) {
+        let args = oEvent.getParameter("arguments");
+        let dateRange = oEvent.getParameter("arguments").dateRange;
+        this.getView().byId("secondPageTitle").setText(args.location);
+        if (args.selectedStatus) {
           this._sStatus = oEvent
             .getParameter("arguments")
             .selectedStatus.split("!");
         }
-        /* let [this._dSelectedDate, this._dSelectedSecondDate ...rest] = dateRange.split("!");*/
 
-        this.getView().byId("secondPageTitle").setText(location);
-        if (this._dSelectedSecondDate && this._dSelectedDate !== null) {
+        if (args.dateRange) {
+          this._dStartDate = new Date(parseInt(dateRange.split("!")[0]));
+          this._dEndDate = new Date(
+            parseInt(dateRange.split("!")[1])
+          );
+
           this.getView()
             .byId("dateSelection")
-            .setPlaceholder(
-              new Date(this._dSelectedDate).toLocaleDateString() +
-                " - " +
-                new Date(this._dSelectedSecondDate).toLocaleDateString()
+            .setValue(
+              `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
+        } else {
+          this.getView()
+            .byId("dateSelection")
+            .setValue(null)
+            .setPlaceholder(this._resources.getText("calendar"));
         }
         this.getView()
           .byId("idSelectSalesOrganization")
-          .setPlaceholder(location);
-        this._sLocation = this._convertLocation(location);
+          .setValue(args.location);
+        this._sLocation = this._convertLocation(args.location);
         this._applyFilters();
       },
       /**
@@ -133,8 +141,8 @@ sap.ui.define(
        * @param {} oEvent
        */
       onDateChanged: function (oEvent) {
-        this._dSelectedDate = oEvent.getSource().getDateValue();
-        this._dSelectedSecondDate = oEvent.getSource().getSecondDateValue();
+        this._dStartDate = oEvent.getSource().getDateValue();
+        this._dEndDate = oEvent.getSource().getSecondDateValue();
         this._applyFilters();
       },
       /**
@@ -145,7 +153,7 @@ sap.ui.define(
         let oComboBox = this.byId("idSelectSalesOrganization");
         let chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
-        oComboBox.setPlaceholder(this._convertLocation(this._sLocation));
+        oComboBox.setValue(this._convertLocation(this._sLocation));
         this.getView()
           .byId("secondPageTitle")
           .setText(this._convertLocation(this._sLocation));
@@ -187,13 +195,13 @@ sap.ui.define(
             );
           });
         }
-        if (this._dSelectedSecondDate && this._dSelectedDate) {
+        if (this._dEndDate && this._dStartDate) {
           this._aFilters.push(
             new Filter(
               "SalesOrderDate",
               FilterOperator.BT,
-              this._dSelectedDate,
-              this._dSelectedSecondDate
+              this._dStartDate,
+              this._dEndDate
             )
           );
         }
@@ -208,15 +216,16 @@ sap.ui.define(
        */
       deleteButtonPressed: function (oEvent) {
         this._sStatus = [];
-        this._dSelectedDate = null;
-        this._dSelectedSecondDate = null;
+        this._dStartDate = null;
+        this._dEndDate = null;
         this._applyFilters();
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
         this.getView().byId("idSelectSalesOrganization").setSelectedKey(null);
+
         this.getView()
           .byId("dateSelection")
           .setValue(null)
-          .setPlaceholder("von - bis");
+          .setPlaceholder(this._resources.getText("calendar"));
       },
 
       onNavBack: function (oEvent) {
