@@ -49,7 +49,7 @@
 							<fb:FilterGroupItem
 								groupName="ASD"
 								name="filterBarStatus"
-								label="Status"
+								label="{i18n>dimensionDefinition}"
 								visibleInFilterBar="true"
 							>
 								<fb:control>
@@ -81,7 +81,7 @@
 								name="filterBarSalesOrganization"
 								groupName="ASD"
 								visibleInFilterBar="true"
-								label="Verkaufsorganisation"
+								label="{i18n>salesOrganization}"
 							>
 								<fb:control>
 									<ComboBox
@@ -133,7 +133,7 @@
 							</fb:FilterGroupItem>
 							<fb:FilterGroupItem
 								name="filterBarDateRange"
-								label="Zeitspanne"
+								label="{i18n>timeFrame}"
 								groupName="ASD"
 								visibleInFilterBar="true"
 							>
