@@ -51,6 +51,10 @@ sap.ui.define(
           .getRoute("thirdPage")
           .attachPatternMatched(this._onObjectMatched, this);
       },
+
+      onNavBack: function (oEvent) {
+        window.history.go(-1);
+      },
     });
   }
 );

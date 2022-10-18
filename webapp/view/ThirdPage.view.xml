@@ -33,10 +33,7 @@
 								path: 'SalesOrganization',
 								formatter: '.formatter.formatSO'
 							}"
-							href="./index.html#/secondPage/{
-								path: 'SalesOrganization',
-								formatter: '.formatter.formatSO'
-							}"
+							press=".onNavBack"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
@@ -47,7 +44,7 @@
 				<layout:HorizontalLayout allowWrapping="true">
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
-							title="{i18n>soldToParty}"
+							title="{i18n>soldToPartyID}"
 							text="{SoldToParty}"
 						/>
 					</layout:VerticalLayout>
@@ -63,12 +60,15 @@
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectStatus
 							title="{i18n>deliveryStatus}"
-							id="statusText"
+							text="{
+								path: 'OverallDeliveryStatus',
+								formatter: '.formatter.statusText'
+							}"
 						/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout class="sapUiMediumMarginEnd">
 						<ObjectAttribute
-							title="Kunde in Text"
+							title="{i18n>soldToParty}"
 							text="{bpModel>/BusinessPartnerName}"
 						/>
 					</layout:VerticalLayout>
@@ -93,7 +93,7 @@
 									<Text text="{i18n>salesOrder}"/>
 								</Column>
 								<Column width="15em">
-									<Text text="{i18n>soldToParty}"/>
+									<Text text="{i18n>soldToPartyID}"/>
 								</Column>
 								<Column width="15em">
 									<Text text="{i18n>salesOrderDate}"/>

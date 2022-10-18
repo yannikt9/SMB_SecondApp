@@ -7,20 +7,6 @@ sap.ui.define([], function () {
       return dDate.toLocaleDateString();
     },
 
-    statusText(sStatus) {
-      let resourceBundle = this.getView().getModel("i18n").getResourceBundle();
-      switch (sStatus) {
-        case "A":
-          return resourceBundle.getText("invoiceStatusA");
-        case "B":
-          return resourceBundle.getText("invoiceStatusB");
-        case "C":
-          return resourceBundle.getText("invoiceStatusC");
-        default:
-          return "Offen";
-      }
-    },
-
     formatSO(sOrganization) {
       let resourceBundle = this.getView().getModel("i18n").getResourceBundle();
       switch (sOrganization) {
@@ -45,6 +31,20 @@ sap.ui.define([], function () {
       }
     },
 
+    statusText(sStatus) {
+      let resourceBundle = this.getView().getModel("i18n").getResourceBundle();
+      switch (sStatus) {
+        case "A":
+          return resourceBundle.getText("invoiceStatusA");
+        case "B":
+          return resourceBundle.getText("invoiceStatusB");
+        case "C":
+          return resourceBundle.getText("invoiceStatusC");
+        default:
+          return "Offen";
+      }
+    },
+    
     colorSetter(sStatus) {
       switch (sStatus) {
         case "C":

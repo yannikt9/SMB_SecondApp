@@ -13,25 +13,13 @@ sap.ui.define(
     return BaseController.extend("project1.controller.SecondPage", {
       formatter: formatter,
       _sLocation: "",
-      _sStatus: [],
+      _aStatus: [],
       _dStartDate: "",
       _dEndDate: "",
       _aFilters: [],
 
-      /**
-       * routing to second page
-       * loading the right data by decoding the uri parameters
-       */
-      onInit: function () {
-        // set explored app's demo model on this sample
-
-        let oRouter = this.getOwnerComponent().getRouter();
-        oRouter
-          .getRoute("secondPage")
-          .attachPatternMatched(this._onObjectMatched, this);
-      },
       _onObjectMatched: function (oEvent) {
-        this._sStatus = [];
+        this._aStatus = [];
         let args = oEvent.getParameter("arguments");
         this.getView()
           .byId("dateSelection")
@@ -40,7 +28,7 @@ sap.ui.define(
           .byId("secondPageTitle")
           .setText(this.convertLocation(args.location));
         if (args.selectedStatus) {
-          this._sStatus = oEvent
+          this._aStatus = oEvent
             .getParameter("arguments")
             .selectedStatus.split(",");
         }
@@ -55,7 +43,7 @@ sap.ui.define(
               `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
         }
-        this.getView().byId("idSelectStatus").setSelectedKeys(this._sStatus);
+        this.getView().byId("idSelectStatus").setSelectedKeys(this._aStatus);
         this.getView()
           .byId("idSelectSalesOrganization")
           .setSelectedKey(args.location);
@@ -64,11 +52,24 @@ sap.ui.define(
       },
 
       /**
+       * routing to second page
+       * loading the right data by decoding the uri parameters
+       */
+       onInit: function () {
+        // set explored app's demo model on this sample
+
+        let oRouter = this.getOwnerComponent().getRouter();
+        oRouter
+          .getRoute("secondPage")
+          .attachPatternMatched(this._onObjectMatched, this);
+      },
+
+      /**
        * change selected status and filter / event handler
        * @param {} oEvent
        */
       handleSelectionChange: function (oEvent) {
-        this._sStatus = oEvent.getSource().getSelectedKeys();
+        this._aStatus = oEvent.getSource().getSelectedKeys();
       },
       handleSelectionFinish: function () {
         this._applyFilters();
@@ -125,8 +126,8 @@ sap.ui.define(
             )
           );
         }
-        if (this._sStatus.length !== 0) {
-          this._sStatus.forEach((element) => {
+        if (this._aStatus.length !== 0) {
+          this._aStatus.forEach((element) => {
             this._aFilters.push(
               new Filter(
                 "OverallDeliveryStatus",
@@ -156,7 +157,7 @@ sap.ui.define(
        * @param {} oEvent
        */
       deleteButtonPressed: function (oEvent) {
-        this._sStatus = [];
+        this._aStatus = [];
         this._dStartDate = null;
         this._dEndDate = null;
         this._applyFilters();
@@ -170,7 +171,7 @@ sap.ui.define(
       },
 
       onNavBack: function (oEvent) {
-        window.history(-1);
+        window.history.go(-1);
       },
     });
   }

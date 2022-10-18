@@ -25,13 +25,13 @@ sap.ui.define(
       formatter: formatter,
       dStartDate: "",
       dEndDate: "",
-      _sStatus: [],
+      _aStatus: [],
 
       /**
-       * empties private filtering Array _sStatus and clears selected statuses in viz Frame
+       * empties private filtering Array _aStatus and clears selected statuses in viz Frame
        */
       _onRouteMatched: function () {
-        /* this._sStatus = []; */
+        this._aStatus = [];
         this.getView()
           .byId("idVizFrame")
           .vizSelection([], { clearSelection: true });
@@ -160,11 +160,11 @@ sap.ui.define(
        * upon selection of a status pushes it into private filtering Array sStatus
        */
       onSelectData: function (oEvent) {
-        let status = oEvent.getParameter("data")[0].data.Status;
-        if (!this._sStatus.includes(status)) {
-          this._sStatus.push(this.convertStatus(status));
+        let status = this.convertStatus(oEvent.getParameter("data")[0].data.Status);
+        if (!this._aStatus.includes(status)) {
+          this._aStatus.push(status);
         }
-        console.log(this._sStatus);
+        console.log(this._aStatus);
       },
 
       /**
@@ -172,8 +172,9 @@ sap.ui.define(
        * @param {} oEvent
        */
       onDeselectData: function (oEvent) {
-        let status = oEvent.getParameter("data")[0].data.Status;
-        this._sStatus = this._sStatus.filter((element) => element !== status);
+        let status = this.convertStatus(oEvent.getParameter("data")[0].data.Status);
+        this._aStatus = this._aStatus.filter((element) => element !== status);
+        console.log(this._aStatus);
       },
 
       /**
@@ -186,7 +187,7 @@ sap.ui.define(
         oRouter.navTo("secondPage", {
           location: this.convertLocation(oEvent.getSource().getTitle()),
           dateRange: this._dateRangeConvert(),
-          selectedStatus: this._sStatus.toString(),
+          selectedStatus: this._aStatus.toString(),
         });
       },
       getRouter() {
