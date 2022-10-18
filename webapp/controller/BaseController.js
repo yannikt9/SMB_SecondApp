@@ -52,20 +52,34 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
       }
     },
 
-	/**
-       * converts statusCharacter into string and vice versa
-       * @param {} sStatus
-       * @returns statusString
-       */
-	 convertStatus: function (sStatus) {
-        switch (sStatus) {
-          case "Erfasst":
-            return "A";
-          case "In Bearbeitung":
-            return "B";
-          case "Ausgeführt":
-            return "C";
-        }
-      },
+    getRouter: function () {
+      return this.getOwnerComponent().getRouter();
+    },
+
+    /**
+     * converts statusCharacter into string and vice versa
+     * @param {} sStatus
+     * @returns statusString
+     */
+    convertStatus: function (sStatus) {
+      switch (sStatus) {
+        case "Erfasst":
+          return "A";
+        case "In Bearbeitung":
+          return "B";
+        case "Ausgeführt":
+          return "C";
+      }
+    },
+    /**
+     * If a start date has been selected, converts start- and end-date into unitary template string to pass on in URL
+     * @returns one template String with two values separated by an exclamation mark for ease of future separation
+     */
+    dateRangeConvert: function (dStartDate, dEndDate) {
+      if (dStartDate) {
+        return `${dStartDate.getTime()}!${dEndDate.getTime()}`;
+      }
+      return "";
+    },
   });
 });

@@ -25,28 +25,16 @@ sap.ui.define(
       formatter: formatter,
       dStartDate: "",
       dEndDate: "",
-      _sStatus: [],
+      _aStatus: [],
 
       /**
-       * empties private filtering Array _sStatus and clears selected statuses in viz Frame
+       * empties private filtering Array _aStatus and clears selected statuses in viz Frame
        */
       _onRouteMatched: function () {
-        this._sStatus = [];
+        this._aStatus = [];
         this.getView()
           .byId("idVizFrame")
           .vizSelection([], { clearSelection: true });
-        console.log("viz frame prolly didn't refresh here");
-      },
-
-      /**
-       * If a start date has been selected, converts start- and end-date into unitary template string to pass on in URL
-       * @returns one template String with two values separated by an exclamation mark for ease of future separation
-       */
-      _dateRangeConvert: function () {
-        if (this.dStartDate) {
-          return `${this.dStartDate.getTime()}!${this.dEndDate.getTime()}`;
-        }
-        return "";
       },
 
       /**
@@ -161,11 +149,12 @@ sap.ui.define(
        * upon selection of a status pushes it into private filtering Array sStatus
        */
       onSelectData: function (oEvent) {
-        let status = oEvent.getParameter("data")[0].data.Status;
-        if (!this._sStatus.includes(status)) {
-          this._sStatus.push(status);
+        let status = this.convertStatus(
+          oEvent.getParameter("data")[0].data.Status
+        );
+        if (!this._aStatus.includes(status)) {
+          this._aStatus.push(status);
         }
-        console.log(this._sStatus);
       },
 
       /**
@@ -173,8 +162,10 @@ sap.ui.define(
        * @param {} oEvent
        */
       onDeselectData: function (oEvent) {
-        let status = oEvent.getParameter("data")[0].data.Status;
-        this._sStatus = this._sStatus.filter((element) => element !== status);
+        let status = this.convertStatus(
+          oEvent.getParameter("data")[0].data.Status
+        );
+        this._aStatus = this._aStatus.filter((element) => element !== status);
       },
 
       /**
@@ -186,9 +177,8 @@ sap.ui.define(
 
         oRouter.navTo("secondPage", {
           location: this.convertLocation(oEvent.getSource().getTitle()),
-          dateRange: this._dateRangeConvert(),
-          selectedStatus: this._sStatus.toString(),
-          /* selectedStatus: this.convertStatus(this._sStatus,toString()), */
+          dateRange: this.dateRangeConvert(this.dStartDate, this.dEndDate),
+          selectedStatus: this._aStatus.toString(),
         });
       },
       getRouter() {
