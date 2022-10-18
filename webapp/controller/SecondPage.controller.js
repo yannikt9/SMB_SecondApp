@@ -108,6 +108,10 @@ sap.ui.define(
         let oRouter = this.getOwnerComponent().getRouter();
         oRouter.navTo("thirdPage", {
           results: window.encodeURIComponent(oItem),
+          businessPartner: this.getView()
+            .getModel()
+            .getObject(oEvent.getSource().getBindingContext().getPath())
+            .SoldToParty,
         });
       },
       /**
@@ -151,7 +155,7 @@ sap.ui.define(
           .filter(this._aFilters, FilterType.Application);
       },
       /**
-       * empties filters
+       * delete all filters and set values to null / event handler
        * @param {} oEvent
        */
       deleteButtonPressed: function (oEvent) {
