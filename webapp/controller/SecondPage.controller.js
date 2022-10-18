@@ -56,16 +56,14 @@ sap.ui.define(
               `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
         }
-        this.getView()
-          .byId("idSelectStatus")
-          .setSelectedKeys(args.selectedStatus);
-          console.log("multiple keys problem");
+        this.getView().byId("idSelectStatus").setSelectedKeys(this._sStatus);
         this.getView()
           .byId("idSelectSalesOrganization")
           .setSelectedKey(args.location);
         this._sLocation = args.location;
         this._applyFilters();
       },
+
       /**
        * change selected status and filter / event handler
        * @param {} oEvent

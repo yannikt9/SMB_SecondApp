@@ -188,6 +188,7 @@ sap.ui.define(
           location: this.convertLocation(oEvent.getSource().getTitle()),
           dateRange: this._dateRangeConvert(),
           selectedStatus: this._sStatus.toString(),
+          /* selectedStatus: this.convertStatus(this._sStatus,toString()), */
         });
       },
       getRouter() {
