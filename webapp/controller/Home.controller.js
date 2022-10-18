@@ -31,11 +31,10 @@ sap.ui.define(
        * empties private filtering Array _sStatus and clears selected statuses in viz Frame
        */
       _onRouteMatched: function () {
-        this._sStatus = [];
+        /* this._sStatus = []; */
         this.getView()
           .byId("idVizFrame")
           .vizSelection([], { clearSelection: true });
-        console.log("viz frame prolly didn't refresh here");
       },
 
       /**

@@ -51,7 +51,7 @@
 							<items>
 								<core:Item
 									key="A"
-									text="{i18n>invoiceStatusC}"
+									text="{i18n>invoiceStatusA}"
 								/>
 								<core:Item
 									key="B"
@@ -59,7 +59,7 @@
 								/>
 								<core:Item
 									key="C"
-									text="{i18n>invoiceStatusA}"
+									text="{i18n>invoiceStatusC}"
 								/>
 							</items>
 						</MultiComboBox>
