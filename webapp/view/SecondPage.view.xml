@@ -7,6 +7,7 @@
 	height="100%"
 	busyIndicatorDelay="0"
 	xmlns:core="sap.ui.core"
+	xmlns:fb="sap.ui.comp.filterbar"
 >
 	<f:DynamicPage
 		id="secondPage"
@@ -26,7 +27,7 @@
 					<Breadcrumbs>
 						<Link
 							text="{i18n>headerTitle}"
-							press=".onNavBack"
+							href="./index.html"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
@@ -35,106 +36,130 @@
 		<f:header>
 			<f:DynamicPageHeader>
 				<f:content>
-					<Title
-						text="{i18n>filterOptions}"
-						level="H2"
-					/>
-					<FlexBox>
-						<HBox width="97%"/>
-						<MultiComboBox
-							id="idSelectStatus"
-							placeholder="{i18n>deliveryStatus}"
-							selectionChange="handleSelectionChange"
-							selectionFinish="handleSelectionFinish"
-							width="13rem"
-						>
-							<items>
-								<core:Item
-									key="A"
-									text="{i18n>invoiceStatusA}"
-								/>
-								<core:Item
-									key="B"
-									text="{i18n>invoiceStatusB}"
-								/>
-								<core:Item
-									key="C"
-									text="{i18n>invoiceStatusC}"
-								/>
-							</items>
-						</MultiComboBox>
-						<HBox width="1%"/>
-						<ComboBox
-							id="idSelectSalesOrganization"
-							placeholder="{i18n>salesOrganization}"
-							change=".onSalesOrganizationChanged"
-							width="13rem"
-						>
-							<items>
-								<core:Item
-									key="1010"
-									text="InlandVerkOrg. DE"
-								/>
-								<core:Item
-									key="1710"
-									text="InlandVerkOrg. US"
-								/>
-								<core:Item
-									key="2010"
-									text="St. Moritz"
-								/>
-								<core:Item
-									key="2020"
-									text="Arosa"
-								/>
-								<core:Item
-									key="2030"
-									text="Laax"
-								/>
-								<core:Item
-									key="2040"
-									text="Davos"
-								/>
-								<core:Item
-									key="2050"
-									text="Chur"
-								/>
-								<core:Item
-									key="2060"
-									text="Lenzerheide"
-								/>
-								<core:Item
-									key="2099"
-									text="Interlaken"
-								/>
-							</items>
-						</ComboBox>
-						<HBox width="1%"/>
-						<DateRangeSelection
-							placeholder="{i18n>calendar}"
-							id="dateSelection"
-							width="13rem"
-							delimiter="{
-								path: '/delimiterDRS1'
-							}"
-							dateValue="{
-								path: '/dateValueDRS1'
-							}"
-							secondDateValue="{
-								path: '/secondDateValueDRS1'
-							}"
-							displayFormat="{
-								path: '/dateFormatDRS1'
-							}"
-							change=".onDateChanged"
-						/>
-						<HBox width="1%"/>
-						<Button
-							press=".deleteButtonPressed"
-							text="Alle Filter löschen"
-							type="Emphasized"
-						/>
-					</FlexBox>
+					<fb:FilterBar
+						id="filterBar"
+						visible="true"
+						useToolbar="false"
+						showFilterConfiguration="false"
+						clear=".deleteButtonPressed"
+						showClearOnFB="true"
+						showGoOnFB="false"
+					>
+						<fb:filterGroupItems>
+							<fb:FilterGroupItem
+								groupName="ASD"
+								name="filterBarStatus"
+								label="{i18n>dimensionDefinition}"
+								visibleInFilterBar="true"
+							>
+								<fb:control>
+									<MultiComboBox
+										id="idSelectStatus"
+										placeholder="{i18n>deliveryStatus}"
+										selectionChange="handleSelectionChange"
+										selectionFinish="handleSelectionFinish"
+										width="13rem"
+									>
+										<items>
+											<core:Item
+												key="A"
+												text="{i18n>invoiceStatusA}"
+											/>
+											<core:Item
+												key="C"
+												text="{i18n>invoiceStatusC}"
+											/>
+											<core:Item
+												key="B"
+												text="{i18n>invoiceStatusB}"
+											/>
+										</items>
+									</MultiComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem
+								name="filterBarSalesOrganization"
+								groupName="ASD"
+								visibleInFilterBar="true"
+								label="{i18n>salesOrganization}"
+							>
+								<fb:control>
+									<ComboBox
+										id="idSelectSalesOrganization"
+										placeholder="{i18n>salesOrganization}"
+										change=".onSalesOrganizationChanged"
+										width="13rem"
+									>
+										<items>
+											<core:Item
+												key="1010"
+												text="InlandVerkOrg. DE"
+											/>
+											<core:Item
+												key="1710"
+												text="InlandVerkOrg. US"
+											/>
+											<core:Item
+												key="2010"
+												text="St. Moritz"
+											/>
+											<core:Item
+												key="2020"
+												text="Arosa"
+											/>
+											<core:Item
+												key="2030"
+												text="Laax"
+											/>
+											<core:Item
+												key="2040"
+												text="Davos"
+											/>
+											<core:Item
+												key="2050"
+												text="Chur"
+											/>
+											<core:Item
+												key="2060"
+												text="Lenzerheide"
+											/>
+											<core:Item
+												key="2099"
+												text="Interlaken"
+											/>
+										</items>
+									</ComboBox>
+								</fb:control>
+							</fb:FilterGroupItem>
+							<fb:FilterGroupItem
+								name="filterBarDateRange"
+								label="{i18n>timeFrame}"
+								groupName="ASD"
+								visibleInFilterBar="true"
+							>
+								<fb:control>
+									<DateRangeSelection
+										placeholder="{i18n>calendar}"
+										id="dateSelection"
+										width="13rem"
+										delimiter="{
+											path: '/delimiterDRS1'
+										}"
+										dateValue="{
+											path: '/dateValueDRS1'
+										}"
+										secondDateValue="{
+											path: '/secondDateValueDRS1'
+										}"
+										displayFormat="{
+											path: '/dateFormatDRS1'
+										}"
+										change=".onDateChanged"
+									/>
+								</fb:control>
+							</fb:FilterGroupItem>
+						</fb:filterGroupItems>
+					</fb:FilterBar>
 				</f:content>
 			</f:DynamicPageHeader>
 		</f:header>
@@ -184,15 +209,15 @@
 							<Text text="{SalesOrder}"/>
 							<Text text="{SalesOrganization}"/>
 							<ObjectStatus
-									text="{
-										path: 'OverallDeliveryStatus',
-										formatter: '.formatter.statusText'
-									}"
-									state="{
-										path: 'OverallDeliveryStatus',
-										formatter: '.formatter.colorSetter'
-									}"
-								/>
+								text="{
+									path: 'OverallDeliveryStatus',
+									formatter: '.formatter.statusText'
+								}"
+								state="{
+									path: 'OverallDeliveryStatus',
+									formatter: '.formatter.colorSetter'
+								}"
+							/>
 							<Text text="{SoldToParty}"/>
 							<Text text="{
 								path: 'SalesOrderDate',
