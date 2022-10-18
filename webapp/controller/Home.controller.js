@@ -163,7 +163,7 @@ sap.ui.define(
       onSelectData: function (oEvent) {
         let status = oEvent.getParameter("data")[0].data.Status;
         if (!this._sStatus.includes(status)) {
-          this._sStatus.push(status);
+          this._sStatus.push(this.convertStatus(status));
         }
         console.log(this._sStatus);
       },
@@ -188,7 +188,6 @@ sap.ui.define(
           location: this.convertLocation(oEvent.getSource().getTitle()),
           dateRange: this._dateRangeConvert(),
           selectedStatus: this._sStatus.toString(),
-          /* selectedStatus: this.convertStatus(this._sStatus,toString()), */
         });
       },
       getRouter() {

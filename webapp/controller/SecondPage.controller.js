@@ -33,7 +33,6 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         this._sStatus = [];
         let args = oEvent.getParameter("arguments");
-        console.log(args.location);
         this.getView()
           .byId("dateSelection")
           .setPlaceholder(this.resources().getText("calendar"));
@@ -132,7 +131,7 @@ sap.ui.define(
               new Filter(
                 "OverallDeliveryStatus",
                 FilterOperator.Contains,
-                this.convertStatus(element)
+                element
               )
             );
           });

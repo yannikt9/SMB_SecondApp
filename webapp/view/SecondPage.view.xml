@@ -50,15 +50,15 @@
 						>
 							<items>
 								<core:Item
-									key="Ausgeführt"
+									key="A"
 									text="{i18n>invoiceStatusC}"
 								/>
 								<core:Item
-									key="In Bearbeitung"
+									key="B"
 									text="{i18n>invoiceStatusB}"
 								/>
 								<core:Item
-									key="Erfasst"
+									key="C"
 									text="{i18n>invoiceStatusA}"
 								/>
 							</items>
