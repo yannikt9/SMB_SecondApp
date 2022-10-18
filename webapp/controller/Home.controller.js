@@ -38,17 +38,6 @@ sap.ui.define(
       },
 
       /**
-       * If a start date has been selected, converts start- and end-date into unitary template string to pass on in URL
-       * @returns one template String with two values separated by an exclamation mark for ease of future separation
-       */
-      _dateRangeConvert: function () {
-        if (this.dStartDate) {
-          return `${this.dStartDate.getTime()}!${this.dEndDate.getTime()}`;
-        }
-        return "";
-      },
-
-      /**
        * Sets Data with applied Filters, sieves through data to create a set of all Sales Offices, passes "results" dataset
        * through Sales Office set and notes how many times each status has been called for in separate Array called "arraySalesOffices"
        * @param {sap.ui.model.Filter} [oFilter]
@@ -160,11 +149,12 @@ sap.ui.define(
        * upon selection of a status pushes it into private filtering Array sStatus
        */
       onSelectData: function (oEvent) {
-        let status = this.convertStatus(oEvent.getParameter("data")[0].data.Status);
+        let status = this.convertStatus(
+          oEvent.getParameter("data")[0].data.Status
+        );
         if (!this._aStatus.includes(status)) {
           this._aStatus.push(status);
         }
-        console.log(this._aStatus);
       },
 
       /**
@@ -172,9 +162,10 @@ sap.ui.define(
        * @param {} oEvent
        */
       onDeselectData: function (oEvent) {
-        let status = this.convertStatus(oEvent.getParameter("data")[0].data.Status);
+        let status = this.convertStatus(
+          oEvent.getParameter("data")[0].data.Status
+        );
         this._aStatus = this._aStatus.filter((element) => element !== status);
-        console.log(this._aStatus);
       },
 
       /**
@@ -186,7 +177,7 @@ sap.ui.define(
 
         oRouter.navTo("secondPage", {
           location: this.convertLocation(oEvent.getSource().getTitle()),
-          dateRange: this._dateRangeConvert(),
+          dateRange: this.dateRangeConvert(this.dStartDate, this.dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
       },

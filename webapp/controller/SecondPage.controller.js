@@ -51,15 +51,20 @@ sap.ui.define(
         this._applyFilters();
       },
 
+      _filterChange: function () {
+        this.getRouter().navTo("secondPage", {
+          location: this._sLocation,
+          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          selectedStatus: this._aStatus.toString(),
+        });
+      },
+
       /**
        * routing to second page
        * loading the right data by decoding the uri parameters
        */
-       onInit: function () {
-        // set explored app's demo model on this sample
-
-        let oRouter = this.getOwnerComponent().getRouter();
-        oRouter
+      onInit: function () {
+        this.getRouter()
           .getRoute("secondPage")
           .attachPatternMatched(this._onObjectMatched, this);
       },
@@ -71,9 +76,11 @@ sap.ui.define(
       handleSelectionChange: function (oEvent) {
         this._aStatus = oEvent.getSource().getSelectedKeys();
       },
+
       handleSelectionFinish: function () {
-        this._applyFilters();
+        this._filterChange();
       },
+
       /**
        * change date and filter / event handler
        * @param {} oEvent
@@ -81,8 +88,9 @@ sap.ui.define(
       onDateChanged: function (oEvent) {
         this._dStartDate = oEvent.getSource().getDateValue();
         this._dEndDate = oEvent.getSource().getSecondDateValue();
-        this._applyFilters();
+        this._filterChange();
       },
+
       /**
        * change salesOrganization / event handler
        * @param {} oEvent
@@ -95,8 +103,9 @@ sap.ui.define(
         this.getView()
           .byId("secondPageTitle")
           .setText(this.convertLocation(this._sLocation));
-        this._applyFilters();
+          this._filterChange();
       },
+
       /**
        * load third page by clicking on table row / event handler
        * @param {} oEvent
@@ -112,6 +121,7 @@ sap.ui.define(
             .SoldToParty,
         });
       },
+
       /**
        * function to create a filter array by checking if values are given
        */
@@ -152,6 +162,7 @@ sap.ui.define(
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
       },
+
       /**
        * delete all filters and set values to null / event handler
        * @param {} oEvent
@@ -160,7 +171,7 @@ sap.ui.define(
         this._aStatus = [];
         this._dStartDate = null;
         this._dEndDate = null;
-        this._applyFilters();
+        this._filterChange();
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
         this.getView().byId("idSelectSalesOrganization").setSelectedKey(null);
 
