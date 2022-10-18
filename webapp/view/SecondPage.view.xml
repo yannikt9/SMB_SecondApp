@@ -27,7 +27,7 @@
 					<Breadcrumbs>
 						<Link
 							text="{i18n>headerTitle}"
-							press=".onNavBack"
+							href="./index.html"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
@@ -62,16 +62,16 @@
 									>
 										<items>
 											<core:Item
-												key="Ausgeführt"
+												key="A"
+												text="{i18n>invoiceStatusA}"
+											/>
+											<core:Item
+												key="C"
 												text="{i18n>invoiceStatusC}"
 											/>
 											<core:Item
-												key="In Bearbeitung"
+												key="B"
 												text="{i18n>invoiceStatusB}"
-											/>
-											<core:Item
-												key="Erfasst"
-												text="{i18n>invoiceStatusA}"
 											/>
 										</items>
 									</MultiComboBox>
