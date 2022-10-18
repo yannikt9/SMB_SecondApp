@@ -75,6 +75,7 @@ sap.ui.define(
        */
       handleSelectionChange: function (oEvent) {
         this._aStatus = oEvent.getSource().getSelectedKeys();
+        console.log(this._aStatus);
       },
 
       handleSelectionFinish: function () {
