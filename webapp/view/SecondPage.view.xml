@@ -46,18 +46,6 @@
 						showGoOnFB="false"
 					>
 						<fb:filterGroupItems>
-							<!-- <fb:FilterGroupItem
-								name="filterBarTitle"
-								groupName="ASD"
-								visibleInFilterBar="true"
-							>
-								<fb:control>
-									<Title
-										text="{i18n>filterOptions}"
-										level="H2"
-									/>
-								</fb:control>
-							</fb:FilterGroupItem> -->
 							<fb:FilterGroupItem
 								groupName="ASD"
 								name="filterBarStatus"
@@ -170,19 +158,6 @@
 									/>
 								</fb:control>
 							</fb:FilterGroupItem>
-							<!-- <fb:FilterGroupItem
-								name="filterTabDelteButton"
-								groupName="ASD"
-								visibleInFilterBar="true"
-							>
-								<fb:control>
-									<Button
-										press=".deleteButtonPressed"
-										text="Alle Filter löschen"
-										type="Emphasized"
-									/>
-								</fb:control>
-							</fb:FilterGroupItem> -->
 						</fb:filterGroupItems>
 					</fb:FilterBar>
 				</f:content>
