@@ -162,7 +162,7 @@ sap.ui.define(
         this._dEndDate = null;
         this._applyFilters();
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
-        this.getView().byId("idSelectSalesOrganization").setSelectedKey(null);
+        this.getView().byId("idSelectSalesOrganization").setSelectedKey(this._sLocation);
 
         this.getView()
           .byId("dateSelection")
