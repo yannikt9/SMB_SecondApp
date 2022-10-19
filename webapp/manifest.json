@@ -32,6 +32,14 @@
           "annotations": [],
           "odataVersion": "2.0"
         }
+      },
+      "thirdSource":{
+        "uri": "/sap/opu/odata/sap/API_SALESORGANIZATION_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "2.0"
+        }
       }
     }
   },
@@ -84,6 +92,11 @@
       },
       "secondSource": {
         "dataSource": "secondSource",
+        "preload": true,
+        "settings": {}
+      },
+      "thirdSource": {
+        "dataSource": "thirdSource",
         "preload": true,
         "settings": {}
       }

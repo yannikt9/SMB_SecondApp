@@ -27,24 +27,27 @@
 				<f:content>
 					<FlexBox justifyContent="End">
 						<items>
-							<DateRangeSelection
-								placeholder="{i18n>calendar}"
-								id="DRS1"
-								width="13rem"
-								delimiter="{
-									path: '/delimiterDRS1'
-								}"
-								dateValue="{
-									path: '/dateValueDRS1'
-								}"
-								secondDateValue="{
-									path: '/secondDateValueDRS1'
-								}"
-								displayFormat="{
-									path: '/dateFormatDRS1'
-								}"
-								change=".onDateRangeSelect"
-							/>
+							<VBox>
+								<Label text="{i18n>firstTimeFrame}"/>
+								<DateRangeSelection
+									placeholder="{i18n>calendar}"
+									id="DRS1"
+									width="13rem"
+									delimiter="{
+										path: '/delimiterDRS1'
+									}"
+									dateValue="{
+										path: '/dateValueDRS1'
+									}"
+									secondDateValue="{
+										path: '/secondDateValueDRS1'
+									}"
+									displayFormat="{
+										path: '/dateFormatDRS1'
+									}"
+									change=".onDateRangeSelect"
+								/>
+							</VBox>
 						</items>
 					</FlexBox>
 				</f:content>
@@ -132,5 +135,4 @@
 			</layout:Grid>
 		</f:content>
 	</f:DynamicPage>
-
 </mvc:View>

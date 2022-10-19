@@ -5,7 +5,6 @@ sap.ui.define(
     "sap/ui/model/FilterOperator",
     "sap/ui/model/FilterType",
     "../model/formatter",
-    "sap/ui/core/routing/History",
   ],
   function (BaseController, Filter, FilterOperator, FilterType, formatter) {
     "use strict";
@@ -19,14 +18,16 @@ sap.ui.define(
       _aFilters: [],
 
       _onObjectMatched: function (oEvent) {
+        this.createSOModel();
+
         this._aStatus = [];
         let args = oEvent.getParameter("arguments");
         this.getView()
           .byId("dateSelection")
           .setPlaceholder(this.resources().getText("calendar"));
-        this.getView()
+        /* this.getView()
           .byId("secondPageTitle")
-          .setText(this.convertLocation(args.location));
+          .setText(this.convertLocation(args.location)); */
         if (args.selectedStatus) {
           this._aStatus = oEvent
             .getParameter("arguments")
@@ -103,7 +104,7 @@ sap.ui.define(
         this.getView()
           .byId("secondPageTitle")
           .setText(this.convertLocation(this._sLocation));
-          this._filterChange();
+        this._filterChange();
       },
 
       /**
@@ -173,16 +174,14 @@ sap.ui.define(
         this._dEndDate = null;
         this._filterChange();
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
-        this.getView().byId("idSelectSalesOrganization").setSelectedKey(this._sLocation);
+        this.getView()
+          .byId("idSelectSalesOrganization")
+          .setSelectedKey(this._sLocation);
 
         this.getView()
           .byId("dateSelection")
           .setValue(null)
           .setPlaceholder(this.resources().getText("calendar"));
-      },
-
-      onNavBack: function (oEvent) {
-        window.history.go(-1);
       },
     });
   }
