@@ -18,6 +18,11 @@ sap.ui.define(
       _dEndDate: "",
       _aFilters: [],
 
+      /**
+       * Filters data if filters have been passed from First Page
+       * displays data, which has been passed over, in filter
+       * @param {} oEvent 
+       */
       _onObjectMatched: function (oEvent) {
         this._aStatus = [];
         let args = oEvent.getParameter("arguments");
@@ -49,78 +54,6 @@ sap.ui.define(
           .setSelectedKey(args.location);
         this._sLocation = args.location;
         this._applyFilters();
-      },
-
-      _filterChange: function () {
-        this.getRouter().navTo("secondPage", {
-          location: this._sLocation,
-          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
-          selectedStatus: this._aStatus.toString(),
-        });
-      },
-
-      /**
-       * routing to second page
-       * loading the right data by decoding the uri parameters
-       */
-      onInit: function () {
-        this.getRouter()
-          .getRoute("secondPage")
-          .attachPatternMatched(this._onObjectMatched, this);
-      },
-
-      /**
-       * change selected status and filter / event handler
-       * @param {} oEvent
-       */
-      handleSelectionChange: function (oEvent) {
-        this._aStatus = oEvent.getSource().getSelectedKeys();
-        console.log(this._aStatus);
-      },
-
-      handleSelectionFinish: function () {
-        this._filterChange();
-      },
-
-      /**
-       * change date and filter / event handler
-       * @param {} oEvent
-       */
-      onDateChanged: function (oEvent) {
-        this._dStartDate = oEvent.getSource().getDateValue();
-        this._dEndDate = oEvent.getSource().getSecondDateValue();
-        this._filterChange();
-      },
-
-      /**
-       * change salesOrganization / event handler
-       * @param {} oEvent
-       */
-      onSalesOrganizationChanged: function (oEvent) {
-        let oComboBox = this.byId("idSelectSalesOrganization");
-        let chosenKey = oComboBox.getSelectedKey();
-        this._sLocation = chosenKey;
-        oComboBox.setValue(this.convertLocation(this._sLocation));
-        this.getView()
-          .byId("secondPageTitle")
-          .setText(this.convertLocation(this._sLocation));
-          this._filterChange();
-      },
-
-      /**
-       * load third page by clicking on table row / event handler
-       * @param {} oEvent
-       */
-      onRowPressed: function (oEvent) {
-        let oItem = oEvent.getSource().getBindingContext().getPath();
-        let oRouter = this.getOwnerComponent().getRouter();
-        oRouter.navTo("thirdPage", {
-          results: window.encodeURIComponent(oItem),
-          businessPartner: this.getView()
-            .getModel()
-            .getObject(oEvent.getSource().getBindingContext().getPath())
-            .SoldToParty,
-        });
       },
 
       /**
@@ -165,7 +98,82 @@ sap.ui.define(
       },
 
       /**
-       * delete all filters and set values to null / event handler
+       * function updates page based on changes in URI
+       */
+      _filterChange: function () {
+        this.getRouter().navTo("secondPage", {
+          location: this._sLocation,
+          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          selectedStatus: this._aStatus.toString(),
+        });
+      },
+
+      /**
+       * routes to Second Page
+       * loads correct data by decoding the URI parameters
+       */
+      onInit: function () {
+        this.getRouter()
+          .getRoute("secondPage")
+          .attachPatternMatched(this._onObjectMatched, this);
+      },
+
+      /**
+       * change selected status and filter / event handler
+       * @param {} oEvent
+       */
+      handleSelectionChange: function (oEvent) {
+        this._aStatus = oEvent.getSource().getSelectedKeys();
+      },
+
+      handleSelectionFinish: function () {
+        this._filterChange();
+      },
+
+      /**
+       * change date and filter / event handler
+       * @param {} oEvent
+       */
+      onDateChanged: function (oEvent) {
+        this._dStartDate = oEvent.getSource().getDateValue();
+        this._dEndDate = oEvent.getSource().getSecondDateValue();
+        this._filterChange();
+      },
+
+      /**
+       * change salesOrganization / event handler
+       * @param {} oEvent
+       */
+      onSalesOrganizationChanged: function (oEvent) {
+        let oComboBox = this.byId("idSelectSalesOrganization");
+        let chosenKey = oComboBox.getSelectedKey();
+        this._sLocation = chosenKey;
+        oComboBox.setValue(this.convertLocation(this._sLocation));
+        this.getView()
+          .byId("secondPageTitle")
+          .setText(this.convertLocation(this._sLocation));
+        this._filterChange();
+      },
+
+      /**
+       * navigates to Third Page and passes according Sales Order and Business Partner through URI
+       * @param {} oEvent
+       */
+      onRowPressed: function (oEvent) {
+        this.getRouter().navTo("thirdPage", {
+          results: this.getView()
+            .getModel()
+            .getObject(oEvent.getSource().getBindingContext().getPath())
+            .SalesOrder,
+          businessPartner: this.getView()
+            .getModel()
+            .getObject(oEvent.getSource().getBindingContext().getPath())
+            .SoldToParty,
+        });
+      },
+
+      /**
+       * Empties all filters
        * @param {} oEvent
        */
       deleteButtonPressed: function (oEvent) {
@@ -174,16 +182,14 @@ sap.ui.define(
         this._dEndDate = null;
         this._filterChange();
         this.getView().byId("idSelectStatus").setSelectedKeys(null);
-        this.getView().byId("idSelectSalesOrganization").setSelectedKey(this._sLocation);
+        this.getView()
+          .byId("idSelectSalesOrganization")
+          .setSelectedKey(this._sLocation);
 
         this.getView()
           .byId("dateSelection")
           .setValue(null)
           .setPlaceholder(this.resources().getText("calendar"));
-      },
-
-      onNavBack: function (oEvent) {
-        window.history.go(-1);
       },
     });
   }
