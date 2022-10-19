@@ -1,15 +1,15 @@
 sap.ui.define(
   [
-    "sap/ui/core/mvc/Controller",
+    "./BaseController",
     "../model/formatter",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/ui/model/json/JSONModel",
   ],
-  function (Controller, formatter, Filter, FilterOperator, JSONModel) {
+  function (BaseController, formatter, Filter, FilterOperator, JSONModel) {
     "use strict";
 
-    return Controller.extend("project1.controller.ThirdPage", {
+    return BaseController.extend("project1.controller.ThirdPage", {
       formatter: formatter,
 
       /**
@@ -41,8 +41,7 @@ sap.ui.define(
        */
       onInit: function () {
         this.getView().setModel(new JSONModel(), "bpModel");
-        let oRouter = this.getOwnerComponent().getRouter();
-        oRouter
+        this.getRouter()
           .getRoute("thirdPage")
           .attachPatternMatched(this._onObjectMatched, this);
       },
