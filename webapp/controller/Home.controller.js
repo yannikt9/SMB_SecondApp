@@ -106,10 +106,12 @@ sap.ui.define(
                   .getModel("display")
                   .setData({ stati: arraySalesOffices });
               });
+              console.log(data);
               this.hideBusyIndicator();
             },
           });
       },
+
 
       /**
        * Sets model "display" and appeals to set Data function to fill it with appropriate data
