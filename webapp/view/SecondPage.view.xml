@@ -20,7 +20,6 @@
 				<f:heading>
 					<Title
 						id="secondPageTitle"
-						text="{soModel>/SalesOrganizationName}"
 					/>
 				</f:heading>
 				<f:breadcrumbs>
@@ -93,8 +92,8 @@
 									>
 										<core:ListItem
 											id="ka"
-											key="{soModel>/SalesOrganization}"
-											text="{soModel>/SalesOrganizationName}"
+											key="{soModel>SalesOrganization}"
+											text="{soModel>SalesOrganizationName}"
 										/>
 									</ComboBox>
 								</fb:control>

@@ -84,8 +84,22 @@ sap.ui.define(
         return "";
       },
 
+      /**
+       *
+       * @param {String} [sName]
+       * @returns
+       */
+      getModel(sName) {
+        return this.getView().getModel(sName) || this.getOwnerComponent().getModel(sName);
+      },
+
+      setModel(oModel, sName) {
+        this.getView().setModel(oModel, sName);
+      },
+
       createSOModel() {
-        this.getOwnerComponent()
+        return new Promise((resolve, reject) => {
+          this.getOwnerComponent()
           .getModel("thirdSource")
           .read("/A_SalesOrganization", {
             urlParameters: {
@@ -105,9 +119,18 @@ sap.ui.define(
                   atest.push(e[0]);
                 });
 
-              this.getView().setModel(new JSONModel(atest), "soModel");
+              this.setModel(new JSONModel(atest), "soModel");
+
+              resolve();
             },
+            error: (oError) => {
+              reject(oError);
+            }
           });
+        });
+      },
+      getSoModel() {
+        return this.getModel("soModel").getData();
       },
     });
   }

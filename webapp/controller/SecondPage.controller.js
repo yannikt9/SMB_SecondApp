@@ -18,8 +18,6 @@ sap.ui.define(
       _aFilters: [],
 
       _onObjectMatched: function (oEvent) {
-        this.createSOModel();
-
         this._aStatus = [];
         let args = oEvent.getParameter("arguments");
         this.getView()
@@ -28,6 +26,7 @@ sap.ui.define(
         /* this.getView()
           .byId("secondPageTitle")
           .setText(this.convertLocation(args.location)); */
+
         if (args.selectedStatus) {
           this._aStatus = oEvent
             .getParameter("arguments")
@@ -65,6 +64,9 @@ sap.ui.define(
        * loading the right data by decoding the uri parameters
        */
       onInit: function () {
+        this.createSOModel().then(() => {
+          console.log(this.getSoModel());
+        });
         this.getRouter()
           .getRoute("secondPage")
           .attachPatternMatched(this._onObjectMatched, this);
@@ -101,9 +103,9 @@ sap.ui.define(
         let chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
         oComboBox.setValue(this.convertLocation(this._sLocation));
-        this.getView()
+        /* this.getView()
           .byId("secondPageTitle")
-          .setText(this.convertLocation(this._sLocation));
+          .setText(this.convertLocation(this._sLocation)); */
         this._filterChange();
       },
 
@@ -162,6 +164,7 @@ sap.ui.define(
           .byId("orderTable")
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
+        this.getView().byId("secondPageTitle").setText(this._sLocation)
       },
 
       /**
