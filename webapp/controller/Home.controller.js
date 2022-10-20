@@ -173,16 +173,12 @@ sap.ui.define(
        * @param {} oEvent
        */
       onChartPressed: function (oEvent) {
-        let oRouter = this.getOwnerComponent().getRouter();
 
-        oRouter.navTo("secondPage", {
+        this.getRouter().navTo("secondPage", {
           location: this.convertLocation(oEvent.getSource().getTitle()),
           dateRange: this.dateRangeConvert(this.dStartDate, this.dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
-      },
-      getRouter() {
-        return UIComponent.getRouterFor(this);
       },
 
       hideBusyIndicator: function () {

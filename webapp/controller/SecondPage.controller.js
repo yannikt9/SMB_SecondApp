@@ -17,6 +17,11 @@ sap.ui.define(
       _dEndDate: "",
       _aFilters: [],
 
+      /**
+       * Filters data if filters have been passed from First Page
+       * displays data, which has been passed over, in filter
+       * @param {} oEvent 
+       */
       _onObjectMatched: function (oEvent) {
         this._aStatus = [];
         let args = oEvent.getParameter("arguments");
@@ -60,6 +65,7 @@ sap.ui.define(
         this._applyFilters();
       },
 
+<<<<<<< HEAD
       _filterChange: function () {
         this.getRouter().navTo("secondPage", {
           location: this._sLocation,
@@ -139,6 +145,8 @@ sap.ui.define(
         });
       },
 
+=======
+>>>>>>> main
       /**
        * function to create a filter array by checking if values are given
        */
@@ -182,7 +190,90 @@ sap.ui.define(
       },
 
       /**
-       * delete all filters and set values to null / event handler
+       * function updates page based on changes in URI
+       */
+      _filterChange: function () {
+        this.getRouter().navTo("secondPage", {
+          location: this._sLocation,
+          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          selectedStatus: this._aStatus.toString(),
+        });
+      },
+
+      /**
+       * routes to Second Page
+       * loads correct data by decoding the URI parameters
+       */
+      onInit: function () {
+        /* console.log(
+          this.getSoModel().filter(
+            "SalesOrganization",
+            FilterOperator.Contains,
+            this._sLocation
+          ).SalesOrganizationName
+        ); */
+
+        this.getRouter()
+          .getRoute("secondPage")
+          .attachPatternMatched(this._onObjectMatched, this);
+      },
+
+      /**
+       * change selected status and filter / event handler
+       * @param {} oEvent
+       */
+      handleSelectionChange: function (oEvent) {
+        this._aStatus = oEvent.getSource().getSelectedKeys();
+      },
+
+      handleSelectionFinish: function () {
+        this._filterChange();
+      },
+
+      /**
+       * change date and filter / event handler
+       * @param {} oEvent
+       */
+      onDateChanged: function (oEvent) {
+        this._dStartDate = oEvent.getSource().getDateValue();
+        this._dEndDate = oEvent.getSource().getSecondDateValue();
+        this._filterChange();
+      },
+
+      /**
+       * change salesOrganization / event handler
+       * @param {} oEvent
+       */
+      onSalesOrganizationChanged: function (oEvent) {
+        let oComboBox = this.byId("idSelectSalesOrganization");
+        let chosenKey = oComboBox.getSelectedKey();
+        this._sLocation = chosenKey;
+        oComboBox.setValue(this.convertLocation(this._sLocation));
+        /* this.getView()
+          .byId("secondPageTitle")
+          .setText(this.convertLocation(this._sLocation)); */
+        this._filterChange();
+      },
+
+      /**
+       * navigates to Third Page and passes according Sales Order and Business Partner through URI
+       * @param {} oEvent
+       */
+      onRowPressed: function (oEvent) {
+        this.getRouter().navTo("thirdPage", {
+          results: this.getView()
+            .getModel()
+            .getObject(oEvent.getSource().getBindingContext().getPath())
+            .SalesOrder,
+          businessPartner: this.getView()
+            .getModel()
+            .getObject(oEvent.getSource().getBindingContext().getPath())
+            .SoldToParty,
+        });
+      },
+
+      /**
+       * Empties all filters
        * @param {} oEvent
        */
       deleteButtonPressed: function (oEvent) {

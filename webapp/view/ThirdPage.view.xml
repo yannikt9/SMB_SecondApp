@@ -89,28 +89,33 @@
 							width="auto"
 						>
 							<columns>
-								<Column width="12em">
+								<Column width="12%">
 									<Text text="{i18n>salesOrder}"/>
 								</Column>
-								<Column width="15em">
+								<Column width="15%">
 									<Text text="{i18n>soldToPartyID}"/>
 								</Column>
-								<Column width="15em">
+								<Column width="15%">
 									<Text text="{i18n>salesOrderDate}"/>
 								</Column>
 								<Column
+									width="15%"
 									minScreenWidth="Tablet"
 									demandPopin="true"
 								>
 									<Text text="{i18n>deliveryStatus}"/>
 								</Column>
 								<Column
+									width="28%"
 									demandPopin="true"
 									hAlign="End"
 								>
 									<Text text="{i18n>productDescription}"/>
 								</Column>
-								<Column hAlign="End">
+								<Column
+									width="15%"
+									hAlign="End"
+								>
 									<Text text="{i18n>totalNetAmount}"/>
 								</Column>
 							</columns>
