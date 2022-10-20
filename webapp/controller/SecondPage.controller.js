@@ -65,7 +65,6 @@ sap.ui.define(
         this._applyFilters();
       },
 
-<<<<<<< HEAD
       _filterChange: function () {
         this.getRouter().navTo("secondPage", {
           location: this._sLocation,
@@ -145,8 +144,6 @@ sap.ui.define(
         });
       },
 
-=======
->>>>>>> main
       /**
        * function to create a filter array by checking if values are given
        */
