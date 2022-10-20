@@ -48,6 +48,15 @@ sap.ui.define(
           .byId("idSelectSalesOrganization")
           .setSelectedKey(args.location);
         this._sLocation = args.location;
+        this.createSOModel().then(() => {
+          this.getView()
+            .byId("secondPageTitle")
+            .setText(
+              this.getSoModel().filter(
+                (e) => e.SalesOrganization === this._sLocation
+              )[0].SalesOrganizationName
+            );
+        });
         this._applyFilters();
       },
 
@@ -64,9 +73,14 @@ sap.ui.define(
        * loading the right data by decoding the uri parameters
        */
       onInit: function () {
-        this.createSOModel().then(() => {
-          console.log(this.getSoModel());
-        });
+        /* console.log(
+          this.getSoModel().filter(
+            "SalesOrganization",
+            FilterOperator.Contains,
+            this._sLocation
+          ).SalesOrganizationName
+        ); */
+
         this.getRouter()
           .getRoute("secondPage")
           .attachPatternMatched(this._onObjectMatched, this);
@@ -164,7 +178,7 @@ sap.ui.define(
           .byId("orderTable")
           .getBinding("items")
           .filter(this._aFilters, FilterType.Application);
-        this.getView().byId("secondPageTitle").setText(this._sLocation)
+        /* this.getView().byId("secondPageTitle").setText(this._sLocation) */
       },
 
       /**
@@ -185,6 +199,13 @@ sap.ui.define(
           .byId("dateSelection")
           .setValue(null)
           .setPlaceholder(this.resources().getText("calendar"));
+      },
+      setSOTitle() {
+        this.getSoModel().filter(
+          "SalesOrganization",
+          FilterOperator.Contains,
+          this._sLocation
+        ).SalesOrganizationName;
       },
     });
   }
