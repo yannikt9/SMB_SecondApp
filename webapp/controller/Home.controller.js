@@ -180,8 +180,9 @@ sap.ui.define(
        * @param {} oEvent
        */
       onChartPressed: function (oEvent) {
+        console.log(this.getView().byId("homePageCardTitle").getSubtitle());
         this.getRouter().navTo("secondPage", {
-          location: this.arraySalesOffices oEvent.getSource().getTitle(),
+          location: oEvent.getSource().getSubtitle(),
           dateRange: this.dateRangeConvert(this.dStartDate, this.dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
