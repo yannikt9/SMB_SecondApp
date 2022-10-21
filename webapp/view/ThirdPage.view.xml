@@ -30,8 +30,7 @@
 						/>
 						<Link
 							text="{
-								path: 'SalesOrganization',
-								formatter: '.formatter.formatSO'
+								path: 'SalesOrganization'
 							}"
 							press=".onNavBack"
 						/>

@@ -28,9 +28,6 @@ sap.ui.define(
         this.getView()
           .byId("dateSelection")
           .setPlaceholder(this.resources().getText("calendar"));
-        /* this.getView()
-          .byId("secondPageTitle")
-          .setText(this.convertLocation(args.location)); */
 
         if (args.selectedStatus) {
           this._aStatus = oEvent
@@ -163,7 +160,7 @@ sap.ui.define(
         let oComboBox = this.byId("idSelectSalesOrganization");
         let chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
-        oComboBox.setValue(this.convertLocation(this._sLocation));
+        oComboBox.setValue(this._sLocation);
         /* this.getView()
           .byId("secondPageTitle")
           .setText(this.convertLocation(this._sLocation)); */
