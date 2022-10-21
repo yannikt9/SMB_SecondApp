@@ -26,6 +26,7 @@ sap.ui.define(
       dStartDate: "",
       dEndDate: "",
       _aStatus: [],
+      aSOTitle: [],
 
       /**
        * empties private filtering Array _aStatus and clears selected statuses in viz Frame
@@ -48,9 +49,51 @@ sap.ui.define(
           .read("/A_SalesOrder", {
             filters: [oFilter],
             success: (data) => {
-              let setOfSalesOffices = new Set(
-                data.results.map((element) => element.SalesOrganization)
-              );
+              this.createSOModel().then(() => {
+                let aSalesOffices = this.getSoModel().map((e) => ({
+                  org: e.SalesOrganization,
+                  name: e.SalesOrganizationName,
+                }));
+
+                aSalesOffices.forEach((element) => {
+                  arraySalesOffices.push({
+                    SalesOfficeNumber: element.org,
+                    SalesOfficeName: element.name,
+                    Statuses: [
+                      {
+                        status: this.resources().getText("invoiceStatusA"),
+                        quantity: data.results.filter((e) => {
+                          let condition1 = element.org === e.SalesOrganization;
+                          let condition2 = "A" === e.OverallDeliveryStatus;
+                          return condition1 && condition2;
+                        }).length,
+                      },
+                      {
+                        status: this.resources().getText("invoiceStatusB"),
+                        quantity: data.results.filter((e) => {
+                          let condition1 = element.org === e.SalesOrganization;
+                          let condition2 = "B" === e.OverallDeliveryStatus;
+                          return condition1 && condition2;
+                        }).length,
+                      },
+                      {
+                        status: this.resources().getText("invoiceStatusC"),
+                        quantity: data.results.filter((e) => {
+                          let condition1 = element.org === e.SalesOrganization;
+                          let condition2 = "C" === e.OverallDeliveryStatus;
+                          return condition1 && condition2;
+                        }).length,
+                      },
+                    ],
+                  });
+                  this.getView()
+                    .getModel("display")
+                    .setData({ offices: arraySalesOffices });
+                  console.log(this.getModel("display").getData());
+                });
+                console.log(arraySalesOffices);
+                this.hideBusyIndicator();
+              });
               let arraySalesOffices = [];
               if (data.results.length === 0) {
                 return MessageBox.warning(
@@ -71,47 +114,9 @@ sap.ui.define(
                   },
                 ]
               } */
-
-              setOfSalesOffices.forEach((element) => {
-                arraySalesOffices.push({
-                  SalesOffice: element,
-                  Statuses: [
-                    {
-                      status: this.resources().getText("invoiceStatusA"),
-                      quantity: data.results.filter((e) => {
-                        let condition1 = element === e.SalesOrganization;
-                        let condition2 = "A" === e.OverallDeliveryStatus;
-                        return condition1 && condition2;
-                      }).length,
-                    },
-                    {
-                      status: this.resources().getText("invoiceStatusB"),
-                      quantity: data.results.filter((e) => {
-                        let condition1 = element === e.SalesOrganization;
-                        let condition2 = "B" === e.OverallDeliveryStatus;
-                        return condition1 && condition2;
-                      }).length,
-                    },
-                    {
-                      status: this.resources().getText("invoiceStatusC"),
-                      quantity: data.results.filter((e) => {
-                        let condition1 = element === e.SalesOrganization;
-                        let condition2 = "C" === e.OverallDeliveryStatus;
-                        return condition1 && condition2;
-                      }).length,
-                    },
-                  ],
-                });
-                this.getView()
-                  .getModel("display")
-                  .setData({ stati: arraySalesOffices });
-              });
-              console.log(data);
-              this.hideBusyIndicator();
             },
           });
       },
-
 
       /**
        * Sets model "display" and appeals to set Data function to fill it with appropriate data
@@ -175,9 +180,8 @@ sap.ui.define(
        * @param {} oEvent
        */
       onChartPressed: function (oEvent) {
-
         this.getRouter().navTo("secondPage", {
-          location: this.convertLocation(oEvent.getSource().getTitle()),
+          location: this.arraySalesOffices oEvent.getSource().getTitle(),
           dateRange: this.dateRangeConvert(this.dStartDate, this.dEndDate),
           selectedStatus: this._aStatus.toString(),
         });

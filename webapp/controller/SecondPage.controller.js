@@ -206,13 +206,6 @@ sap.ui.define(
           .setValue(null)
           .setPlaceholder(this.resources().getText("calendar"));
       },
-      setSOTitle() {
-        this.getSoModel().filter(
-          "SalesOrganization",
-          FilterOperator.Contains,
-          this._sLocation
-        ).SalesOrganizationName;
-      },
     });
   }
 );
