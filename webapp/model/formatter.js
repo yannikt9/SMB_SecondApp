@@ -6,16 +6,17 @@ sap.ui.define([], function () {
     },
 
     statusText(sStatus) {
-      const resourceBundle = this.getView().getModel('i18n').getResourceBundle();
+      /* const resourceBundle = this.getView().getModel('i18n').getResourceBundle(); */
       switch (sStatus) {
         case 'A':
-          return resourceBundle.getText('invoiceStatusA');
+          return this.resources().getText('invoiceStatusA');
         case 'B':
-          return resourceBundle.getText('invoiceStatusB');
+          return this.resources().getText('invoiceStatusB');
         case 'C':
-          return resourceBundle.getText('invoiceStatusC');
+          return this.resources().getText('invoiceStatusC');
         default:
-          return resourceBundle.getText('invoiceStatusD');
+          return this.resources().getText('invoiceStatusD');
+        /* return resourceBundle.getText('invoiceStatusD'); */
       }
     },
 

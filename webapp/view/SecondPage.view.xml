@@ -18,9 +18,7 @@
 		<f:title>
 			<f:DynamicPageTitle>
 				<f:heading>
-					<Title
-						id="secondPageTitle"
-					/>
+					<Title id="secondPageTitle"/>
 				</f:heading>
 				<f:breadcrumbs>
 					<Breadcrumbs>
@@ -88,12 +86,12 @@
 										placeholder="{i18n>salesOrganization}"
 										change=".onSalesOrganizationChanged"
 										width="13rem"
-										items="{soModel>/}"
+										items="{salesOrgModel>/}"
 									>
 										<core:ListItem
 											id="ka"
-											key="{soModel>SalesOrganization}"
-											text="{soModel>SalesOrganizationName}"
+											key="{salesOrgModel>SalesOrganization}"
+											text="{salesOrgModel>SalesOrganizationName}"
 										/>
 									</ComboBox>
 								</fb:control>

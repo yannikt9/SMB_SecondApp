@@ -9,20 +9,14 @@ sap.ui.define(
       formatter: formatter,
 
       /**
-       * reads corresponding models out of URI via Template Strings
+       * reads corresponding models out of URI template strings
        * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
         const args = oEvent.getParameter('arguments');
-        // nconst path = oEvent.getParameter("arguments").results;
-        // let businessPartner = oEvent.getParameter("arguments").businessPartner;
         this.getView().bindElement({
           path: `/A_SalesOrder('${args.results}')`,
         });
-        /* this.createSOModel().then(()=>{
-          let a = this.getSoModel().filter((e) => e.SalesOrganization === 
-          )[0].SalesOrganizationName;
-         }) */
         this.getOwnerComponent()
           .getModel('secondSource')
           .read(`/A_BusinessPartner('${args.businessPartner}')`, {
@@ -30,7 +24,7 @@ sap.ui.define(
               $expand: 'to_BusinessPartnerAddress',
             },
             success: (data) => {
-              this.getView().getModel('bpModel').setData(data);
+              this.getView().getModel('businessPartnerModel').setData(data);
             },
           });
       },
@@ -39,7 +33,7 @@ sap.ui.define(
        * sets bound models to Third Page
        */
       onInit: function () {
-        this.getView().setModel(new JSONModel(), 'bpModel');
+        this.getView().setModel(new JSONModel(), 'businessPartnerModel');
         this.getRouter()
           .getRoute('thirdPage')
           .attachPatternMatched(this._onObjectMatched, this);

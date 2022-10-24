@@ -19,21 +19,20 @@ sap.ui.define(
       _dStartDate: '',
       _dEndDate: '',
       _aStatus: [],
-      _arraySalesOffices: [],
+      _aSalesOffices: [],
 
       /**
-       * empties private filtering Array _aStatus and clears selected statuses in viz Frame
+       * empties private filtering Array _aStatus
        */
       _onRouteMatched: function () {
         this._aStatus = [];
-        this.getView()
-          .byId('idVizFrame')
-          .vizSelection([], { clearSelection: true });
       },
 
       /**
-       * Sets Data with applied Filters, sieves through data to create a set of all Sales Offices, passes "results" dataset
-       * through Sales Office set and notes how many times each status has been called for in separate Array called "arraySalesOffices"
+       * creates an array of sales offices which is then used to sieve through all sales orders and create a model with parameters such as
+       * the amount of times each status is represented in the data for a given sales organization, as well as its name
+       * applies all filters
+       * passes results into model "display"
        * @param {sap.ui.model.Filter} [oFilter]
        */
       _setData: function (oFilter) {
@@ -42,21 +41,21 @@ sap.ui.define(
           .read('/A_SalesOrder', {
             filters: [oFilter],
             success: (data) => {
-              this.createSOModel().then(() => {
-                const aSalesOffices = this.getSoModel().map((e) => ({
-                  org: e.SalesOrganization,
-                  name: e.SalesOrganizationName,
+              this.createSalesOrganizationModel().then(() => {
+                const aSalesOffices = this.getSalesOrganizationModel().map((e) => ({
+                  organization: e.SalesOrganization,
+                  organizationName: e.SalesOrganizationName,
                 }));
 
                 aSalesOffices.forEach((element) => {
-                  this._arraySalesOffices.push({
-                    SalesOfficeNumber: element.org,
-                    SalesOfficeName: element.name,
+                  this._aSalesOffices.push({
+                    SalesOfficeNumber: element.organization,
+                    SalesOfficeName: element.organizationName,
                     Statuses: [
                       {
                         status: this.resources().getText('invoiceStatusA'),
                         quantity: data.results.filter((e) => {
-                          const condition1 = element.org === e.SalesOrganization;
+                          const condition1 = element.organization === e.SalesOrganization;
                           const condition2 = e.OverallDeliveryStatus === 'A';
                           return condition1 && condition2;
                         }).length,
@@ -64,7 +63,7 @@ sap.ui.define(
                       {
                         status: this.resources().getText('invoiceStatusB'),
                         quantity: data.results.filter((e) => {
-                          const condition1 = element.org === e.SalesOrganization;
+                          const condition1 = element.organization === e.SalesOrganization;
                           const condition2 = e.OverallDeliveryStatus === 'B';
                           return condition1 && condition2;
                         }).length,
@@ -72,7 +71,7 @@ sap.ui.define(
                       {
                         status: this.resources().getText('invoiceStatusC'),
                         quantity: data.results.filter((e) => {
-                          const condition1 = element.org === e.SalesOrganization;
+                          const condition1 = element.organization === e.SalesOrganization;
                           const condition2 = e.OverallDeliveryStatus === 'C';
                           return condition1 && condition2;
                         }).length,
@@ -81,11 +80,11 @@ sap.ui.define(
                   });
                   this.getView()
                     .getModel('display')
-                    .setData({ offices: this._arraySalesOffices });
+                    .setData({ offices: this._aSalesOffices });
                 });
                 this._hideBusyIndicator();
               });
-              this._arraySalesOffices = [];
+              this._aSalesOffices = [];
               if (data.results.length === 0) {
                 return MessageBox.warning(
                   this.resources().getText('noOrdersInTimeSpan')
@@ -105,13 +104,21 @@ sap.ui.define(
                   },
                 ]
               } */
-              return "";
+              return '';
             },
           });
       },
 
+      _hideBusyIndicator: function () {
+        BusyIndicator.hide();
+      },
+
+      _showBusyIndicator: function () {
+        BusyIndicator.show(1000);
+      },
+
       /**
-       * Sets model "display" and appeals to set Data function to fill it with appropriate data
+       * sets model "display", while it's loading, calls for busy indicator and appeals to private set data function to filter appropriately
        */
       onInit: function () {
         this.getRouter()
@@ -123,14 +130,14 @@ sap.ui.define(
       },
 
       /**
-       * upon selection of start- and end-dates creates Filter to check whether SalesOrderDate is between selected two dates
-       * @param {} oEvent
-       * @returns without date range if start date has not been selected
+       *
+       * creates filter to display only the sales orders which are dated between the two selected dates
+       * @param {} oEvent 
        */
       onDateRangeSelect: function (oEvent) {
         this._dStartDate = new Date(oEvent.getSource().getDateValue());
         this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
-        if (this._dStartDate === null) {
+        if (!this._dStartDate) {
           this._setData(null);
         } else {
           this._setData(
@@ -145,7 +152,7 @@ sap.ui.define(
       },
 
       /**
-       * upon selection of a status pushes it into private filtering Array sStatus
+       * upon selecting a status pushes it into private filter array
        */
       onSelectData: function (oEvent) {
         const status = this.convertStatus(
@@ -157,7 +164,7 @@ sap.ui.define(
       },
 
       /**
-       * deletes selected status from filter Array upon deselection
+       * deletes selected status from filter array upon deselection
        * @param {} oEvent
        */
       onDeselectData: function (oEvent) {
@@ -168,24 +175,15 @@ sap.ui.define(
       },
 
       /**
-       * When chart header gets pressed, navigates to second Page and passes selected date range in URL as templatestring
+       * navigates to second page and passes parameters such as the location, array of selected statuses, and the selected date range (as template String) in URI 
        * @param {} oEvent
        */
       onChartPressed: function (oEvent) {
-        console.log(this.getView().byId('homePageCardTitle').getSubtitle());
         this.getRouter().navTo('secondPage', {
           location: oEvent.getSource().getSubtitle(),
           dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
-      },
-
-      _hideBusyIndicator: function () {
-        BusyIndicator.hide();
-      },
-
-      _showBusyIndicator: function () {
-        BusyIndicator.show(1000);
       },
     });
   }

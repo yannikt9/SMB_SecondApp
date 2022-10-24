@@ -10,14 +10,14 @@ sap.ui.define(
     return BaseController.extend('project1.controller.SecondPage', {
       formatter: formatter,
       _sLocation: '',
-      _aStatus: [],
       _dStartDate: '',
       _dEndDate: '',
+      _aStatus: [],
       _aFilters: [],
 
       /**
-       * Filters data if filters have been passed from First Page
-       * displays data, which has been passed over, in filter
+       * filters data if filters have been passed from first page
+       * displays passed over filters
        * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
@@ -34,7 +34,9 @@ sap.ui.define(
         }
 
         if (args.dateRange) {
-          this._dStartDate = new Date(parseInt(args.dateRange.split('!')[0], 10));
+          this._dStartDate = new Date(
+            parseInt(args.dateRange.split('!')[0], 10)
+          );
           this._dEndDate = new Date(parseInt(args.dateRange.split('!')[1], 10));
 
           this.getView()
@@ -48,11 +50,11 @@ sap.ui.define(
           .byId('idSelectSalesOrganization')
           .setSelectedKey(args.location);
         this._sLocation = args.location;
-        this.createSOModel().then(() => {
+        this.createSalesOrganizationModel().then(() => {
           this.getView()
             .byId('secondPageTitle')
             .setText(
-              this.getSoModel().filter(
+              this.getSalesOrganizationModel().filter(
                 (e) => e.SalesOrganization === this._sLocation
               )[0].SalesOrganizationName
             );
@@ -60,38 +62,8 @@ sap.ui.define(
         this._applyFilters();
       },
 
-      _filterChange: function () {
-        this.getRouter().navTo('secondPage', {
-          location: this._sLocation,
-          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
-          selectedStatus: this._aStatus.toString(),
-        });
-      },
-
       /**
-       * change selected status and filter / event handler
-       * @param {} oEvent
-       */
-      handleSelectionChange: function (oEvent) {
-        this._aStatus = oEvent.getSource().getSelectedKeys();
-      },
-
-      handleSelectionFinish: function () {
-        this._filterChange();
-      },
-
-      /**
-       * change date and filter / event handler
-       * @param {} oEvent
-       */
-      onDateChanged: function (oEvent) {
-        this._dStartDate = new Date(oEvent.getSource().getDateValue());
-        this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
-        this._filterChange();
-      },
-
-      /**
-       * function to create a filter array by checking if values are given
+       * creates a filter array by checking if values are given
        */
       _applyFilters() {
         this._aFilters = [];
@@ -129,29 +101,53 @@ sap.ui.define(
           .byId('orderTable')
           .getBinding('items')
           .filter(this._aFilters, FilterType.Application);
-        /* this.getView().byId("secondPageTitle").setText(this._sLocation) */
       },
 
       /**
-       * routes to Second Page
-       * loads correct data by decoding the URI parameters
+       * changes URI when filters change
+       */
+      _filterChange: function () {
+        this.getRouter().navTo('secondPage', {
+          location: this._sLocation,
+          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          selectedStatus: this._aStatus.toString(),
+        });
+      },
+
+      /**
+       * event handler that changes selected status and filter
+       * @param {} oEvent
+       */
+      handleSelectionChange: function (oEvent) {
+        this._aStatus = oEvent.getSource().getSelectedKeys();
+      },
+
+      handleSelectionFinish: function () {
+        this._filterChange();
+      },
+
+      /**
+       * event handler that changes date and filter
+       * @param {} oEvent
+       */
+      onDateChanged: function (oEvent) {
+        this._dStartDate = new Date(oEvent.getSource().getDateValue());
+        this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
+        this._filterChange();
+      },
+
+      /**
+       * routes to second page
+       * loads correct data by decoding URI parameters
        */
       onInit: function () {
-        /* console.log(
-          this.getSoModel().filter(
-            "SalesOrganization",
-            FilterOperator.Contains,
-            this._sLocation
-          ).SalesOrganizationName
-        ); */
-
         this.getRouter()
           .getRoute('secondPage')
           .attachPatternMatched(this._onObjectMatched, this);
       },
 
       /**
-       * change salesOrganization / event handler
+       * event handler that changes the sales organization
        * @param {} oEvent
        */
       onSalesOrganizationChanged: function () {
@@ -159,14 +155,11 @@ sap.ui.define(
         const chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
         oComboBox.setValue(this._sLocation);
-        /* this.getView()
-          .byId("secondPageTitle")
-          .setText(this.convertLocation(this._sLocation)); */
         this._filterChange();
       },
 
       /**
-       * navigates to Third Page and passes according Sales Order and Business Partner through URI
+       * navigates to third page and passes according sales order and business partner through URI
        * @param {} oEvent
        */
       onRowPressed: function (oEvent) {
@@ -183,7 +176,7 @@ sap.ui.define(
       },
 
       /**
-       * Empties all filters
+       * empties all filters
        * @param {} oEvent
        */
       deleteButtonPressed: function () {

@@ -2,18 +2,32 @@ sap.ui.define(
   ['sap/ui/core/mvc/Controller', 'sap/ui/model/json/JSONModel'],
   function (Controller, JSONModel) {
     return Controller.extend('project1.controller.BaseController', {
-      resources: function () {
-        return this.getView().getModel('i18n').getResourceBundle();
-      },
 
       /**
-       * converts locationNumbers into string and vice versa
-       * @param {} sLocation
-       * @returns locationNumber and locationString
+       * @param {String} [sName]
+       * @returns
        */
+       _getModel(sName) {
+        return (
+          this.getView().getModel(sName) ||
+          this.getOwnerComponent().getModel(sName)
+        );
+      },
+
+      _setModel(oModel, sName) {
+        this.getView().setModel(oModel, sName);
+      },
 
       getRouter: function () {
         return this.getOwnerComponent().getRouter();
+      },
+
+      /**
+       * creates shortcut for i18n resource bundle
+       * @returns i18n properties model
+       */
+      resources: function () {
+        return this.getView().getModel('i18n').getResourceBundle();
       },
 
       /**
@@ -33,11 +47,12 @@ sap.ui.define(
             return '';
         }
       },
+
       /**
        * @param {any} dStartDate
        * @param {any} dEndDate
-       * If a start date has been selected, converts start- and end-date into unitary template string to pass on in URL
-       * @returns one template String with two values separated by an exclamation mark for ease of future separation
+       * if a start date has been selected, combines both dates into template String to effectively pass on in URI
+       * @returns single template String with two values separated by an exclamation mark for ease of separation in second page
        */
       dateRangeConvert: function (dStartDate, dEndDate) {
         if (dStartDate) {
@@ -47,22 +62,10 @@ sap.ui.define(
       },
 
       /**
-       *
-       * @param {String} [sName]
-       * @returns
+       * creates model of sales organizations
+       * @returns Promise of a model of sales organizations, due to asynchronized structure of JavaScript
        */
-      _getModel(sName) {
-        return (
-          this.getView().getModel(sName) ||
-          this.getOwnerComponent().getModel(sName)
-        );
-      },
-
-      _setModel(oModel, sName) {
-        this.getView().setModel(oModel, sName);
-      },
-
-      createSOModel() {
+      createSalesOrganizationModel() {
         return new Promise((resolve, reject) => {
           this.getOwnerComponent()
             .getModel('thirdSource')
@@ -71,20 +74,20 @@ sap.ui.define(
                 $expand: 'to_Text',
               },
               success: (data) => {
-                const aSO = [];
+                const aSalesOrg = [];
                 data.results.forEach((element) => {
-                  aSO.push(
-                    element.to_Text.results.filter((e) => e.Language === 'DE')
+                  aSalesOrg.push(
+                    element.to_Text.results.filter((element) => element.Language === 'DE')
                   );
                 });
-                const aTest = [];
-                aSO
-                  .filter((e) => e.length > 0)
-                  .forEach((e) => {
-                    aTest.push(e[0]);
+                const aSalesOrgFilter = [];
+                aSalesOrg
+                  .filter((element) => element.length > 0)
+                  .forEach((element) => {
+                    aSalesOrgFilter.push(element[0]);
                   });
 
-                this._setModel(new JSONModel(aTest), 'soModel');
+                this._setModel(new JSONModel(aSalesOrgFilter), 'salesOrgModel');
 
                 resolve();
               },
@@ -94,8 +97,9 @@ sap.ui.define(
             });
         });
       },
-      getSoModel() {
-        return this._getModel('soModel').getData();
+
+      getSalesOrganizationModel() {
+        return this._getModel('salesOrgModel').getData();
       },
     });
   }
