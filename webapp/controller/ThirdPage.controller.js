@@ -17,7 +17,7 @@ sap.ui.define(
         // nconst path = oEvent.getParameter("arguments").results;
         // let businessPartner = oEvent.getParameter("arguments").businessPartner;
         this.getView().bindElement({
-          path: `/A_SalesOrder('${args.result}')`,
+          path: `/A_SalesOrder('${args.results}')`,
         });
         /* this.createSOModel().then(()=>{
           let a = this.getSoModel().filter((e) => e.SalesOrganization === 
