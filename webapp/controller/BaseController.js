@@ -51,7 +51,7 @@ sap.ui.define(
        * @param {String} [sName]
        * @returns
        */
-      getModel(sName) {
+      _getModel(sName) {
         return (
           this.getView().getModel(sName) ||
           this.getOwnerComponent().getModel(sName)
@@ -95,7 +95,7 @@ sap.ui.define(
         });
       },
       getSoModel() {
-        return this.getModel('soModel').getData();
+        return this._getModel('soModel').getData();
       },
     });
   }
