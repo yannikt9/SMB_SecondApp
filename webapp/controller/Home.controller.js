@@ -1,18 +1,18 @@
 sap.ui.define(
   [
     './BaseController',
+    'sap/m/MessageBox',
     'sap/ui/model/json/JSONModel',
     'sap/ui/model/Filter',
     'sap/ui/model/FilterOperator',
-    'sap/m/MessageBox',
     'sap/ui/core/BusyIndicator',
   ],
   function (
     BaseController,
+    MessageBox,
     JSONModel,
     Filter,
     FilterOperator,
-    MessageBox,
     BusyIndicator
   ) {
     return BaseController.extend('project1.controller.Home', {
@@ -22,7 +22,7 @@ sap.ui.define(
       _aSalesOffices: [],
 
       /**
-       * empties private filtering Array _aStatus
+       * empties private filtering array _aStatus
        */
       _onRouteMatched: function () {
         this._aStatus = [];
@@ -130,7 +130,6 @@ sap.ui.define(
       },
 
       /**
-       *
        * creates filter to display only the sales orders which are dated between the two selected dates
        * @param {} oEvent 
        */
