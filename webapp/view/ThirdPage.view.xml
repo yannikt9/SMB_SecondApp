@@ -29,9 +29,7 @@
 							href="./index.html"
 						/>
 						<Link
-							text="{
-								path: 'SalesOrganization'
-							}"
+							text="{SalesOrganization}"
 							press=".onNavBack"
 						/>
 					</Breadcrumbs>

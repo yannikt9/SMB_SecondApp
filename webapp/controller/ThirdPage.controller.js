@@ -19,11 +19,13 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         let path = oEvent.getParameter("arguments").results;
         let businessPartner = oEvent.getParameter("arguments").businessPartner;
-
         this.getView().bindElement({
           path: `/A_SalesOrder('${path}')`,
         });
-
+        /* this.createSOModel().then(()=>{
+          let a = this.getSoModel().filter((e) => e.SalesOrganization === 
+          )[0].SalesOrganizationName;
+         }) */
         this.getOwnerComponent()
           .getModel("secondSource")
           .read(`/A_BusinessPartner('${businessPartner}')`, {
