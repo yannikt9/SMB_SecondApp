@@ -1,13 +1,11 @@
 sap.ui.define(
   [
-    "./BaseController",
-    "sap/ui/model/json/JSONModel",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "sap/m/MessageBox",
-    "../model/formatter",
-    "sap/ui/core/UIComponent",
-    "sap/ui/core/BusyIndicator",
+    './BaseController',
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator',
+    'sap/m/MessageBox',
+    'sap/ui/core/BusyIndicator',
   ],
   function (
     BaseController,
@@ -15,18 +13,13 @@ sap.ui.define(
     Filter,
     FilterOperator,
     MessageBox,
-    formatter,
-    UIComponent,
     BusyIndicator
   ) {
-    "use strict";
-
-    return BaseController.extend("project1.controller.Home", {
-      formatter: formatter,
-      dStartDate: "",
-      dEndDate: "",
+    return BaseController.extend('project1.controller.Home', {
+      _dStartDate: '',
+      _dEndDate: '',
       _aStatus: [],
-      aSOTitle: [],
+      _arraySalesOffices: [],
 
       /**
        * empties private filtering Array _aStatus and clears selected statuses in viz Frame
@@ -34,7 +27,7 @@ sap.ui.define(
       _onRouteMatched: function () {
         this._aStatus = [];
         this.getView()
-          .byId("idVizFrame")
+          .byId('idVizFrame')
           .vizSelection([], { clearSelection: true });
       },
 
@@ -46,58 +39,56 @@ sap.ui.define(
       _setData: function (oFilter) {
         this.getOwnerComponent()
           .getModel()
-          .read("/A_SalesOrder", {
+          .read('/A_SalesOrder', {
             filters: [oFilter],
             success: (data) => {
               this.createSOModel().then(() => {
-                let aSalesOffices = this.getSoModel().map((e) => ({
+                const aSalesOffices = this.getSoModel().map((e) => ({
                   org: e.SalesOrganization,
                   name: e.SalesOrganizationName,
                 }));
 
                 aSalesOffices.forEach((element) => {
-                  arraySalesOffices.push({
+                  this._arraySalesOffices.push({
                     SalesOfficeNumber: element.org,
                     SalesOfficeName: element.name,
                     Statuses: [
                       {
-                        status: this.resources().getText("invoiceStatusA"),
+                        status: this.resources().getText('invoiceStatusA'),
                         quantity: data.results.filter((e) => {
-                          let condition1 = element.org === e.SalesOrganization;
-                          let condition2 = "A" === e.OverallDeliveryStatus;
+                          const condition1 = element.org === e.SalesOrganization;
+                          const condition2 = e.OverallDeliveryStatus === 'A';
                           return condition1 && condition2;
                         }).length,
                       },
                       {
-                        status: this.resources().getText("invoiceStatusB"),
+                        status: this.resources().getText('invoiceStatusB'),
                         quantity: data.results.filter((e) => {
-                          let condition1 = element.org === e.SalesOrganization;
-                          let condition2 = "B" === e.OverallDeliveryStatus;
+                          const condition1 = element.org === e.SalesOrganization;
+                          const condition2 = e.OverallDeliveryStatus === 'B';
                           return condition1 && condition2;
                         }).length,
                       },
                       {
-                        status: this.resources().getText("invoiceStatusC"),
+                        status: this.resources().getText('invoiceStatusC'),
                         quantity: data.results.filter((e) => {
-                          let condition1 = element.org === e.SalesOrganization;
-                          let condition2 = "C" === e.OverallDeliveryStatus;
+                          const condition1 = element.org === e.SalesOrganization;
+                          const condition2 = e.OverallDeliveryStatus === 'C';
                           return condition1 && condition2;
                         }).length,
                       },
                     ],
                   });
                   this.getView()
-                    .getModel("display")
-                    .setData({ offices: arraySalesOffices });
-                  console.log(this.getModel("display").getData());
+                    .getModel('display')
+                    .setData({ offices: this._arraySalesOffices });
                 });
-                console.log(arraySalesOffices);
-                this.hideBusyIndicator();
+                this._hideBusyIndicator();
               });
-              let arraySalesOffices = [];
+              this._arraySalesOffices = [];
               if (data.results.length === 0) {
                 return MessageBox.warning(
-                  this.resources().getText("noOrdersInTimeSpan")
+                  this.resources().getText('noOrdersInTimeSpan')
                 );
               }
 
@@ -114,6 +105,7 @@ sap.ui.define(
                   },
                 ]
               } */
+              return "";
             },
           });
       },
@@ -123,10 +115,10 @@ sap.ui.define(
        */
       onInit: function () {
         this.getRouter()
-          .getRoute("home")
+          .getRoute('home')
           .attachMatched(this._onRouteMatched, this);
-        this.showBusyIndicator();
-        this.getView().setModel(new JSONModel(), "display");
+        this._showBusyIndicator();
+        this.getView().setModel(new JSONModel(), 'display');
         this._setData();
       },
 
@@ -136,17 +128,17 @@ sap.ui.define(
        * @returns without date range if start date has not been selected
        */
       onDateRangeSelect: function (oEvent) {
-        this.dStartDate = oEvent.getSource().getDateValue();
-        this.dEndDate = oEvent.getSource().getSecondDateValue();
-        if (this.dStartDate === null) {
+        this._dStartDate = new Date(oEvent.getSource().getDateValue());
+        this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
+        if (this._dStartDate === null) {
           this._setData(null);
         } else {
           this._setData(
             new Filter(
-              "SalesOrderDate",
+              'SalesOrderDate',
               FilterOperator.BT,
-              this.dStartDate,
-              this.dEndDate
+              this._dStartDate,
+              this._dEndDate
             )
           );
         }
@@ -156,8 +148,8 @@ sap.ui.define(
        * upon selection of a status pushes it into private filtering Array sStatus
        */
       onSelectData: function (oEvent) {
-        let status = this.convertStatus(
-          oEvent.getParameter("data")[0].data.Status
+        const status = this.convertStatus(
+          oEvent.getParameter('data')[0].data.Status
         );
         if (!this._aStatus.includes(status)) {
           this._aStatus.push(status);
@@ -169,8 +161,8 @@ sap.ui.define(
        * @param {} oEvent
        */
       onDeselectData: function (oEvent) {
-        let status = this.convertStatus(
-          oEvent.getParameter("data")[0].data.Status
+        const status = this.convertStatus(
+          oEvent.getParameter('data')[0].data.Status
         );
         this._aStatus = this._aStatus.filter((element) => element !== status);
       },
@@ -180,19 +172,19 @@ sap.ui.define(
        * @param {} oEvent
        */
       onChartPressed: function (oEvent) {
-        console.log(this.getView().byId("homePageCardTitle").getSubtitle());
-        this.getRouter().navTo("secondPage", {
+        console.log(this.getView().byId('homePageCardTitle').getSubtitle());
+        this.getRouter().navTo('secondPage', {
           location: oEvent.getSource().getSubtitle(),
-          dateRange: this.dateRangeConvert(this.dStartDate, this.dEndDate),
+          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
       },
 
-      hideBusyIndicator: function () {
+      _hideBusyIndicator: function () {
         BusyIndicator.hide();
       },
 
-      showBusyIndicator: function () {
+      _showBusyIndicator: function () {
         BusyIndicator.show(1000);
       },
     });

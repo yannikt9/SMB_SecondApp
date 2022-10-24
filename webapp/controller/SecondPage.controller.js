@@ -1,58 +1,56 @@
 sap.ui.define(
   [
-    "./BaseController",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "sap/ui/model/FilterType",
-    "../model/formatter",
+    './BaseController',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator',
+    'sap/ui/model/FilterType',
+    '../model/formatter',
   ],
   function (BaseController, Filter, FilterOperator, FilterType, formatter) {
-    "use strict";
-
-    return BaseController.extend("project1.controller.SecondPage", {
+    return BaseController.extend('project1.controller.SecondPage', {
       formatter: formatter,
-      _sLocation: "",
+      _sLocation: '',
       _aStatus: [],
-      _dStartDate: "",
-      _dEndDate: "",
+      _dStartDate: '',
+      _dEndDate: '',
       _aFilters: [],
 
       /**
        * Filters data if filters have been passed from First Page
        * displays data, which has been passed over, in filter
-       * @param {} oEvent 
+       * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
         this._aStatus = [];
-        let args = oEvent.getParameter("arguments");
+        const args = oEvent.getParameter('arguments');
         this.getView()
-          .byId("dateSelection")
-          .setPlaceholder(this.resources().getText("calendar"));
+          .byId('dateSelection')
+          .setPlaceholder(this.resources().getText('calendar'));
 
         if (args.selectedStatus) {
           this._aStatus = oEvent
-            .getParameter("arguments")
-            .selectedStatus.split(",");
+            .getParameter('arguments')
+            .selectedStatus.split(',');
         }
 
         if (args.dateRange) {
-          this._dStartDate = new Date(parseInt(args.dateRange.split("!")[0]));
-          this._dEndDate = new Date(parseInt(args.dateRange.split("!")[1]));
+          this._dStartDate = new Date(parseInt(args.dateRange.split('!')[0], 10));
+          this._dEndDate = new Date(parseInt(args.dateRange.split('!')[1], 10));
 
           this.getView()
-            .byId("dateSelection")
+            .byId('dateSelection')
             .setValue(
               `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
         }
-        this.getView().byId("idSelectStatus").setSelectedKeys(this._aStatus);
+        this.getView().byId('idSelectStatus').setSelectedKeys(this._aStatus);
         this.getView()
-          .byId("idSelectSalesOrganization")
+          .byId('idSelectSalesOrganization')
           .setSelectedKey(args.location);
         this._sLocation = args.location;
         this.createSOModel().then(() => {
           this.getView()
-            .byId("secondPageTitle")
+            .byId('secondPageTitle')
             .setText(
               this.getSoModel().filter(
                 (e) => e.SalesOrganization === this._sLocation
@@ -63,7 +61,7 @@ sap.ui.define(
       },
 
       _filterChange: function () {
-        this.getRouter().navTo("secondPage", {
+        this.getRouter().navTo('secondPage', {
           location: this._sLocation,
           dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
           selectedStatus: this._aStatus.toString(),
@@ -87,8 +85,8 @@ sap.ui.define(
        * @param {} oEvent
        */
       onDateChanged: function (oEvent) {
-        this._dStartDate = oEvent.getSource().getDateValue();
-        this._dEndDate = oEvent.getSource().getSecondDateValue();
+        this._dStartDate = new Date(oEvent.getSource().getDateValue());
+        this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
         this._filterChange();
       },
 
@@ -100,7 +98,7 @@ sap.ui.define(
         if (this._sLocation) {
           this._aFilters.push(
             new Filter(
-              "SalesOrganization",
+              'SalesOrganization',
               FilterOperator.Contains,
               this._sLocation
             )
@@ -110,7 +108,7 @@ sap.ui.define(
           this._aStatus.forEach((element) => {
             this._aFilters.push(
               new Filter(
-                "OverallDeliveryStatus",
+                'OverallDeliveryStatus',
                 FilterOperator.Contains,
                 element
               )
@@ -120,7 +118,7 @@ sap.ui.define(
         if (this._dEndDate && this._dStartDate) {
           this._aFilters.push(
             new Filter(
-              "SalesOrderDate",
+              'SalesOrderDate',
               FilterOperator.BT,
               this._dStartDate,
               this._dEndDate
@@ -128,8 +126,8 @@ sap.ui.define(
           );
         }
         this.getView()
-          .byId("orderTable")
-          .getBinding("items")
+          .byId('orderTable')
+          .getBinding('items')
           .filter(this._aFilters, FilterType.Application);
         /* this.getView().byId("secondPageTitle").setText(this._sLocation) */
       },
@@ -148,7 +146,7 @@ sap.ui.define(
         ); */
 
         this.getRouter()
-          .getRoute("secondPage")
+          .getRoute('secondPage')
           .attachPatternMatched(this._onObjectMatched, this);
       },
 
@@ -156,9 +154,9 @@ sap.ui.define(
        * change salesOrganization / event handler
        * @param {} oEvent
        */
-      onSalesOrganizationChanged: function (oEvent) {
-        let oComboBox = this.byId("idSelectSalesOrganization");
-        let chosenKey = oComboBox.getSelectedKey();
+      onSalesOrganizationChanged: function () {
+        const oComboBox = this.byId('idSelectSalesOrganization');
+        const chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
         oComboBox.setValue(this._sLocation);
         /* this.getView()
@@ -172,7 +170,7 @@ sap.ui.define(
        * @param {} oEvent
        */
       onRowPressed: function (oEvent) {
-        this.getRouter().navTo("thirdPage", {
+        this.getRouter().navTo('thirdPage', {
           results: this.getView()
             .getModel()
             .getObject(oEvent.getSource().getBindingContext().getPath())
@@ -188,20 +186,20 @@ sap.ui.define(
        * Empties all filters
        * @param {} oEvent
        */
-      deleteButtonPressed: function (oEvent) {
+      deleteButtonPressed: function () {
         this._aStatus = [];
         this._dStartDate = null;
         this._dEndDate = null;
         this._filterChange();
-        this.getView().byId("idSelectStatus").setSelectedKeys(null);
+        this.getView().byId('idSelectStatus').setSelectedKeys(null);
         this.getView()
-          .byId("idSelectSalesOrganization")
+          .byId('idSelectSalesOrganization')
           .setSelectedKey(this._sLocation);
 
         this.getView()
-          .byId("dateSelection")
+          .byId('dateSelection')
           .setValue(null)
-          .setPlaceholder(this.resources().getText("calendar"));
+          .setPlaceholder(this.resources().getText('calendar'));
       },
     });
   }

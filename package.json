@@ -9,11 +9,16 @@
     "sapui5"
   ],
   "main": "webapp/index.html",
-  "dependencies": {},
   "devDependencies": {
-    "@ui5/cli": "^2.14.1",
+    "@sap/ux-ui5-fe-mockserver-middleware": "1",
     "@sap/ux-ui5-tooling": "1",
-    "@sap/ux-ui5-fe-mockserver-middleware": "1"
+    "@ui5/cli": "^2.14.1",
+    "eslint": "^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.2",
+    "prettier": "2.7.1",
+    "ui5-task-eslint": "^1.0.2"
   },
   "scripts": {
     "start": "fiori run --open \"test/flpSandbox.html?sap-client=700&sap-ui-xx-viewCache=false#project1-display\"",
@@ -29,6 +34,7 @@
   },
   "ui5": {
     "dependencies": [
+      "ui5-task-eslint",
       "@sap/ux-ui5-tooling",
       "@sap/ux-ui5-fe-mockserver-middleware"
     ]

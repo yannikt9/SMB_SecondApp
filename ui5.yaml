@@ -30,3 +30,10 @@ server:
       configuration:
         component: project1
         ui5Theme: sap_fiori_3
+builder:
+  customTasks:
+  - name: ui5-task-eslint
+    afterTask: replaceCopyright
+    configuration:
+      debug: false
+      autoFix: true

@@ -1,15 +1,11 @@
 sap.ui.define(
   [
-    "./BaseController",
-    "../model/formatter",
-    "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator",
-    "sap/ui/model/json/JSONModel",
+    './BaseController',
+    '../model/formatter',
+    'sap/ui/model/json/JSONModel',
   ],
-  function (BaseController, formatter, Filter, FilterOperator, JSONModel) {
-    "use strict";
-
-    return BaseController.extend("project1.controller.ThirdPage", {
+  function (BaseController, formatter, JSONModel) {
+    return BaseController.extend('project1.controller.ThirdPage', {
       formatter: formatter,
 
       /**
@@ -17,23 +13,24 @@ sap.ui.define(
        * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
-        let path = oEvent.getParameter("arguments").results;
-        let businessPartner = oEvent.getParameter("arguments").businessPartner;
+        const args = oEvent.getParameter('arguments');
+        // nconst path = oEvent.getParameter("arguments").results;
+        // let businessPartner = oEvent.getParameter("arguments").businessPartner;
         this.getView().bindElement({
-          path: `/A_SalesOrder('${path}')`,
+          path: `/A_SalesOrder('${args.result}')`,
         });
         /* this.createSOModel().then(()=>{
           let a = this.getSoModel().filter((e) => e.SalesOrganization === 
           )[0].SalesOrganizationName;
          }) */
         this.getOwnerComponent()
-          .getModel("secondSource")
-          .read(`/A_BusinessPartner('${businessPartner}')`, {
+          .getModel('secondSource')
+          .read(`/A_BusinessPartner('${args.businessPartner}')`, {
             urlParameters: {
-              $expand: "to_BusinessPartnerAddress",
+              $expand: 'to_BusinessPartnerAddress',
             },
             success: (data) => {
-              this.getView().getModel("bpModel").setData(data);
+              this.getView().getModel('bpModel').setData(data);
             },
           });
       },
@@ -42,13 +39,13 @@ sap.ui.define(
        * sets bound models to Third Page
        */
       onInit: function () {
-        this.getView().setModel(new JSONModel(), "bpModel");
+        this.getView().setModel(new JSONModel(), 'bpModel');
         this.getRouter()
-          .getRoute("thirdPage")
+          .getRoute('thirdPage')
           .attachPatternMatched(this._onObjectMatched, this);
       },
 
-      onNavBack: function (oEvent) {
+      onNavBack: function () {
         window.history.go(-1);
       },
     });
