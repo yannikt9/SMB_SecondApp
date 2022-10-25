@@ -37,11 +37,11 @@ sap.ui.define(
        */
       convertStatus: function (sStatus) {
         switch (sStatus) {
-          case 'Erfasst':
+          case this.resources().getText('invoiceStatusA'):
             return 'A';
-          case 'In Bearbeitung':
+          case this.resources().getText('invoiceStatusB'):
             return 'B';
-          case 'Ausgeführt':
+          case this.resources().getText('invoiceStatusC'):
             return 'C';
           default:
             return '';
