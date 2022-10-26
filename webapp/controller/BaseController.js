@@ -31,7 +31,7 @@ sap.ui.define(
        * @returns i18n properties model
        */
       // TODO: getRessources()
-      // TODO: Noch besser  -> Gleich getText()...
+      // TODO: Noch besser  -> Gleich
       resources: function () {
         return this.getView().getModel('i18n').getResourceBundle();
       },
