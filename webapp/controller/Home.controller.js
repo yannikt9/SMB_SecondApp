@@ -16,8 +16,8 @@ sap.ui.define(
     BusyIndicator
   ) {
     return BaseController.extend('project1.controller.Home', {
-      _dStartDate: '',
-      _dEndDate: '',
+      _dStartDate: undefined,
+      _dEndDate: undefined,
       _aStatus: [],
       _aSalesOffices: [],
 
@@ -29,30 +29,39 @@ sap.ui.define(
       },
 
       /**
-       * creates an array of sales offices which is then used to sieve through all sales orders and create a model with parameters such as
-       * the amount of times each status is represented in the data for a given sales organization, as well as its name
-       * applies all filters
+       * creates an array of sales offices which is then used to sieve through all sales orders
+       * and create a model with parameters such as the amount of times each status is represented
+       * in the data for a given sales organization, as well as its name applies all filters
        * passes results into model "display"
        * @param {sap.ui.model.Filter} [oFilter]
        */
       _setData: function (oFilter) {
+        // TODO: Lesen der Sales Orders & Sales Orgs parallelisieren
+        Promise.all([
+          this.createSalesOrganizationModel(),
+          this._getSalesOrders(oFilter),
+        ]).then((aValues) => {
+          const [, aSalesOrders] = aValues;
+          //aValues[0] = Resultat von createSalesOrganizationModel = undefined
+          //aValues[1] = Resultat von _getSalesOrders
+        });
+
         this.getOwnerComponent()
           .getModel()
           .read('/A_SalesOrder', {
             filters: [oFilter],
             success: (data) => {
               this.createSalesOrgModel().then(() => {
-                const aSalesOffices = this.getSalesOrgModel().map(
-                  (e) => ({
-                    organization: e.SalesOrganization,
-                    organizationName: e.SalesOrganizationName,
-                  })
-                );
+                const aSalesOffices = this.getSalesOrgModel().map((e) => ({
+                  organization: e.SalesOrganization,
+                  organizationName: e.SalesOrganizationName,
+                }));
 
                 aSalesOffices.forEach((element) => {
-                  this._aSalesOffices.push({
+                  const oObject = {
                     SalesOfficeNumber: element.organization,
                     SalesOfficeName: element.organizationName,
+                    // TODO: Redundanz für Quantity entfernen
                     Statuses: [
                       {
                         status: this.getResources('invoiceStatusA'),
@@ -82,26 +91,28 @@ sap.ui.define(
                         }).length,
                       },
                     ],
-                  });
-                  const orderCount = this._aSalesOffices
-                    .find((elm) => elm.SalesOfficeNumber === element.organization)
+                  };
+                  /* const orderCount = this._aSalesOffices
+                    .find(
+                      (elm) => elm.SalesOfficeNumber === element.organization
+                    )
                     .Statuses.filter((count) => count.quantity >= 1).length;
                   if (orderCount < 1) {
                     this._aSalesOffices = this._aSalesOffices.filter(
                       (e) => e.SalesOfficeNumber !== element.organization
                     );
-                  }
+                  } */
+                  this._aSalesOffices.push(oObject);
                 });
+
                 this.getView()
                   .getModel('display')
                   .setData({ offices: this._aSalesOffices });
-                this._hideBusyIndicator();
+                this.hideBusyIndicator();
               });
               this._aSalesOffices = [];
               if (data.results.length === 0) {
-                return MessageBox.warning(
-                  this.resources().getText('noOrdersInTimeSpan')
-                );
+                MessageBox.warning(this.getResources('noOrdersInTimeSpan'));
               }
 
               /* model name = results
@@ -117,17 +128,34 @@ sap.ui.define(
                   },
                 ]
               } */
-              return '';
             },
           });
       },
 
-      _hideBusyIndicator: function () {
-        BusyIndicator.hide();
+      getSalesOrders: function (oFilter) {
+        return new Promise((resolve, reject) => {
+          this.getOwnerComponent()
+            .getModel()
+            .read('/A_SalesOrder', {
+              filters: [oFilter],
+              success: (data) => {
+                resolve(data.results);
+              },
+              error: (error) => {
+                reject(error);
+              },
+            });
+        });
       },
 
-      _showBusyIndicator: function () {
+      hideBusyIndicator: function () {
+        BusyIndicator.hide();
+        /* this.byId('grid').setBusy(false); */
+      },
+
+      showBusyIndicator: function () {
         BusyIndicator.show(1000);
+        /* this.byId('grid').setBusy(true); */
       },
 
       /**
@@ -137,7 +165,7 @@ sap.ui.define(
         this.getRouter()
           .getRoute('home')
           .attachMatched(this._onRouteMatched, this);
-        this._showBusyIndicator();
+        this.showBusyIndicator();
         this.getView().setModel(new JSONModel(), 'display');
         this._setData();
       },
@@ -198,7 +226,10 @@ sap.ui.define(
       onChartPressed: function (oEvent) {
         this.getRouter().navTo('secondPage', {
           location: oEvent.getSource().getSubtitle(),
-          dateRange: this.convertDateRangeToTemplateString(this._dStartDate, this._dEndDate),
+          dateRange: this.convertDateRangeToTemplateString(
+            this._dStartDate,
+            this._dEndDate
+          ),
           selectedStatus: this._aStatus.toString(),
         });
       },
