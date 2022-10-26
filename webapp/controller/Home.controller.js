@@ -24,7 +24,7 @@ sap.ui.define(
       /**
        * empties private filtering array _aStatus
        */
-      _onRouteMatched: function () {
+      onRouteMatched: function () {
         this._aStatus = [];
       },
 
@@ -35,7 +35,7 @@ sap.ui.define(
        * passes results into model "display"
        * @param {sap.ui.model.Filter} [oFilter]
        */
-      _setData: function (oFilter) {
+      setData: function (oFilter) {
         // TODO: Lesen der Sales Orders & Sales Orgs parallelisieren
         Promise.all([
           this.createSalesOrganizationModel(),
@@ -164,10 +164,10 @@ sap.ui.define(
       onInit: function () {
         this.getRouter()
           .getRoute('home')
-          .attachMatched(this._onRouteMatched, this);
+          .attachMatched(this.onRouteMatched, this);
         this.showBusyIndicator();
         this.getView().setModel(new JSONModel(), 'display');
-        this._setData();
+        this.setData();
       },
 
       /**
@@ -183,9 +183,9 @@ sap.ui.define(
           ? new Date(oSource.getSecondDateValue())
           : null;
         if (!this._dStartDate) {
-          this._setData(null);
+          this.setData(null);
         } else {
-          this._setData(
+          this.setData(
             new Filter(
               'SalesOrderDate',
               FilterOperator.BT,
