@@ -13,7 +13,16 @@ sap.ui.define(
       _dStartDate: '',
       _dEndDate: '',
       _aStatus: [],
-      _aFilters: [],
+
+      /**
+       * routes to second page
+       * loads correct data by decoding URI parameters
+       */
+      onInit: function () {
+        this.getRouter()
+          .getRoute('secondPage')
+          .attachPatternMatched(this.onObjectMatched, this);
+      },
 
       /**
        * filters data if filters have been passed from first page
@@ -23,14 +32,9 @@ sap.ui.define(
       onObjectMatched: function (oEvent) {
         this._aStatus = [];
         const args = oEvent.getParameter('arguments');
-        this.getView()
-          .byId('dateSelection')
-          .setPlaceholder(this.resources().getText('calendar'));
 
         if (args.selectedStatus) {
-          this._aStatus = oEvent
-            .getParameter('arguments')
-            .selectedStatus.split(',');
+          this._aStatus = args.selectedStatus.split(',');
         }
 
         if (args.dateRange) {
@@ -45,9 +49,9 @@ sap.ui.define(
               `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
         }
-        this.getView().byId('idSelectStatus').setSelectedKeys(this._aStatus);
+        this.getView().byId('statusSelection').setSelectedKeys(this._aStatus);
         this.getView()
-          .byId('idSelectSalesOrganization')
+          .byId('salesOrganizationSelection')
           .setSelectedKey(args.location);
         this._sLocation = args.location;
         this.createSalesOrganizationModel().then(() => {
@@ -63,58 +67,6 @@ sap.ui.define(
       },
 
       /**
-       * creates a filter array by checking if values are given
-       */
-      applyFilters() {
-        this._aFilters = [];
-        if (this._sLocation) {
-          this._aFilters.push(
-            new Filter(
-              'SalesOrganization',
-              FilterOperator.Contains,
-              this._sLocation
-            )
-          );
-        }
-        if (this._aStatus.length !== 0) {
-          this._aStatus.forEach((element) => {
-            this._aFilters.push(
-              new Filter(
-                'OverallDeliveryStatus',
-                FilterOperator.Contains,
-                element
-              )
-            );
-          });
-        }
-        if (this._dEndDate && this._dStartDate) {
-          this._aFilters.push(
-            new Filter(
-              'SalesOrderDate',
-              FilterOperator.BT,
-              this._dStartDate,
-              this._dEndDate
-            )
-          );
-        }
-        this.getView()
-          .byId('orderTable')
-          .getBinding('items')
-          .filter(this._aFilters, FilterType.Application);
-      },
-
-      /**
-       * changes URI when filters change
-       */
-      filterChange: function () {
-        this.getRouter().navTo('secondPage', {
-          location: this._sLocation,
-          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
-          selectedStatus: this._aStatus.toString(),
-        });
-      },
-
-      /**
        * event handler that changes selected status and filter
        * @param {} oEvent
        */
@@ -122,6 +74,9 @@ sap.ui.define(
         this._aStatus = oEvent.getSource().getSelectedKeys();
       },
 
+      /**
+       * event handler, after status has been selected
+       */
       onStatusSelectionFinished: function () {
         this.filterChange();
       },
@@ -134,16 +89,6 @@ sap.ui.define(
         this._dStartDate = new Date(oEvent.getSource().getDateValue());
         this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
         this.filterChange();
-      },
-
-      /**
-       * routes to second page
-       * loads correct data by decoding URI parameters
-       */
-      onInit: function () {
-        this.getRouter()
-          .getRoute('secondPage')
-          .attachPatternMatched(this.onObjectMatched, this);
       },
 
       /**
@@ -193,6 +138,50 @@ sap.ui.define(
           .byId('dateSelection')
           .setValue(null)
           .setPlaceholder(this.resources().getText('calendar'));
+      },
+
+      /**
+       * creates a filter array by checking if values are given
+       */
+      applyFilters() {
+        const aFilters = [];
+        if (this._sLocation) {
+          aFilters.push(
+            new Filter('SalesOrganization', FilterOperator.EQ, this._sLocation)
+          );
+        }
+        if (this._aStatus.length !== 0) {
+          this._aStatus.forEach((element) => {
+            aFilters.push(
+              new Filter('OverallDeliveryStatus', FilterOperator.EQ, element)
+            );
+          });
+        }
+        if (this._dEndDate && this._dStartDate) {
+          aFilters.push(
+            new Filter(
+              'SalesOrderDate',
+              FilterOperator.BT,
+              this._dStartDate,
+              this._dEndDate
+            )
+          );
+        }
+        this.getView()
+          .byId('orderTable')
+          .getBinding('items')
+          .filter(aFilters, FilterType.Application);
+      },
+
+      /**
+       * changes URI when filters change
+       */
+      filterChange: function () {
+        this.getRouter().navTo('secondPage', {
+          location: this._sLocation,
+          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          selectedStatus: this._aStatus.toString(),
+        });
       },
     });
   }

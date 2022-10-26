@@ -51,7 +51,7 @@
 							>
 								<fb:control>
 									<MultiComboBox
-										id="idSelectStatus"
+										id="statusSelection"
 										placeholder="{i18n>deliveryStatus}"
 										selectionChange="onStatusSelectionChange"
 										selectionFinish="onStatusSelectionFinished"
@@ -82,14 +82,14 @@
 							>
 								<fb:control>
 									<ComboBox
-										id="idSelectSalesOrganization"
+										id="salesOrganizationSelection"
 										placeholder="{i18n>salesOrganization}"
 										change=".onSalesOrganizationChanged"
 										width="13rem"
 										items="{salesOrgModel>/}"
 									>
 										<core:ListItem
-											id="ka"
+											id="listItem"
 											key="{salesOrgModel>SalesOrganization}"
 											text="{salesOrgModel>SalesOrganizationName}"
 										/>
