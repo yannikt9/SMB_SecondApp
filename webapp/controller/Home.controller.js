@@ -41,8 +41,8 @@ sap.ui.define(
           .read('/A_SalesOrder', {
             filters: [oFilter],
             success: (data) => {
-              this.createSalesOrganizationModel().then(() => {
-                const aSalesOffices = this.getSalesOrganizationModel().map(
+              this.createSalesOrgModel().then(() => {
+                const aSalesOffices = this.getSalesOrgModel().map(
                   (e) => ({
                     organization: e.SalesOrganization,
                     organizationName: e.SalesOrganizationName,
@@ -55,7 +55,7 @@ sap.ui.define(
                     SalesOfficeName: element.organizationName,
                     Statuses: [
                       {
-                        status: this.resources().getText('invoiceStatusA'),
+                        status: this.getResources('invoiceStatusA'),
                         quantity: data.results.filter((e) => {
                           const condition1 =
                             element.organization === e.SalesOrganization;
@@ -64,7 +64,7 @@ sap.ui.define(
                         }).length,
                       },
                       {
-                        status: this.resources().getText('invoiceStatusB'),
+                        status: this.getResources('invoiceStatusB'),
                         quantity: data.results.filter((e) => {
                           const condition1 =
                             element.organization === e.SalesOrganization;
@@ -73,7 +73,7 @@ sap.ui.define(
                         }).length,
                       },
                       {
-                        status: this.resources().getText('invoiceStatusC'),
+                        status: this.getResources('invoiceStatusC'),
                         quantity: data.results.filter((e) => {
                           const condition1 =
                             element.organization === e.SalesOrganization;
@@ -198,7 +198,7 @@ sap.ui.define(
       onChartPressed: function (oEvent) {
         this.getRouter().navTo('secondPage', {
           location: oEvent.getSource().getSubtitle(),
-          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          dateRange: this.convertDateRangeToTemplateString(this._dStartDate, this._dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
       },

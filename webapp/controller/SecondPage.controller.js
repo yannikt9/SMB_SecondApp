@@ -25,7 +25,7 @@ sap.ui.define(
         const args = oEvent.getParameter('arguments');
         this.getView()
           .byId('dateSelection')
-          .setPlaceholder(this.resources().getText('calendar'));
+          .setPlaceholder(this.getResources('calendar'));
 
         if (args.selectedStatus) {
           this._aStatus = oEvent
@@ -50,11 +50,11 @@ sap.ui.define(
           .byId('idSelectSalesOrganization')
           .setSelectedKey(args.location);
         this._sLocation = args.location;
-        this.createSalesOrganizationModel().then(() => {
+        this.createSalesOrgModel().then(() => {
           this.getView()
             .byId('secondPageTitle')
             .setText(
-              this.getSalesOrganizationModel().filter(
+              this.getSalesOrgModel().filter(
                 (e) => e.SalesOrganization === this._sLocation
               )[0].SalesOrganizationName
             );
@@ -109,7 +109,7 @@ sap.ui.define(
       _filterChange: function () {
         this.getRouter().navTo('secondPage', {
           location: this._sLocation,
-          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          dateRange: this.convertDateRangeToTemplateString(this._dStartDate, this._dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
       },
@@ -192,7 +192,7 @@ sap.ui.define(
         this.getView()
           .byId('dateSelection')
           .setValue(null)
-          .setPlaceholder(this.resources().getText('calendar'));
+          .setPlaceholder(this.getResources('calendar'));
       },
     });
   }
