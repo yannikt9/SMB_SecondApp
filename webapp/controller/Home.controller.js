@@ -42,10 +42,12 @@ sap.ui.define(
             filters: [oFilter],
             success: (data) => {
               this.createSalesOrganizationModel().then(() => {
-                const aSalesOffices = this.getSalesOrganizationModel().map((e) => ({
-                  organization: e.SalesOrganization,
-                  organizationName: e.SalesOrganizationName,
-                }));
+                const aSalesOffices = this.getSalesOrganizationModel().map(
+                  (e) => ({
+                    organization: e.SalesOrganization,
+                    organizationName: e.SalesOrganizationName,
+                  })
+                );
 
                 aSalesOffices.forEach((element) => {
                   this._aSalesOffices.push({
@@ -55,7 +57,8 @@ sap.ui.define(
                       {
                         status: this.resources().getText('invoiceStatusA'),
                         quantity: data.results.filter((e) => {
-                          const condition1 = element.organization === e.SalesOrganization;
+                          const condition1 =
+                            element.organization === e.SalesOrganization;
                           const condition2 = e.OverallDeliveryStatus === 'A';
                           return condition1 && condition2;
                         }).length,
@@ -63,7 +66,8 @@ sap.ui.define(
                       {
                         status: this.resources().getText('invoiceStatusB'),
                         quantity: data.results.filter((e) => {
-                          const condition1 = element.organization === e.SalesOrganization;
+                          const condition1 =
+                            element.organization === e.SalesOrganization;
                           const condition2 = e.OverallDeliveryStatus === 'B';
                           return condition1 && condition2;
                         }).length,
@@ -71,17 +75,26 @@ sap.ui.define(
                       {
                         status: this.resources().getText('invoiceStatusC'),
                         quantity: data.results.filter((e) => {
-                          const condition1 = element.organization === e.SalesOrganization;
+                          const condition1 =
+                            element.organization === e.SalesOrganization;
                           const condition2 = e.OverallDeliveryStatus === 'C';
                           return condition1 && condition2;
                         }).length,
                       },
                     ],
                   });
-                  this.getView()
-                    .getModel('display')
-                    .setData({ offices: this._aSalesOffices });
+                  const orderCount = this._aSalesOffices
+                    .find((elm) => elm.SalesOfficeNumber === element.organization)
+                    .Statuses.filter((count) => count.quantity >= 1).length;
+                  if (orderCount < 1) {
+                    this._aSalesOffices = this._aSalesOffices.filter(
+                      (e) => e.SalesOfficeNumber !== element.organization
+                    );
+                  }
                 });
+                this.getView()
+                  .getModel('display')
+                  .setData({ offices: this._aSalesOffices });
                 this._hideBusyIndicator();
               });
               this._aSalesOffices = [];
@@ -132,11 +145,16 @@ sap.ui.define(
       /**
        *
        * creates filter to display only the sales orders which are dated between the two selected dates
-       * @param {} oEvent 
+       * @param {} oEvent
        */
       onDateRangeSelect: function (oEvent) {
-        this._dStartDate = new Date(oEvent.getSource().getDateValue());
-        this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
+        const oSource = oEvent.getSource();
+        this._dStartDate = oSource.getDateValue()
+          ? new Date(oSource.getDateValue())
+          : null;
+        this._dEndDate = oSource.getSecondDateValue()
+          ? new Date(oSource.getSecondDateValue())
+          : null;
         if (!this._dStartDate) {
           this._setData(null);
         } else {
@@ -175,7 +193,7 @@ sap.ui.define(
       },
 
       /**
-       * navigates to second page and passes parameters such as the location, array of selected statuses, and the selected date range (as template String) in URI 
+       * navigates to second page and passes parameters such as the location, array of selected statuses, and the selected date range (as template String) in URI
        * @param {} oEvent
        */
       onChartPressed: function (oEvent) {

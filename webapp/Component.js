@@ -4,7 +4,6 @@ sap.ui.define([
         "project1/model/models"
     ],
     function (UIComponent, Device, models) {
-        "use strict";
 
         return UIComponent.extend("project1.Component", {
             metadata: {
