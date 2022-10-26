@@ -1,5 +1,7 @@
 sap.ui.define([], function () {
   return {
+
+    // TODO: Verwendungen mittels Types abbilden ohne Formatter
     formatDate(dOrderDate) {
       const dDate = new Date(dOrderDate);
       return dDate.toLocaleDateString();

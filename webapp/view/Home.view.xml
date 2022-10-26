@@ -18,8 +18,6 @@
 						class="sapUiResponsiveContentPadding"
 					/>
 				</f:heading>
-				<f:content>
-				</f:content>
 			</f:DynamicPageTitle>
 		</f:title>
 		<f:header>
@@ -33,9 +31,7 @@
 									placeholder="{i18n>calendar}"
 									id="DRS1"
 									width="13rem"
-									delimiter="{
-										path: '/delimiterDRS1'
-									}"
+									delimiter="{/delimiterDRS1}"
 									dateValue="{
 										path: '/dateValueDRS1'
 									}"
@@ -55,6 +51,7 @@
 		</f:header>
 		<f:content>
 			<layout:Grid
+				id="grid"
 				containerQuery="true"
 				class="sapUiSmallMarginTop"
 				content="{display>/offices}"

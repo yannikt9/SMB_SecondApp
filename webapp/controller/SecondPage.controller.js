@@ -15,6 +15,8 @@ sap.ui.define(
       _aStatus: [],
       _aFilters: [],
 
+      // TODO: Umbau der Properties auf Model mit Binding der Filter-Controls
+
       /**
        * filters data if filters have been passed from first page
        * displays passed over filters
@@ -23,28 +25,36 @@ sap.ui.define(
       _onObjectMatched: function (oEvent) {
         this._aStatus = [];
         const args = oEvent.getParameter('arguments');
+
+        // TODO: Direkt im XML
         this.getView()
           .byId('dateSelection')
           .setPlaceholder(this.resources().getText('calendar'));
 
         if (args.selectedStatus) {
           this._aStatus = oEvent
-            .getParameter('arguments')
+            .getParameter('arguments') // TODO: ERsetzen durch 'args'
             .selectedStatus.split(',');
         }
 
         if (args.dateRange) {
+          // // TODO: Destructuring
+          // const [iStart, iEnd] = args.dateRange.split('!');
+
           this._dStartDate = new Date(
             parseInt(args.dateRange.split('!')[0], 10)
           );
           this._dEndDate = new Date(parseInt(args.dateRange.split('!')[1], 10));
 
+          // TODO: Prüfen, ob Date Values übergeben werden können (setValue, setSecondaryValue)
           this.getView()
             .byId('dateSelection')
             .setValue(
               `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
             );
         }
+        // TODO: Element idSelectStatus ohne id + einheitlich (siehe dateSelection)
+        // dateSelection + statusSelection || selectStatus + selectDate
         this.getView().byId('idSelectStatus').setSelectedKeys(this._aStatus);
         this.getView()
           .byId('idSelectSalesOrganization')
@@ -66,12 +76,12 @@ sap.ui.define(
        * creates a filter array by checking if values are given
        */
       _applyFilters() {
-        this._aFilters = [];
+        this._aFilters = []; // TODO: Lokale Var
         if (this._sLocation) {
           this._aFilters.push(
             new Filter(
               'SalesOrganization',
-              FilterOperator.Contains,
+              FilterOperator.Contains, // TODO: Equals und mit Hanna schimpfen
               this._sLocation
             )
           );
@@ -118,10 +128,14 @@ sap.ui.define(
        * event handler that changes selected status and filter
        * @param {} oEvent
        */
+
+      // TODO: onX....
+      // TODO: Namen mit Bezug zu Status
       handleSelectionChange: function (oEvent) {
         this._aStatus = oEvent.getSource().getSelectedKeys();
       },
 
+      // TODO: onX....
       handleSelectionFinish: function () {
         this._filterChange();
       },
@@ -140,6 +154,7 @@ sap.ui.define(
        * routes to second page
        * loads correct data by decoding URI parameters
        */
+      // TODO: Reihenfolge
       onInit: function () {
         this.getRouter()
           .getRoute('secondPage')
@@ -163,15 +178,13 @@ sap.ui.define(
        * @param {} oEvent
        */
       onRowPressed: function (oEvent) {
+        const oObject = this.getView()
+          .getModel()
+          .getObject(oEvent.getSource().getBindingContext().getPath());
+
         this.getRouter().navTo('thirdPage', {
-          results: this.getView()
-            .getModel()
-            .getObject(oEvent.getSource().getBindingContext().getPath())
-            .SalesOrder,
-          businessPartner: this.getView()
-            .getModel()
-            .getObject(oEvent.getSource().getBindingContext().getPath())
-            .SoldToParty,
+          results: oObject.SalesOrder,
+          businessPartner: oObject.SoldToParty,
         });
       },
 
@@ -179,6 +192,8 @@ sap.ui.define(
        * empties all filters
        * @param {} oEvent
        */
+      // TODO: Naming onX....
+      // TODO: Sinnvoller Name...
       deleteButtonPressed: function () {
         this._aStatus = [];
         this._dStartDate = null;

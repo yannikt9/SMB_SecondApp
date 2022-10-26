@@ -12,7 +12,6 @@
 		id="dynamicPageId"
 		stickySubheaderProvider="iconTabBar"
 		class="sapUiNoContentPadding"
-		toggleHeaderOnTitleClick="{/titleClickable}"
 	>
 		<f:title>
 			<f:DynamicPageTitle>
@@ -26,7 +25,7 @@
 					<Breadcrumbs>
 						<Link
 							text="{i18n>headerTitle}"
-							href="./index.html"
+							href=".onNavHome"
 						/>
 						<Link
 							text="{SalesOrganization}"
@@ -63,10 +62,10 @@
 							}"
 						/>
 					</layout:VerticalLayout>
-					<layout:VerticalLayout class="sapUiMediumMarginEnd">
+					<layout:VerticalLayout id="blockBusinessPartner" class="sapUiMediumMarginEnd">
 						<ObjectAttribute
 							title="{i18n>soldToParty}"
-							text="{businessPartnerModel>/BusinessPartnerName}"
+							text="{secondSource>BusinessPartnerName}"
 						/>
 					</layout:VerticalLayout>
 				</layout:HorizontalLayout>

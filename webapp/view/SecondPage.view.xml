@@ -13,7 +13,6 @@
 		id="secondPage"
 		stickySubheaderProvider="iconTabBar"
 		class="sapUiNoContentPadding"
-		toggleHeaderOnTitleClick="{/titleClickable}"
 	>
 		<f:title>
 			<f:DynamicPageTitle>
@@ -24,7 +23,7 @@
 					<Breadcrumbs>
 						<Link
 							text="{i18n>headerTitle}"
-							href="./index.html"
+							href="/"
 						/>
 					</Breadcrumbs>
 				</f:breadcrumbs>
@@ -192,7 +191,7 @@
 								parts: [{
 									path: 'TotalNetAmount'
 								}, {
-									path: 'TransactionCurrency'
+									path: 'TransactionCurrency',
 								}],
 								type: 'sap.ui.model.type.Currency',
 								formatOptions: {

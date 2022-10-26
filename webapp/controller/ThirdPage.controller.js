@@ -17,6 +17,15 @@ sap.ui.define(
         this.getView().bindElement({
           path: `/A_SalesOrder('${args.results}')`,
         });
+
+        // TODO: Binding auf zweites Model ohne JSON Zwischenmodel
+
+        // this.byId('blockBusinessPartner').bindElement({
+        //   path: `/A_BusinessPartner('${args.businessPartner}')`,
+        //   model: 'secondSource',
+        //   // expand...
+        // });
+
         this.getOwnerComponent()
           .getModel('secondSource')
           .read(`/A_BusinessPartner('${args.businessPartner}')`, {
@@ -40,6 +49,7 @@ sap.ui.define(
       },
 
       onNavBack: function () {
+        // TODO: onNavToSecondPage, ohne Historie nur mit Routing
         window.history.go(-1);
       },
     });

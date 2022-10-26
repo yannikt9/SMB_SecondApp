@@ -16,7 +16,7 @@ sap.ui.define(
     BusyIndicator
   ) {
     return BaseController.extend('project1.controller.Home', {
-      _dStartDate: '',
+      _dStartDate: '', // TODO: Mit undefined initialisieren
       _dEndDate: '',
       _aStatus: [],
       _aSalesOffices: [],
@@ -29,18 +29,34 @@ sap.ui.define(
       },
 
       /**
-       * creates an array of sales offices which is then used to sieve through all sales orders and create a model with parameters such as
-       * the amount of times each status is represented in the data for a given sales organization, as well as its name
+       * creates an array of sales offices which is then used to sieve through all sales orders
+       * and create a model with parameters such as
+       * the amount of times each status is represented in the data for a given sales organization,
+       * as well as its name
        * applies all filters
        * passes results into model "display"
        * @param {sap.ui.model.Filter} [oFilter]
        */
       _setData: function (oFilter) {
+        // TODO: Lesen der Sales Orders & Sales Orgs parallelisieren
+        Promise.all([
+          this.createSalesOrganizationModel(),
+          this._getSalesOrders(oFilter),
+        ]).then((aValues) => {
+          const [, aSalesOrders] = aValues;
+
+
+          //aValues[0] = Resultat von createSalesOrganizationModel = undefined
+          //aValues[1] = Resultat von _getSalesOrders
+        });
+
         this.getOwnerComponent()
           .getModel()
           .read('/A_SalesOrder', {
             filters: [oFilter],
             success: (data) => {
+              // TODO: Private Property _aSalesOffices unnötigt --> Lokale Variable
+
               this.createSalesOrganizationModel().then(() => {
                 const aSalesOffices = this.getSalesOrganizationModel().map(
                   (e) => ({
@@ -50,9 +66,10 @@ sap.ui.define(
                 );
 
                 aSalesOffices.forEach((element) => {
-                  this._aSalesOffices.push({
+                  const oObject = {
                     SalesOfficeNumber: element.organization,
                     SalesOfficeName: element.organizationName,
+                    // TODO: Redundanz für Quantity entfernen
                     Statuses: [
                       {
                         status: this.resources().getText('invoiceStatusA'),
@@ -82,16 +99,23 @@ sap.ui.define(
                         }).length,
                       },
                     ],
-                  });
-                  const orderCount = this._aSalesOffices
-                    .find((elm) => elm.SalesOfficeNumber === element.organization)
-                    .Statuses.filter((count) => count.quantity >= 1).length;
-                  if (orderCount < 1) {
-                    this._aSalesOffices = this._aSalesOffices.filter(
-                      (e) => e.SalesOfficeNumber !== element.organization
-                    );
-                  }
+                  };
+
+                  // TODO: Prüfen, ob relevant und erst dann Push
+
+                  this._aSalesOffices.push(oObject);
                 });
+
+                // TODO: Bereinigung am Ende üer gesamte Sales Offices mit einem Statement
+                // const orderCount = this._aSalesOffices
+                //   .find((elm) => elm.SalesOfficeNumber === element.organization)
+                //   .Statuses.filter((count) => count.quantity >= 1).length;
+                // if (orderCount < 1) {
+                //   this._aSalesOffices = this._aSalesOffices.filter(
+                //     (e) => e.SalesOfficeNumber !== element.organization
+                //   );
+                // }
+
                 this.getView()
                   .getModel('display')
                   .setData({ offices: this._aSalesOffices });
@@ -99,7 +123,7 @@ sap.ui.define(
               });
               this._aSalesOffices = [];
               if (data.results.length === 0) {
-                return MessageBox.warning(
+                MessageBox.warning(
                   this.resources().getText('noOrdersInTimeSpan')
                 );
               }
@@ -117,17 +141,33 @@ sap.ui.define(
                   },
                 ]
               } */
-              return '';
             },
           });
       },
 
+      _getSalesOrders: function (oFilter) {
+        return new Promise((resolve, reject) => {
+          this.getOwnerComponent()
+            .getModel()
+            .read('/A_SalesOrder', {
+              filters: [oFilter],
+              success: (data) => {
+                resolve(data.results);
+              },
+              error: (error) => {
+                reject(error);
+              },
+            });
+        });
+      },
+
       _hideBusyIndicator: function () {
-        BusyIndicator.hide();
+        this.byId('grid').setBusy(false);
       },
 
       _showBusyIndicator: function () {
-        BusyIndicator.show(1000);
+        // TODO: Model aktualisieren, statt Grid direkt
+        this.byId('grid').setBusy(true);
       },
 
       /**
@@ -139,6 +179,16 @@ sap.ui.define(
           .attachMatched(this._onRouteMatched, this);
         this._showBusyIndicator();
         this.getView().setModel(new JSONModel(), 'display');
+
+        // TODO: Evtl. Auslagerung des Busy Indicators in eigenes JSON Model. Binding
+        // des Grids in der View XML.
+        this.getView().setModel(
+          new JSONModel({
+            gridBusy: false,
+          }),
+          'uiControl'
+        );
+
         this._setData();
       },
 
@@ -149,6 +199,7 @@ sap.ui.define(
        */
       onDateRangeSelect: function (oEvent) {
         const oSource = oEvent.getSource();
+
         this._dStartDate = oSource.getDateValue()
           ? new Date(oSource.getDateValue())
           : null;
@@ -156,7 +207,7 @@ sap.ui.define(
           ? new Date(oSource.getSecondDateValue())
           : null;
         if (!this._dStartDate) {
-          this._setData(null);
+          this._setData();
         } else {
           this._setData(
             new Filter(
@@ -190,6 +241,11 @@ sap.ui.define(
           oEvent.getParameter('data')[0].data.Status
         );
         this._aStatus = this._aStatus.filter((element) => element !== status);
+
+        // const iIndex = this._aStatus.findIndex((element) => element === status);
+        // if (iIndex >= 0) {
+        //   this._aStatus.splice(iIndex, 1);
+        // }
       },
 
       /**
