@@ -88,7 +88,7 @@ sap.ui.define(
       createSalesOrgModel() {
         return new Promise((resolve, reject) => {
           this.getOwnerComponent()
-            .getModel('thirdSource') // TODO: Modelnamen ändern
+            .getModel('org')
             .read('/A_SalesOrganization', {
               urlParameters: {
                 $expand: 'to_Text',

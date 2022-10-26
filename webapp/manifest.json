@@ -16,7 +16,7 @@
       "toolsId": "d5c0095d-0cab-485a-82be-8064b53ecd13"
     },
     "dataSources": {
-      "mainService": {
+      "salesOrderService": {
         "uri": "/sap/opu/odata/sap/API_SALES_ORDER_SRV/",
         "type": "OData",
         "settings": {
@@ -25,7 +25,7 @@
           "odataVersion": "2.0"
         }
       },
-      "secondSource": {
+      "businessPartnerService": {
         "uri": "/sap/opu/odata/sap/API_BUSINESS_PARTNER/",
         "type": "OData",
         "settings": {
@@ -33,7 +33,7 @@
           "odataVersion": "2.0"
         }
       },
-      "thirdSource":{
+      "salesOrgService":{
         "uri": "/sap/opu/odata/sap/API_SALESORGANIZATION_SRV/",
         "type": "OData",
         "settings": {
@@ -86,17 +86,17 @@
         }
       },
       "": {
-        "dataSource": "mainService",
+        "dataSource": "salesOrderService",
         "preload": true,
         "settings": {}
       },
-      "secondSource": {
-        "dataSource": "secondSource",
+      "bp": {
+        "dataSource": "businessPartnerService",
         "preload": true,
         "settings": {}
       },
-      "thirdSource": {
-        "dataSource": "thirdSource",
+      "org": {
+        "dataSource": "salesOrgService",
         "preload": true,
         "settings": {}
       }
