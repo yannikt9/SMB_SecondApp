@@ -33,10 +33,11 @@ sap.ui.define(
 
       /**
        * creates shortcut for i18n resource bundle
-       * @returns {object} i18n
+       * @param {String} sString
+       * @returns {String} text of i18n
        */
-      getResources: function () {
-        return this.getView().getModel('i18n').getResourceBundle().getText();
+      getText: function (sString) {
+        return this.getView().getModel('i18n').getResourceBundle().getText(sString);
       },
 
       /**
@@ -46,11 +47,11 @@ sap.ui.define(
        */
       convertStatus: function (sStatus) {
         switch (sStatus) {
-          case this.getResources('invoiceStatusA'):
+          case this.getText('invoiceStatusA'):
             return 'A';
-          case this.getResources('invoiceStatusB'):
+          case this.getText('invoiceStatusB'):
             return 'B';
-          case this.getResources('invoiceStatusC'):
+          case this.getText('invoiceStatusC'):
             return 'C';
           default:
             return '';

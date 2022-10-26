@@ -64,7 +64,7 @@ sap.ui.define(
                     // TODO: Redundanz für Quantity entfernen
                     Statuses: [
                       {
-                        status: this.getResources('invoiceStatusA'),
+                        status: this.getText('invoiceStatusA'),
                         quantity: data.results.filter((e) => {
                           const condition1 =
                             element.organization === e.SalesOrganization;
@@ -73,7 +73,7 @@ sap.ui.define(
                         }).length,
                       },
                       {
-                        status: this.getResources('invoiceStatusB'),
+                        status: this.getText('invoiceStatusB'),
                         quantity: data.results.filter((e) => {
                           const condition1 =
                             element.organization === e.SalesOrganization;
@@ -82,7 +82,7 @@ sap.ui.define(
                         }).length,
                       },
                       {
-                        status: this.getResources('invoiceStatusC'),
+                        status: this.getText('invoiceStatusC'),
                         quantity: data.results.filter((e) => {
                           const condition1 =
                             element.organization === e.SalesOrganization;
@@ -112,7 +112,7 @@ sap.ui.define(
               });
               this._aSalesOffices = [];
               if (data.results.length === 0) {
-                MessageBox.warning(this.getResources('noOrdersInTimeSpan'));
+                MessageBox.warning(this.getText('noOrdersInTimeSpan'));
               }
 
               /* model name = results

@@ -25,7 +25,7 @@ sap.ui.define(
         const args = oEvent.getParameter('arguments');
         this.getView()
           .byId('dateSelection')
-          .setPlaceholder(this.getResources('calendar'));
+          .setPlaceholder(this.getText('calendar'));
 
         if (args.selectedStatus) {
           this._aStatus = oEvent
@@ -192,7 +192,7 @@ sap.ui.define(
         this.getView()
           .byId('dateSelection')
           .setValue(null)
-          .setPlaceholder(this.getResources('calendar'));
+          .setPlaceholder(this.getText('calendar'));
       },
     });
   }
