@@ -12,7 +12,7 @@ sap.ui.define(
        * reads corresponding models out of URI template strings
        * @param {} oEvent
        */
-      _onObjectMatched: function (oEvent) {
+      onObjectMatched: function (oEvent) {
         const args = oEvent.getParameter('arguments');
         this.getView().bindElement({
           path: `/A_SalesOrder('${args.results}')`,
@@ -36,7 +36,7 @@ sap.ui.define(
         this.getView().setModel(new JSONModel(), 'businessPartnerModel');
         this.getRouter()
           .getRoute('thirdPage')
-          .attachPatternMatched(this._onObjectMatched, this);
+          .attachPatternMatched(this.onObjectMatched, this);
       },
 
       onNavBack: function () {

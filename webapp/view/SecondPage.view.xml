@@ -38,7 +38,7 @@
 						visible="true"
 						useToolbar="false"
 						showFilterConfiguration="false"
-						clear=".deleteButtonPressed"
+						clear=".onDeleteFilter"
 						showClearOnFB="true"
 						showGoOnFB="false"
 					>
@@ -53,8 +53,8 @@
 									<MultiComboBox
 										id="idSelectStatus"
 										placeholder="{i18n>deliveryStatus}"
-										selectionChange="handleSelectionChange"
-										selectionFinish="handleSelectionFinish"
+										selectionChange="onStatusSelectionChange"
+										selectionFinish="onStatusSelectionFinished"
 										width="13rem"
 									>
 										<items>

@@ -20,7 +20,7 @@ sap.ui.define(
        * displays passed over filters
        * @param {} oEvent
        */
-      _onObjectMatched: function (oEvent) {
+      onObjectMatched: function (oEvent) {
         this._aStatus = [];
         const args = oEvent.getParameter('arguments');
         this.getView()
@@ -59,13 +59,13 @@ sap.ui.define(
               )[0].SalesOrganizationName
             );
         });
-        this._applyFilters();
+        this.applyFilters();
       },
 
       /**
        * creates a filter array by checking if values are given
        */
-      _applyFilters() {
+      applyFilters() {
         this._aFilters = [];
         if (this._sLocation) {
           this._aFilters.push(
@@ -106,7 +106,7 @@ sap.ui.define(
       /**
        * changes URI when filters change
        */
-      _filterChange: function () {
+      filterChange: function () {
         this.getRouter().navTo('secondPage', {
           location: this._sLocation,
           dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
@@ -118,12 +118,12 @@ sap.ui.define(
        * event handler that changes selected status and filter
        * @param {} oEvent
        */
-      handleSelectionChange: function (oEvent) {
+      onStatusSelectionChange: function (oEvent) {
         this._aStatus = oEvent.getSource().getSelectedKeys();
       },
 
-      handleSelectionFinish: function () {
-        this._filterChange();
+      onStatusSelectionFinished: function () {
+        this.filterChange();
       },
 
       /**
@@ -133,7 +133,7 @@ sap.ui.define(
       onDateChanged: function (oEvent) {
         this._dStartDate = new Date(oEvent.getSource().getDateValue());
         this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
-        this._filterChange();
+        this.filterChange();
       },
 
       /**
@@ -143,7 +143,7 @@ sap.ui.define(
       onInit: function () {
         this.getRouter()
           .getRoute('secondPage')
-          .attachPatternMatched(this._onObjectMatched, this);
+          .attachPatternMatched(this.onObjectMatched, this);
       },
 
       /**
@@ -155,7 +155,7 @@ sap.ui.define(
         const chosenKey = oComboBox.getSelectedKey();
         this._sLocation = chosenKey;
         oComboBox.setValue(this._sLocation);
-        this._filterChange();
+        this.filterChange();
       },
 
       /**
@@ -179,11 +179,11 @@ sap.ui.define(
        * empties all filters
        * @param {} oEvent
        */
-      deleteButtonPressed: function () {
+      onDeleteFilter: function () {
         this._aStatus = [];
         this._dStartDate = null;
         this._dEndDate = null;
-        this._filterChange();
+        this.filterChange();
         this.getView().byId('idSelectStatus').setSelectedKeys(null);
         this.getView()
           .byId('idSelectSalesOrganization')
