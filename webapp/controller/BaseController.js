@@ -77,7 +77,7 @@ sap.ui.define(
                 const aSalesOrg = [];
                 data.results.forEach((element) => {
                   aSalesOrg.push(
-                    element.to_Text.results.filter((element) => element.Language === 'DE')
+                    element.to_Text.results.filter((e) => e.Language === 'DE')
                   );
                 });
                 const aSalesOrgFilter = [];
