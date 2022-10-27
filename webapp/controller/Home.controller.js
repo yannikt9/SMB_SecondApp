@@ -104,6 +104,14 @@ sap.ui.define(
         });
       },
 
+      calcOrders(oSalesOrders, sSalesOrg, sStatus) {
+        return oSalesOrders.results.filter(
+          (e) =>
+            e.SalesOrganization === sSalesOrg &&
+            e.OverallDeliveryStatus === sStatus
+        ).length;
+      },
+
       /**
        * creates an array of sales offices which is then used to sieve through all sales orders
        * and create a model with parameters such as the amount of times each status is represented
@@ -131,7 +139,7 @@ sap.ui.define(
                   organization: e.SalesOrganization,
                   organizationName: e.SalesOrganizationName,
                 }));
-
+                this.getOwnerComponent().getModel("statusModel").getData().forEach(e=> console.log(e))
                 aSalesOffices.forEach((element) => {
                   const oObject = {
                     SalesOfficeNumber: element.organization,
@@ -140,33 +148,31 @@ sap.ui.define(
                     Statuses: [
                       {
                         status: this.getText('invoiceStatusA'),
-                        quantity: data.results.filter((e) => {
-                          const condition1 =
-                            element.organization === e.SalesOrganization;
-                          const condition2 = e.OverallDeliveryStatus === 'A';
-                          return condition1 && condition2;
-                        }).length,
+                        quantity: this.calcOrders(
+                          data,
+                          element.organization,
+                          'A'
+                        ),
                       },
                       {
                         status: this.getText('invoiceStatusB'),
-                        quantity: data.results.filter((e) => {
-                          const condition1 =
-                            element.organization === e.SalesOrganization;
-                          const condition2 = e.OverallDeliveryStatus === 'B';
-                          return condition1 && condition2;
-                        }).length,
+                        quantity: this.calcOrders(
+                          data,
+                          element.organization,
+                          'B'
+                        ),
                       },
                       {
                         status: this.getText('invoiceStatusC'),
-                        quantity: data.results.filter((e) => {
-                          const condition1 =
-                            element.organization === e.SalesOrganization;
-                          const condition2 = e.OverallDeliveryStatus === 'C';
-                          return condition1 && condition2;
-                        }).length,
+                        quantity: this.calcOrders(
+                          data,
+                          element.organization,
+                          'C'
+                        ),
                       },
                     ],
                   };
+                  console.log(this._aSalesOffices);
                   this._aSalesOffices.push(oObject);
                 });
 
