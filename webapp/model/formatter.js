@@ -1,22 +1,25 @@
 sap.ui.define([], function () {
   return {
+    /**
+     * formats Date to local date String
+     * @param {Date} dOrderDate 
+     * @returns Local Date String
+     */
     formatDate(dOrderDate) {
       const dDate = new Date(dOrderDate);
       return dDate.toLocaleDateString();
     },
 
     statusText(sStatus) {
-      /* const resourceBundle = this.getView().getModel('i18n').getResourceBundle(); */
       switch (sStatus) {
         case 'A':
-          return this.resources().getText('invoiceStatusA');
+          return this.getText('invoiceStatusA');
         case 'B':
-          return this.resources().getText('invoiceStatusB');
+          return this.getText('invoiceStatusB');
         case 'C':
-          return this.resources().getText('invoiceStatusC');
+          return this.getText('invoiceStatusC');
         default:
-          return this.resources().getText('invoiceStatusD');
-        /* return resourceBundle.getText('invoiceStatusD'); */
+          return this.getText('invoiceStatusD');
       }
     },
 

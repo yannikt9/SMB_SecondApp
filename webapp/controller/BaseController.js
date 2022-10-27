@@ -2,46 +2,56 @@ sap.ui.define(
   ['sap/ui/core/mvc/Controller', 'sap/ui/model/json/JSONModel'],
   function (Controller, JSONModel) {
     return Controller.extend('project1.controller.BaseController', {
-
       /**
+       * gets Model
        * @param {String} [sName]
-       * @returns
+       * @returns {object} Data model
        */
-       _getModel(sName) {
+      getModel(sName) {
         return (
           this.getView().getModel(sName) ||
           this.getOwnerComponent().getModel(sName)
         );
       },
 
-      _setModel(oModel, sName) {
+      /**
+       * sets Model
+       * @param {object} oModel
+       * @param {String} sName
+       */
+      setModel(oModel, sName) {
         this.getView().setModel(oModel, sName);
       },
 
+      /**
+       * gets Router
+       * @returns {object} Router
+       */
       getRouter: function () {
         return this.getOwnerComponent().getRouter();
       },
 
       /**
        * creates shortcut for i18n resource bundle
-       * @returns i18n properties model
+       * @param {String} sString
+       * @returns {String} text of i18n
        */
-      resources: function () {
-        return this.getView().getModel('i18n').getResourceBundle();
+      getText: function (sString) {
+        return this.getView().getModel('i18n').getResourceBundle().getText(sString);
       },
 
       /**
-       * converts statusCharacter into string and vice versa
-       * @param {} sStatus
+       * converts status into character
+       * @param {String} sStatus
        * @returns statusString
        */
       convertStatus: function (sStatus) {
         switch (sStatus) {
-          case this.resources().getText('invoiceStatusA'):
+          case this.getText('invoiceStatusA'):
             return 'A';
-          case this.resources().getText('invoiceStatusB'):
+          case this.getText('invoiceStatusB'):
             return 'B';
-          case this.resources().getText('invoiceStatusC'):
+          case this.getText('invoiceStatusC'):
             return 'C';
           default:
             return '';
@@ -49,45 +59,46 @@ sap.ui.define(
       },
 
       /**
-       * @param {any} dStartDate
-       * @param {any} dEndDate
-       * if a start date has been selected, combines both dates into template String to effectively pass on in URI
-       * @returns single template String with two values separated by an exclamation mark for ease of separation in second page
+       * if a start date has been selected, combines two values into a template String split 
+       * by an exclamation mark for ease of separation at the second page to pass on in URI
+       *
+       * @param {Date} dStartDate
+       * @param {Date} dEndDate
+       * @returns {String} template String
        */
-      dateRangeConvert: function (dStartDate, dEndDate) {
-        if (dStartDate) {
-          return `${dStartDate.getTime()}!${dEndDate.getTime()}`;
+      convertDateRangeToTemplateString: function (dStartDate, dEndDate) {
+        if (!dStartDate) {
+          return '';
         }
-        return '';
+
+        if (!dEndDate) {
+          return '';
+        }
+
+        return `${dStartDate.getTime()}!${dEndDate.getTime()}`;
       },
 
       /**
-       * creates model of sales organizations
-       * @returns Promise of a model of sales organizations, due to asynchronized structure of JavaScript
+       * creates model salesOrg using promise, due to asynchronized structure of JavaScript
+       * @returns {Promise} salesOrg
        */
-      createSalesOrganizationModel() {
+      createSalesOrgModel() {
         return new Promise((resolve, reject) => {
           this.getOwnerComponent()
-            .getModel('thirdSource')
+            .getModel('org')
             .read('/A_SalesOrganization', {
               urlParameters: {
                 $expand: 'to_Text',
               },
-              success: (data) => {
-                const aSalesOrg = [];
-                data.results.forEach((element) => {
-                  aSalesOrg.push(
-                    element.to_Text.results.filter((e) => e.Language === 'DE')
-                  );
-                });
-                const aSalesOrgFilter = [];
-                aSalesOrg
-                  .filter((element) => element.length > 0)
-                  .forEach((element) => {
-                    aSalesOrgFilter.push(element[0]);
-                  });
-
-                this._setModel(new JSONModel(aSalesOrgFilter), 'salesOrgModel');
+              success: (salesOrgs) => {
+                const aSalesOrg  = salesOrgs.results
+                  .map((element) => {
+                    return element.to_Text.results.find(
+                      (e) => e.Language === 'DE'
+                    );
+                  })
+                  .filter((element) => element !== undefined);
+                this.setModel(new JSONModel(aSalesOrg), 'salesOrg');
 
                 resolve();
               },
@@ -98,8 +109,12 @@ sap.ui.define(
         });
       },
 
-      getSalesOrganizationModel() {
-        return this._getModel('salesOrgModel').getData();
+      /**
+       * gets model of sales organizations
+       * @returns {Object} salesOrg
+       */
+      getSalesOrgModel() {
+        return this.getModel('salesOrg').getData();
       },
     });
   }

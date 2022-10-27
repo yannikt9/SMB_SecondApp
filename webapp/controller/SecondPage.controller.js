@@ -32,6 +32,9 @@ sap.ui.define(
       onObjectMatched: function (oEvent) {
         this._aStatus = [];
         const args = oEvent.getParameter('arguments');
+        this.getView()
+          .byId('dateSelection')
+          .setPlaceholder(this.getText('calendarPlaceholder'));
 
         if (args.selectedStatus) {
           this._aStatus = args.selectedStatus.split(',');
@@ -51,11 +54,11 @@ sap.ui.define(
           .byId('salesOrganizationSelection')
           .setSelectedKey(args.location);
         this._sLocation = args.location;
-        this.createSalesOrganizationModel().then(() => {
+        this.createSalesOrgModel().then(() => {
           this.getView()
             .byId('secondPageTitle')
             .setText(
-              this.getSalesOrganizationModel().filter(
+              this.getSalesOrgModel().filter(
                 (e) => e.SalesOrganization === this._sLocation
               )[0].SalesOrganizationName
             );
@@ -134,7 +137,7 @@ sap.ui.define(
         this.getView()
           .byId('dateSelection')
           .setValue(null)
-          .setPlaceholder(this.resources().getText('calendar'));
+          .setPlaceholder(this.getText('calendarPlaceholder'));
       },
 
       /**

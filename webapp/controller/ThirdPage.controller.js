@@ -18,7 +18,7 @@ sap.ui.define(
           path: `/A_SalesOrder('${args.results}')`,
         });
         this.getOwnerComponent()
-          .getModel('secondSource')
+          .getModel('bp')
           .read(`/A_BusinessPartner('${args.businessPartner}')`, {
             urlParameters: {
               $expand: 'to_BusinessPartnerAddress',

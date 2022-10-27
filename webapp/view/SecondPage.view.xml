@@ -104,7 +104,7 @@
 							>
 								<fb:control>
 									<DateRangeSelection
-										placeholder="{i18n>calendar}"
+										placeholder="{i18n>calendarPlaceholder}"
 										id="dateSelection"
 										width="13rem"
 										delimiter="{

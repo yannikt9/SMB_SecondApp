@@ -16,119 +16,10 @@ sap.ui.define(
     BusyIndicator
   ) {
     return BaseController.extend('project1.controller.Home', {
-      _dStartDate: '',
-      _dEndDate: '',
+      _dStartDate: undefined,
+      _dEndDate: undefined,
       _aStatus: [],
       _aSalesOffices: [],
-
-      /**
-       * empties private filtering array _aStatus
-       */
-      _onRouteMatched: function () {
-        this._aStatus = [];
-      },
-
-      /**
-       * creates an array of sales offices which is then used to sieve through all sales orders and create a model with parameters such as
-       * the amount of times each status is represented in the data for a given sales organization, as well as its name
-       * applies all filters
-       * passes results into model "display"
-       * @param {sap.ui.model.Filter} [oFilter]
-       */
-      _setData: function (oFilter) {
-        this.getOwnerComponent()
-          .getModel()
-          .read('/A_SalesOrder', {
-            filters: [oFilter],
-            success: (data) => {
-              this.createSalesOrganizationModel().then(() => {
-                const aSalesOffices = this.getSalesOrganizationModel().map(
-                  (e) => ({
-                    organization: e.SalesOrganization,
-                    organizationName: e.SalesOrganizationName,
-                  })
-                );
-
-                aSalesOffices.forEach((element) => {
-                  this._aSalesOffices.push({
-                    SalesOfficeNumber: element.organization,
-                    SalesOfficeName: element.organizationName,
-                    Statuses: [
-                      {
-                        status: this.resources().getText('invoiceStatusA'),
-                        quantity: data.results.filter((e) => {
-                          const condition1 =
-                            element.organization === e.SalesOrganization;
-                          const condition2 = e.OverallDeliveryStatus === 'A';
-                          return condition1 && condition2;
-                        }).length,
-                      },
-                      {
-                        status: this.resources().getText('invoiceStatusB'),
-                        quantity: data.results.filter((e) => {
-                          const condition1 =
-                            element.organization === e.SalesOrganization;
-                          const condition2 = e.OverallDeliveryStatus === 'B';
-                          return condition1 && condition2;
-                        }).length,
-                      },
-                      {
-                        status: this.resources().getText('invoiceStatusC'),
-                        quantity: data.results.filter((e) => {
-                          const condition1 =
-                            element.organization === e.SalesOrganization;
-                          const condition2 = e.OverallDeliveryStatus === 'C';
-                          return condition1 && condition2;
-                        }).length,
-                      },
-                    ],
-                  });
-                  const orderCount = this._aSalesOffices
-                    .find((elm) => elm.SalesOfficeNumber === element.organization)
-                    .Statuses.filter((count) => count.quantity >= 1).length;
-                  if (orderCount < 1) {
-                    this._aSalesOffices = this._aSalesOffices.filter(
-                      (e) => e.SalesOfficeNumber !== element.organization
-                    );
-                  }
-                });
-                this.getView()
-                  .getModel('display')
-                  .setData({ offices: this._aSalesOffices });
-                this._hideBusyIndicator();
-              });
-              this._aSalesOffices = [];
-              if (data.results.length === 0) {
-                return MessageBox.warning(
-                  this.resources().getText('noOrdersInTimeSpan')
-                );
-              }
-
-              /* model name = results
-              {
-                stati: [
-                  {
-                    standort: Arosa,
-                    statuses : [
-                      {status: "Erfasst", quantity: 7}
-                      {status: "In Bearbeitung", quantity: 7}
-                      {status: "Ausgeführt", quantity: 7}
-                    ]
-                  },
-                ]
-              } */
-              return '';
-            },
-          });
-      },
-
-      _hideBusyIndicator: function () {
-        BusyIndicator.hide();
-      },
-
-      _showBusyIndicator: function () {
-        BusyIndicator.show(1000);
-      },
 
       /**
        * sets model "display", while it's loading, calls for busy indicator and appeals to private set data function to filter appropriately
@@ -136,10 +27,17 @@ sap.ui.define(
       onInit: function () {
         this.getRouter()
           .getRoute('home')
-          .attachMatched(this._onRouteMatched, this);
-        this._showBusyIndicator();
+          .attachMatched(this.onRouteMatched, this);
+        this.showBusyIndicator();
         this.getView().setModel(new JSONModel(), 'display');
-        this._setData();
+        this.setData();
+      },
+
+      /**
+       * empties private filtering array _aStatus
+       */
+      onRouteMatched: function () {
+        this._aStatus = [];
       },
 
       /**
@@ -155,9 +53,9 @@ sap.ui.define(
           ? new Date(oSource.getSecondDateValue())
           : null;
         if (!this._dStartDate) {
-          this._setData(null);
+          this.setData(null);
         } else {
-          this._setData(
+          this.setData(
             new Filter(
               'SalesOrderDate',
               FilterOperator.BT,
@@ -198,9 +96,122 @@ sap.ui.define(
       onChartPressed: function (oEvent) {
         this.getRouter().navTo('secondPage', {
           location: oEvent.getSource().getSubtitle(),
-          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          dateRange: this.convertDateRangeToTemplateString(
+            this._dStartDate,
+            this._dEndDate
+          ),
           selectedStatus: this._aStatus.toString(),
         });
+      },
+
+      /**
+       * creates an array of sales offices which is then used to sieve through all sales orders
+       * and create a model with parameters such as the amount of times each status is represented
+       * in the data for a given sales organization, as well as its name applies all filters
+       * passes results into model "display"
+       * @param {sap.ui.model.Filter} [oFilter]
+       */
+      setData: function (oFilter) {
+        Promise.all([
+          this.createSalesOrgModel(),
+          this.getSalesOrders(oFilter),
+        ]).then((aValues) => {
+          const [, aSalesOrders] = aValues;
+          //aValues[0] = Resultat von createSalesOrganizationModel = undefined
+          //aValues[1] = Resultat von _getSalesOrders
+        });
+
+        this.getOwnerComponent()
+          .getModel()
+          .read('/A_SalesOrder', {
+            filters: [oFilter],
+            success: (data) => {
+              this.createSalesOrgModel().then(() => {
+                const aSalesOffices = this.getSalesOrgModel().map((e) => ({
+                  organization: e.SalesOrganization,
+                  organizationName: e.SalesOrganizationName,
+                }));
+
+                aSalesOffices.forEach((element) => {
+                  const oObject = {
+                    SalesOfficeNumber: element.organization,
+                    SalesOfficeName: element.organizationName,
+                    // TODO: Redundanz für Quantity entfernen
+                    Statuses: [
+                      {
+                        status: this.getText('invoiceStatusA'),
+                        quantity: data.results.filter((e) => {
+                          const condition1 =
+                            element.organization === e.SalesOrganization;
+                          const condition2 = e.OverallDeliveryStatus === 'A';
+                          return condition1 && condition2;
+                        }).length,
+                      },
+                      {
+                        status: this.getText('invoiceStatusB'),
+                        quantity: data.results.filter((e) => {
+                          const condition1 =
+                            element.organization === e.SalesOrganization;
+                          const condition2 = e.OverallDeliveryStatus === 'B';
+                          return condition1 && condition2;
+                        }).length,
+                      },
+                      {
+                        status: this.getText('invoiceStatusC'),
+                        quantity: data.results.filter((e) => {
+                          const condition1 =
+                            element.organization === e.SalesOrganization;
+                          const condition2 = e.OverallDeliveryStatus === 'C';
+                          return condition1 && condition2;
+                        }).length,
+                      },
+                    ],
+                  };
+                  this._aSalesOffices.push(oObject);
+                });
+
+                this.getView()
+                  .getModel('display')
+                  .setData({ offices: this._aSalesOffices });
+                this.hideBusyIndicator();
+              });
+              this._aSalesOffices = [];
+              if (data.results.length === 0) {
+                MessageBox.warning(this.getText('noOrdersInTimeSpan'));
+              }
+            },
+          });
+      },
+
+      /**
+       * promises to create model
+       * @param {} oFilter
+       * @returns Promise
+       */
+      getSalesOrders: function (oFilter) {
+        return new Promise((resolve, reject) => {
+          this.getOwnerComponent()
+            .getModel()
+            .read('/A_SalesOrder', {
+              filters: [oFilter],
+              success: (data) => {
+                resolve(data.results);
+              },
+              error: (error) => {
+                reject(error);
+              },
+            });
+        });
+      },
+
+      hideBusyIndicator: function () {
+        BusyIndicator.hide();
+        /* this.byId('grid').setBusy(false); */
+      },
+
+      showBusyIndicator: function () {
+        BusyIndicator.show(1000);
+        /* this.byId('grid').setBusy(true); */
       },
     });
   }
