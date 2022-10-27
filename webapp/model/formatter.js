@@ -1,12 +1,16 @@
 sap.ui.define([], function () {
   return {
+    /**
+     * formats Date to local date String
+     * @param {Date} dOrderDate 
+     * @returns Local Date String
+     */
     formatDate(dOrderDate) {
       const dDate = new Date(dOrderDate);
       return dDate.toLocaleDateString();
     },
 
     statusText(sStatus) {
-      /* const resourceBundle = this.getView().getModel('i18n').getResourceBundle(); */
       switch (sStatus) {
         case 'A':
           return this.getText('invoiceStatusA');

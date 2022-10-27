@@ -112,7 +112,6 @@ sap.ui.define(
        * @param {sap.ui.model.Filter} [oFilter]
        */
       setData: function (oFilter) {
-        // TODO: Lesen der Sales Orders & Sales Orgs parallelisieren
         Promise.all([
           this.createSalesOrgModel(),
           this.getSalesOrders(oFilter),

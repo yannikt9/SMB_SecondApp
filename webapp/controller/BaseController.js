@@ -42,7 +42,7 @@ sap.ui.define(
 
       /**
        * converts status into character
-       * @param {} sStatus
+       * @param {String} sStatus
        * @returns statusString
        */
       convertStatus: function (sStatus) {
@@ -59,9 +59,8 @@ sap.ui.define(
       },
 
       /**
-       * if a start date has been selected, combines two values into a
-       * template String separated by an exclamation mark for ease of
-       * separation at the second page to pass on in URI
+       * if a start date has been selected, combines two values into a template String split 
+       * by an exclamation mark for ease of separation at the second page to pass on in URI
        *
        * @param {Date} dStartDate
        * @param {Date} dEndDate
