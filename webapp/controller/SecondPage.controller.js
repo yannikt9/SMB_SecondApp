@@ -38,16 +38,13 @@ sap.ui.define(
         }
 
         if (args.dateRange) {
-          this._dStartDate = new Date(
-            parseInt(args.dateRange.split('!')[0], 10)
-          );
-          this._dEndDate = new Date(parseInt(args.dateRange.split('!')[1], 10));
+          const [iStart, iEnd] = args.dateRange.split('!');
+          this._dStartDate = new Date(parseInt(iStart, 10));
+          this._dEndDate = new Date(parseInt(iEnd, 10));
 
           this.getView()
             .byId('dateSelection')
-            .setValue(
-              `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
-            );
+            .setValue(`${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`);
         }
         this.getView().byId('statusSelection').setSelectedKeys(this._aStatus);
         this.getView()
