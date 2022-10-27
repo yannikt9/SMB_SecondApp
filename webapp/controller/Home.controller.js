@@ -114,7 +114,7 @@ sap.ui.define(
       setData: function (oFilter) {
         // TODO: Lesen der Sales Orders & Sales Orgs parallelisieren
         Promise.all([
-          this.createSalesOrganizationModel(),
+          this.createSalesOrgModel(),
           this.getSalesOrders(oFilter),
         ]).then((aValues) => {
           const [, aSalesOrders] = aValues;

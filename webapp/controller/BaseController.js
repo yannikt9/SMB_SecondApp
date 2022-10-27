@@ -80,10 +80,8 @@ sap.ui.define(
       },
 
       /**
-       * creates model salesOrg using promise, due to
-       * asynchronized structure of JavaScript
-       *
-       * @returns {Object} salesOrg
+       * creates model salesOrg using promise, due to asynchronized structure of JavaScript
+       * @returns {Promise} salesOrg
        */
       createSalesOrgModel() {
         return new Promise((resolve, reject) => {
@@ -93,9 +91,8 @@ sap.ui.define(
               urlParameters: {
                 $expand: 'to_Text',
               },
-              success: (aModelData) => {
-                const aSalesOrg = [];
-                aSalesOrg = aModelData.results
+              success: (salesOrgs) => {
+                const aSalesOrg  = salesOrgs.results
                   .map((element) => {
                     return element.to_Text.results.find(
                       (e) => e.Language === 'DE'

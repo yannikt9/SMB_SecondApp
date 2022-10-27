@@ -28,7 +28,7 @@
 							<VBox>
 								<Label text="{i18n>firstTimeFrame}"/>
 								<DateRangeSelection
-									placeholder="{i18n>calendar}"
+									placeholder="{i18n>calendarPlaceholder}"
 									id="DRS1"
 									width="13rem"
 									delimiter="{path: '/delimiterDRS1'}"
