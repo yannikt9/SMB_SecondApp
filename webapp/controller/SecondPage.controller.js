@@ -96,11 +96,7 @@ sap.ui.define(
        * @param {} oEvent
        */
       onSalesOrganizationChanged: function (oEvent) {
-        // console.log(oEvent.getSource().getSelectedKey())
-        /* const oComboBox = this.byId('idSelectSalesOrganization');
-        const chosenKey = oComboBox.getSelectedKey(); */
-        this._sLocation = oEvent.getSource().getSelectedKey()/* chosenKey */;
-        /* oComboBox.setValue(this._sLocation); */
+        this._sLocation = oEvent.getSource().getSelectedKey();
         this.filterChange();
       },
 
