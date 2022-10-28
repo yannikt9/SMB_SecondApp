@@ -104,18 +104,18 @@ sap.ui.define(
         });
       },
 
-      filterOrders(oSalesOrders, sSalesOrg, sStatus) {
+      /* filterOrders(oSalesOrders, sSalesOrg, sStatus) {
         return oSalesOrders.results.filter(
           (e) =>
             e.SalesOrganization === sSalesOrg &&
             e.OverallDeliveryStatus === sStatus
         ).length;
-      },
+      }, */
 
-      filterStatuses(oStatuses, sStatus) {
+      /* filterStatuses(oStatuses, sStatus) {
         oStatuses = this.getOwnerComponent().getModel('statusModel').getData();
         return oStatuses.filter((e) => e.oStatuses === sStatus);
-      },
+      }, */
 
       /**
        * creates an array of sales offices which is then used to sieve through all sales orders
@@ -215,7 +215,7 @@ sap.ui.define(
                    };
                    console.log(this._aSalesOffices);
                    this._aSalesOffices.push(oObject); */
-                   
+
                 });
 
                 this.getView()
