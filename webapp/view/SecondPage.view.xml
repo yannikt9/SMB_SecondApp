@@ -86,12 +86,12 @@
 										placeholder="{i18n>salesOrganization}"
 										change=".onSalesOrganizationChanged"
 										width="13rem"
-										items="{salesOrgModel>/}"
+										items="{salesOrg>/}"
 									>
 										<core:ListItem
 											id="listItem"
-											key="{salesOrgModel>SalesOrganization}"
-											text="{salesOrgModel>SalesOrganizationName}"
+											key="{salesOrg>SalesOrganization}"
+											text="{salesOrg>SalesOrganizationName}"
 										/>
 									</ComboBox>
 								</fb:control>

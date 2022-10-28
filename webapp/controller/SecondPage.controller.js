@@ -95,11 +95,12 @@ sap.ui.define(
        * event handler that changes the sales organization
        * @param {} oEvent
        */
-      onSalesOrganizationChanged: function () {
-        const oComboBox = this.byId('idSelectSalesOrganization');
-        const chosenKey = oComboBox.getSelectedKey();
-        this._sLocation = chosenKey;
-        oComboBox.setValue(this._sLocation);
+      onSalesOrganizationChanged: function (oEvent) {
+        // console.log(oEvent.getSource().getSelectedKey())
+        /* const oComboBox = this.byId('idSelectSalesOrganization');
+        const chosenKey = oComboBox.getSelectedKey(); */
+        this._sLocation = oEvent.getSource().getSelectedKey()/* chosenKey */;
+        /* oComboBox.setValue(this._sLocation); */
         this.filterChange();
       },
 
@@ -129,15 +130,14 @@ sap.ui.define(
         this._dStartDate = null;
         this._dEndDate = null;
         this.filterChange();
-        this.getView().byId('idSelectStatus').setSelectedKeys(null);
+        this.getView().byId('statusSelection').setSelectedKeys(null);
         this.getView()
-          .byId('idSelectSalesOrganization')
+          .byId('salesOrganizationSelection')
           .setSelectedKey(this._sLocation);
 
         this.getView()
           .byId('dateSelection')
           .setValue(null)
-          .setPlaceholder(this.getText('calendarPlaceholder'));
       },
 
       /**
@@ -179,7 +179,7 @@ sap.ui.define(
       filterChange: function () {
         this.getRouter().navTo('secondPage', {
           location: this._sLocation,
-          dateRange: this.dateRangeConvert(this._dStartDate, this._dEndDate),
+          dateRange: this.convertDateRangeToTemplateString(this._dStartDate, this._dEndDate),
           selectedStatus: this._aStatus.toString(),
         });
       },

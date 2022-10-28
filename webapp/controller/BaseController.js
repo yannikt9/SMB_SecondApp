@@ -92,14 +92,13 @@ sap.ui.define(
               },
               success: (salesOrgs) => {
                 const aSalesOrg  = salesOrgs.results
-                  .map((element) => {
-                    return element.to_Text.results.find(
+                  .map((element) => 
+                     element.to_Text.results.find(
                       (e) => e.Language === 'DE'
-                    );
-                  })
+                    )
+                  )
                   .filter((element) => element !== undefined);
                 this.setModel(new JSONModel(aSalesOrg), 'salesOrg');
-
                 resolve();
               },
               error: (oError) => {
