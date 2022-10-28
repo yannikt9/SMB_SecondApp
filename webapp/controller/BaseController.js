@@ -5,7 +5,7 @@ sap.ui.define(
       /**
        * gets Model
        * @param {String} [sName]
-       * @returns {object} Data model
+       * @returns {Object} Data model
        */
       getModel(sName) {
         return (
@@ -16,7 +16,7 @@ sap.ui.define(
 
       /**
        * sets Model
-       * @param {object} oModel
+       * @param {Object} oModel
        * @param {String} sName
        */
       setModel(oModel, sName) {
@@ -25,7 +25,7 @@ sap.ui.define(
 
       /**
        * gets Router
-       * @returns {object} Router
+       * @returns {Object} Router
        */
       getRouter: function () {
         return this.getOwnerComponent().getRouter();
