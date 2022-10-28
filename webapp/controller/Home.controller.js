@@ -104,12 +104,17 @@ sap.ui.define(
         });
       },
 
-      calcOrders(oSalesOrders, sSalesOrg, sStatus) {
+      filterOrders(oSalesOrders, sSalesOrg, sStatus) {
         return oSalesOrders.results.filter(
           (e) =>
             e.SalesOrganization === sSalesOrg &&
             e.OverallDeliveryStatus === sStatus
         ).length;
+      },
+
+      filterStatuses(oStatuses, sStatus) {
+        oStatuses = this.getOwnerComponent().getModel('statusModel').getData();
+        return oStatuses.filter((e) => e.oStatuses === sStatus);
       },
 
       /**
@@ -139,46 +144,84 @@ sap.ui.define(
                   organization: e.SalesOrganization,
                   organizationName: e.SalesOrganizationName,
                 }));
-                this.getOwnerComponent().getModel("statusModel").getData().forEach(e=> console.log(e))
+                const aLocations = [];
                 aSalesOffices.forEach((element) => {
-                  const oObject = {
-                    SalesOfficeNumber: element.organization,
-                    SalesOfficeName: element.organizationName,
-                    // TODO: Redundanz für Quantity entfernen
-                    Statuses: [
+                  let iOrderCounter = 0;
+                  const aStatuses = this.getOwnerComponent()
+                    .getModel('statusModel')
+                    .getData()
+                    .map((eStatus) => {
+                      const iOrderLenght = data.results.filter(
+                        (elm) =>
+                          elm.SalesOrganization === element.organization &&
+                          elm.OverallDeliveryStatus === eStatus.status
+                      ).length;
+                      iOrderCounter += iOrderLenght;
+                      return {
+                        status: eStatus.name,
+                        quantity: iOrderLenght,
+                      };
+                    });
+                  console.log(aStatuses);
+                  if (iOrderCounter >= 1) {
+                    aLocations.push({
+                      SalesOfficeNumber: element.organization,
+                      SalesOfficeName: element.organizationName,
+                      Statuses: aStatuses,
+                    });
+                  }
+
+                  /* const oObject = {
+                     SalesOfficeNumber: element.organization,
+                     SalesOfficeName: element.organizationName,
+                     Statuses: [
                       {
-                        status: this.getText('invoiceStatusA'),
-                        quantity: this.calcOrders(
-                          data,
-                          element.organization,
+                         status: this.filterStatuses(
+                           element.status,
+                           'A'
+                           this.getText('invoiceStatusA')
+                         ),
+                         quantity: this.filterOrders(
+                           data,
+                           element.organization,
                           'A'
-                        ),
-                      },
-                      {
-                        status: this.getText('invoiceStatusB'),
-                        quantity: this.calcOrders(
-                          data,
-                          element.organization,
-                          'B'
-                        ),
-                      },
-                      {
-                        status: this.getText('invoiceStatusC'),
-                        quantity: this.calcOrders(
-                          data,
-                          element.organization,
-                          'C'
-                        ),
-                      },
-                    ],
-                  };
-                  console.log(this._aSalesOffices);
-                  this._aSalesOffices.push(oObject);
+                         ),
+                       },
+                       {
+                         status: this.filterStatuses(
+                           element.status,
+                           'B'
+                           this.getText('invoiceStatusB')
+                         ),
+                         quantity: this.filterOrders(
+                           data,
+                           element.organization,
+                           'B'
+                         ),
+                       },
+                       {
+                         status: this.filterStatuses(
+                           element.status,
+                           'C'
+                           this.getText('invoiceStatusC')
+                         ),
+                          quantity: this.filterOrders(
+                            data,
+                            element.organization,
+                            'C'
+                   ),
+                   },
+                   ],
+                   };
+                   console.log(this._aSalesOffices);
+                   this._aSalesOffices.push(oObject); */
+                   
                 });
 
                 this.getView()
                   .getModel('display')
-                  .setData({ offices: this._aSalesOffices });
+                  .setData({ offices: /* this._aSalesOffices */ aLocations });
+                console.log(this.getView().getModel('display').getData());
                 this.hideBusyIndicator();
               });
               this._aSalesOffices = [];
