@@ -19,7 +19,6 @@ sap.ui.define(
       _dStartDate: undefined,
       _dEndDate: undefined,
       _aStatus: [],
-      _aSalesOffices : [],
 
       /**
        * sets model "display", while it's loading, calls for busy indicator and appeals to private set data function to filter appropriately
@@ -149,7 +148,6 @@ sap.ui.define(
                         quantity: iOrderLenght,
                       };
                     });
-                  console.log(aStatuses);
                   if (iOrderCounter >= 1) {
                     aLocations.push({
                       SalesOfficeNumber: element.organization,
@@ -177,18 +175,15 @@ sap.ui.define(
                        
                    ],
                    };
-                   console.log(this._aSalesOffices);
                    this._aSalesOffices.push(oObject); */
 
                 });
 
                 this.getView()
                   .getModel('display')
-                  .setData({ offices: /* this._aSalesOffices */ aLocations });
-                console.log(this.getView().getModel('display').getData());
+                  .setData({ offices: aLocations });
                 this._hideBusyIndicator();
               });
-              /* this._aSalesOffices = []; */
               if (data.results.length === 0) {
                 MessageBox.warning(this.getText('noOrdersInTimeSpan'));
               }
