@@ -1,13 +1,17 @@
 sap.ui.define(
-  [
-    './BaseController',
-    '../model/formatter',
-    'sap/ui/model/json/JSONModel',
-  ],
+  ['./BaseController', '../model/formatter', 'sap/ui/model/json/JSONModel'],
   function (BaseController, formatter, JSONModel) {
     return BaseController.extend('project1.controller.ThirdPage', {
       formatter: formatter,
-
+      /**
+       * sets bound models to Third Page
+       */
+      onInit: function () {
+        this.getView().setModel(new JSONModel(), 'businessPartnerModel');
+        this.getRouter()
+          .getRoute('thirdPage')
+          .attachPatternMatched(this._onObjectMatched, this);
+      },
       /**
        * reads corresponding models out of URI template strings
        * @param {} oEvent
@@ -27,16 +31,6 @@ sap.ui.define(
               this.getView().getModel('businessPartnerModel').setData(data);
             },
           });
-      },
-
-      /**
-       * sets bound models to Third Page
-       */
-      onInit: function () {
-        this.getView().setModel(new JSONModel(), 'businessPartnerModel');
-        this.getRouter()
-          .getRoute('thirdPage')
-          .attachPatternMatched(this._onObjectMatched, this);
       },
 
       onNavBack: function () {
