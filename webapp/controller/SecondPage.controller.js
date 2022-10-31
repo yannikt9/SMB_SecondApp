@@ -21,7 +21,7 @@ sap.ui.define(
       onInit: function () {
         this.getRouter()
           .getRoute('secondPage')
-          .attachPatternMatched(this.onObjectMatched, this);
+          .attachPatternMatched(this._onObjectMatched, this);
       },
 
       /**
@@ -29,7 +29,7 @@ sap.ui.define(
        * displays passed over filters
        * @param {} oEvent
        */
-      onObjectMatched: function (oEvent) {
+      _onObjectMatched: function (oEvent) {
         this._aStatus = [];
         const args = oEvent.getParameter('arguments');
         this.getView()
@@ -63,7 +63,7 @@ sap.ui.define(
               )[0].SalesOrganizationName
             );
         });
-        this.applyFilters();
+        this._applyFilters();
       },
 
       /**
@@ -78,7 +78,7 @@ sap.ui.define(
        * event handler, after status has been selected
        */
       onStatusSelectionFinished: function () {
-        this.filterChange();
+        this._filterChange();
       },
 
       /**
@@ -88,7 +88,7 @@ sap.ui.define(
       onDateChanged: function (oEvent) {
         this._dStartDate = new Date(oEvent.getSource().getDateValue());
         this._dEndDate = new Date(oEvent.getSource().getSecondDateValue());
-        this.filterChange();
+        this._filterChange();
       },
 
       /**
@@ -97,7 +97,7 @@ sap.ui.define(
        */
       onSalesOrganizationChanged: function (oEvent) {
         this._sLocation = oEvent.getSource().getSelectedKey();
-        this.filterChange();
+        this._filterChange();
       },
 
       /**
@@ -125,7 +125,7 @@ sap.ui.define(
         this._aStatus = [];
         this._dStartDate = null;
         this._dEndDate = null;
-        this.filterChange();
+        this._filterChange();
         this.getView().byId('statusSelection').setSelectedKeys(null);
         this.getView()
           .byId('salesOrganizationSelection')
@@ -139,7 +139,7 @@ sap.ui.define(
       /**
        * creates a filter array by checking if values are given
        */
-      applyFilters() {
+      _applyFilters() {
         const aFilters = [];
         if (this._sLocation) {
           aFilters.push(
@@ -172,7 +172,7 @@ sap.ui.define(
       /**
        * changes URI when filters change
        */
-      filterChange: function () {
+      _filterChange: function () {
         this.getRouter().navTo('secondPage', {
           location: this._sLocation,
           dateRange: this.convertDateRangeToTemplateString(this._dStartDate, this._dEndDate),
