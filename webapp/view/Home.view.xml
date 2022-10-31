@@ -35,7 +35,7 @@
 									dateValue="{path: '/dateValueDRS1'}"
 									secondDateValue="{path: '/secondDateValueDRS1'}"
 									displayFormat="{path: '/dateFormatDRS1'}"
-									change=".onDateRangeSelect"
+									change="._onDateRangeSelect"
 								/>
 							</VBox>
 						</items>
@@ -57,7 +57,7 @@
 								title="{display>SalesOfficeName}"
 								subtitle="{display>SalesOfficeNumber}"
 								iconSrc="./img/world.png"
-								press=".onChartPressed"
+								press="._onChartPressed"
 							/>
 						</f:header>
 						<f:content>
@@ -82,8 +82,8 @@
 									}
 								}"
 								vizType="donut"
-								selectData=".onSelectData"
-								deselectData=".onDeselectData"
+								selectData="._onSelectData"
+								deselectData="._onDeselectData"
 								height="20rem"
 								width="30rem"
 							>
