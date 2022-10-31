@@ -19,7 +19,7 @@ sap.ui.define(
       _dStartDate: undefined,
       _dEndDate: undefined,
       _aStatus: [],
-      _aSalesOffices: [],
+      _aSalesOffices : [],
 
       /**
        * sets model "display", while it's loading, calls for busy indicator and appeals to private set data function to filter appropriately
@@ -27,8 +27,8 @@ sap.ui.define(
       onInit: function () {
         this.getRouter()
           .getRoute('home')
-          .attachMatched(this.onRouteMatched, this);
-        this.showBusyIndicator();
+          .attachMatched(this._onRouteMatched, this);
+        this._showBusyIndicator();
         this.getView().setModel(new JSONModel(), 'display');
         this.setData();
       },
@@ -36,7 +36,7 @@ sap.ui.define(
       /**
        * empties private filtering array _aStatus
        */
-      onRouteMatched: function () {
+      _onRouteMatched: function () {
         this._aStatus = [];
       },
 
@@ -44,7 +44,7 @@ sap.ui.define(
        * creates filter to display only the sales orders which are dated between the two selected dates
        * @param {} oEvent
        */
-      onDateRangeSelect: function (oEvent) {
+      _onDateRangeSelect: function (oEvent) {
         const oSource = oEvent.getSource();
         this._dStartDate = oSource.getDateValue()
           ? new Date(oSource.getDateValue())
@@ -69,7 +69,7 @@ sap.ui.define(
       /**
        * upon selecting a status pushes it into private filter array
        */
-      onSelectData: function (oEvent) {
+      _onSelectData: function (oEvent) {
         const status = this.convertStatus(
           oEvent.getParameter('data')[0].data.Status
         );
@@ -82,7 +82,7 @@ sap.ui.define(
        * deletes selected status from filter array upon deselection
        * @param {} oEvent
        */
-      onDeselectData: function (oEvent) {
+      _onDeselectData: function (oEvent) {
         const status = this.convertStatus(
           oEvent.getParameter('data')[0].data.Status
         );
@@ -93,7 +93,7 @@ sap.ui.define(
        * navigates to second page and passes parameters such as the location, array of selected statuses, and the selected date range (as template String) in URI
        * @param {} oEvent
        */
-      onChartPressed: function (oEvent) {
+      _onChartPressed: function (oEvent) {
         this.getRouter().navTo('secondPage', {
           location: oEvent.getSource().getSubtitle(),
           dateRange: this.convertDateRangeToTemplateString(
@@ -102,19 +102,6 @@ sap.ui.define(
           ),
           selectedStatus: this._aStatus.toString(),
         });
-      },
-
-      filterOrders(oSalesOrders, sSalesOrg, sStatus) {
-        return oSalesOrders.results.filter(
-          (e) =>
-            e.SalesOrganization === sSalesOrg &&
-            e.OverallDeliveryStatus === sStatus
-        ).length;
-      },
-
-      filterStatuses(oStatuses, sStatus) {
-        oStatuses = this.getOwnerComponent().getModel('statusModel').getData();
-        return oStatuses.filter((e) => e.oStatuses === sStatus);
       },
 
       /**
@@ -127,11 +114,11 @@ sap.ui.define(
       setData: function (oFilter) {
         Promise.all([
           this.createSalesOrgModel(),
-          this.getSalesOrders(oFilter),
+          this._getSalesOrders(oFilter),
         ]).then((aValues) => {
           const [, aSalesOrders] = aValues;
           //aValues[0] = Resultat von createSalesOrganizationModel = undefined
-          //aValues[1] = Resultat von _getSalesOrders
+          //aValues[1] = Resultat von __getSalesOrders
         });
 
         this.getOwnerComponent()
@@ -187,44 +174,21 @@ sap.ui.define(
                           'A'
                          ),
                        },
-                       {
-                         status: this.filterStatuses(
-                           element.status,
-                           'B'
-                           this.getText('invoiceStatusB')
-                         ),
-                         quantity: this.filterOrders(
-                           data,
-                           element.organization,
-                           'B'
-                         ),
-                       },
-                       {
-                         status: this.filterStatuses(
-                           element.status,
-                           'C'
-                           this.getText('invoiceStatusC')
-                         ),
-                          quantity: this.filterOrders(
-                            data,
-                            element.organization,
-                            'C'
-                   ),
-                   },
+                       
                    ],
                    };
                    console.log(this._aSalesOffices);
                    this._aSalesOffices.push(oObject); */
-                   
+
                 });
 
                 this.getView()
                   .getModel('display')
                   .setData({ offices: /* this._aSalesOffices */ aLocations });
                 console.log(this.getView().getModel('display').getData());
-                this.hideBusyIndicator();
+                this._hideBusyIndicator();
               });
-              this._aSalesOffices = [];
+              /* this._aSalesOffices = []; */
               if (data.results.length === 0) {
                 MessageBox.warning(this.getText('noOrdersInTimeSpan'));
               }
@@ -237,7 +201,7 @@ sap.ui.define(
        * @param {} oFilter
        * @returns Promise
        */
-      getSalesOrders: function (oFilter) {
+      _getSalesOrders: function (oFilter) {
         return new Promise((resolve, reject) => {
           this.getOwnerComponent()
             .getModel()
@@ -253,12 +217,12 @@ sap.ui.define(
         });
       },
 
-      hideBusyIndicator: function () {
+      _hideBusyIndicator: function () {
         BusyIndicator.hide();
         /* this.byId('grid').setBusy(false); */
       },
 
-      showBusyIndicator: function () {
+      _showBusyIndicator: function () {
         BusyIndicator.show(1000);
         /* this.byId('grid').setBusy(true); */
       },

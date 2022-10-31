@@ -28,9 +28,9 @@ sap.ui.define(
 
         this.setModel(
           new JSONModel([
-            { status: 'A', name: 'Offen' },
+            { status: 'A', name: 'Erfasst' },
             { status: 'B', name: 'In Bearbeitung' },
-            { status: 'C', name: 'Abgeschlossen' },
+            { status: 'C', name: 'Ausgeführt' },
           ]),
           'statusModel'
         );
