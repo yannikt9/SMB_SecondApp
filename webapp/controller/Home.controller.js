@@ -116,7 +116,7 @@ sap.ui.define(
           this._getSalesOrders(oFilter),
         ]).then((aValues) => {
           const [, aSalesOrders] = aValues;
-          //aValues[0] = Resultat von createSalesOrganizationModel = undefined
+          //aValues[0] = Resultat von createSalesOrgModel = undefined
           //aValues[1] = Resultat von __getSalesOrders
         });
 
@@ -127,8 +127,8 @@ sap.ui.define(
             success: (data) => {
               this.createSalesOrgModel().then(() => {
                 const aSalesOffices = this.getSalesOrgModel().map((e) => ({
-                  organization: e.SalesOrganization,
-                  organizationName: e.SalesOrganizationName,
+                  org: e.SalesOrganization,
+                  orgName: e.SalesOrganizationName,
                 }));
                 const aLocations = [];
                 aSalesOffices.forEach((element) => {
@@ -139,7 +139,7 @@ sap.ui.define(
                     .map((eStatus) => {
                       const iOrderLenght = data.results.filter(
                         (elm) =>
-                          elm.SalesOrganization === element.organization &&
+                          elm.SalesOrganization === element.org &&
                           elm.OverallDeliveryStatus === eStatus.status
                       ).length;
                       iOrderCounter += iOrderLenght;
@@ -150,8 +150,8 @@ sap.ui.define(
                     });
                   if (iOrderCounter >= 1) {
                     aLocations.push({
-                      SalesOfficeNumber: element.organization,
-                      SalesOfficeName: element.organizationName,
+                      SalesOfficeNumber: element.org,
+                      SalesOfficeName: element.orgName,
                       Statuses: aStatuses,
                     });
                   }
