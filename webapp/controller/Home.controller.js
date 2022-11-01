@@ -135,7 +135,7 @@ sap.ui.define(
                 aSalesOffices.forEach((element) => {
                   let iOrderCounter = 0;
                   const aStatuses = this.getOwnerComponent()
-                    .getModel('statusModel')
+                    .getModel('status')
                     .getData()
                     .map((eStatus) => {
                       const iOrderLenght = data.results.filter(

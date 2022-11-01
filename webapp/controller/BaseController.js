@@ -1,6 +1,10 @@
 sap.ui.define(
-  ['sap/ui/core/mvc/Controller', 'sap/ui/model/json/JSONModel'],
-  function (Controller, JSONModel) {
+  ['sap/ui/core/mvc/Controller', 'sap/ui/model/json/JSONModel',
+	"sap/ui/model/FilterOperator",
+	"sap/apf/utils/Filter"],
+  function (Controller,
+	JSONModel,
+	FilterOperator) {
     return Controller.extend('project1.controller.BaseController', {
       /**
        * gets Model
@@ -37,7 +41,10 @@ sap.ui.define(
        * @returns {String} text of i18n
        */
       getText: function (sString) {
-        return this.getView().getModel('i18n').getResourceBundle().getText(sString);
+        return this.getView()
+          .getModel('i18n')
+          .getResourceBundle()
+          .getText(sString);
       },
 
       /**
@@ -59,7 +66,7 @@ sap.ui.define(
       },
 
       /**
-       * if a start date has been selected, combines two values into a template String split 
+       * if a start date has been selected, combines two values into a template String split
        * by an exclamation mark for ease of separation at the second page to pass on in URI
        *
        * @param {Date} dStartDate
@@ -91,11 +98,9 @@ sap.ui.define(
                 $expand: 'to_Text',
               },
               success: (salesOrgs) => {
-                const aSalesOrg  = salesOrgs.results
-                  .map((element) => 
-                     element.to_Text.results.find(
-                      (e) => e.Language === 'DE'
-                    )
+                const aSalesOrg = salesOrgs.results
+                  .map((element) =>
+                    element.to_Text.results.find((e) => e.Language === 'DE')
                   )
                   .filter((element) => element !== undefined);
                 this.setModel(new JSONModel(aSalesOrg), 'salesOrg');
@@ -114,6 +119,33 @@ sap.ui.define(
        */
       getSalesOrgModel() {
         return this.getModel('salesOrg').getData();
+      },
+
+      createFilterModel() {
+        this.setModel(
+          new JSONModel({
+            sStatus: {
+              path: 'OverallDeliveryStatus',
+              Operator: FilterOperator.EQ,
+              value1: null,
+            },
+            salesOrg: {
+              path: 'SalesOrganization',
+              Operator: FilterOperator.EQ,
+              value1: null,
+            },
+            date: {
+              path: 'SalesOrderDate',
+              Operator: FilterOperator.BT,
+              value1: null,
+              value2: null,
+            },
+          }),
+          'filter'
+        );
+      },
+      getFilterModel() {
+        return this.getModel('filterModel').getData();
       },
     });
   }

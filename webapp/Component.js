@@ -32,7 +32,7 @@ sap.ui.define(
             { status: 'B', name: 'In Bearbeitung' },
             { status: 'C', name: 'Ausgeführt' },
           ]),
-          'statusModel'
+          'status'
         );
       },
     });
