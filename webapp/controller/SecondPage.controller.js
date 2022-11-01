@@ -51,7 +51,7 @@ sap.ui.define(
         }
         this.getView().byId('statusSelection').setSelectedKeys(this._aStatus);
         this.getView()
-          .byId('salesOrganizationSelection')
+          .byId('salesOrgSelection')
           .setSelectedKey(args.location);
         this._sLocation = args.location;
         this.createSalesOrgModel().then(() => {
@@ -95,7 +95,7 @@ sap.ui.define(
        * event handler that changes the sales organization
        * @param {} oEvent
        */
-      onSalesOrganizationChanged: function (oEvent) {
+      onSalesOrgChanged: function (oEvent) {
         this._sLocation = oEvent.getSource().getSelectedKey();
         this._filterChange();
       },
@@ -128,7 +128,7 @@ sap.ui.define(
         this._filterChange();
         this.getView().byId('statusSelection').setSelectedKeys(null);
         this.getView()
-          .byId('salesOrganizationSelection')
+          .byId('salesOrgSelection')
           .setSelectedKey(this._sLocation);
 
         this.getView()

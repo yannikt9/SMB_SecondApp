@@ -19,7 +19,6 @@ sap.ui.define(
       _dStartDate: undefined,
       _dEndDate: undefined,
       _aStatus: [],
-      _aSalesOffices : [],
 
       /**
        * sets model "display", while it's loading, calls for busy indicator and appeals to private set data function to filter appropriately
@@ -117,7 +116,7 @@ sap.ui.define(
           this._getSalesOrders(oFilter),
         ]).then((aValues) => {
           const [, aSalesOrders] = aValues;
-          //aValues[0] = Resultat von createSalesOrganizationModel = undefined
+          //aValues[0] = Resultat von createSalesOrgModel = undefined
           //aValues[1] = Resultat von __getSalesOrders
         });
 
@@ -128,8 +127,8 @@ sap.ui.define(
             success: (data) => {
               this.createSalesOrgModel().then(() => {
                 const aSalesOffices = this.getSalesOrgModel().map((e) => ({
-                  organization: e.SalesOrganization,
-                  organizationName: e.SalesOrganizationName,
+                  org: e.SalesOrganization,
+                  orgName: e.SalesOrganizationName,
                 }));
                 const aLocations = [];
                 aSalesOffices.forEach((element) => {
@@ -140,7 +139,7 @@ sap.ui.define(
                     .map((eStatus) => {
                       const iOrderLenght = data.results.filter(
                         (elm) =>
-                          elm.SalesOrganization === element.organization &&
+                          elm.SalesOrganization === element.org &&
                           elm.OverallDeliveryStatus === eStatus.status
                       ).length;
                       iOrderCounter += iOrderLenght;
@@ -149,11 +148,10 @@ sap.ui.define(
                         quantity: iOrderLenght,
                       };
                     });
-                  console.log(aStatuses);
                   if (iOrderCounter >= 1) {
                     aLocations.push({
-                      SalesOfficeNumber: element.organization,
-                      SalesOfficeName: element.organizationName,
+                      SalesOfficeNumber: element.org,
+                      SalesOfficeName: element.orgName,
                       Statuses: aStatuses,
                     });
                   }
@@ -177,18 +175,15 @@ sap.ui.define(
                        
                    ],
                    };
-                   console.log(this._aSalesOffices);
                    this._aSalesOffices.push(oObject); */
 
                 });
 
                 this.getView()
                   .getModel('display')
-                  .setData({ offices: /* this._aSalesOffices */ aLocations });
-                console.log(this.getView().getModel('display').getData());
+                  .setData({ offices: aLocations });
                 this._hideBusyIndicator();
               });
-              /* this._aSalesOffices = []; */
               if (data.results.length === 0) {
                 MessageBox.warning(this.getText('noOrdersInTimeSpan'));
               }

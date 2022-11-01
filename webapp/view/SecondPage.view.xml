@@ -78,13 +78,13 @@
 								name="filterBarSalesOrganization"
 								groupName="ASD"
 								visibleInFilterBar="true"
-								label="{i18n>salesOrganization}"
+								label="{i18n>salesOrg}"
 							>
 								<fb:control>
 									<ComboBox
-										id="salesOrganizationSelection"
-										placeholder="{i18n>salesOrganization}"
-										change=".onSalesOrganizationChanged"
+										id="salesOrgSelection"
+										placeholder="{i18n>salesOrg}"
+										change=".onSalesOrgChanged"
 										width="13rem"
 										items="{salesOrg>/}"
 									>
@@ -144,7 +144,7 @@
 						<Label text="{i18n>salesOrder}"/>
 					</Column>
 					<Column width="20%">
-						<Label text="{i18n>salesOrganization}"/>
+						<Label text="{i18n>salesOrg}"/>
 					</Column>
 					<Column width="25%">
 						<Label text="{i18n>deliveryStatus}"/>
