@@ -53,8 +53,7 @@
 									<MultiComboBox
 										id="statusSelection"
 										placeholder="{i18n>deliveryStatus}"
-										selectionChange="onStatusSelectionChange"
-										selectionFinish="onStatusSelectionFinished"
+										selectionFinish=".onStatusSelectionFinished"
 										width="13rem"
 									>
 										<items>

@@ -117,7 +117,7 @@ sap.ui.define(
         ]).then((aValues) => {
           const [, aSalesOrders] = aValues;
           //aValues[0] = Resultat von createSalesOrgModel = undefined
-          //aValues[1] = Resultat von __getSalesOrders
+          //aValues[1] = Resultat von _getSalesOrders
         });
 
         this.getOwnerComponent()

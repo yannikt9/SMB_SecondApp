@@ -12,13 +12,15 @@ sap.ui.define(
       _sLocation: '',
       _dStartDate: '',
       _dEndDate: '',
-      _aStatus: [],
+      /* _aStatus: [], */
 
       /**
        * routes to second page
        * loads correct data by decoding URI parameters
        */
       onInit: function () {
+        this.createSalesOrgModel();
+        this.createFilterModel();
         this.getRouter()
           .getRoute('secondPage')
           .attachPatternMatched(this._onObjectMatched, this);
@@ -30,54 +32,59 @@ sap.ui.define(
        * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
-        this._aStatus = [];
+        /* this._aStatus = []; */
         const args = oEvent.getParameter('arguments');
         this.getView()
           .byId('dateSelection')
           .setPlaceholder(this.getText('calendarPlaceholder'));
 
-        if (args.selectedStatus) {
-          this._aStatus = args.selectedStatus.split(',');
-        }
+        this.getModel('filter').setProperty(
+          '/selectedStatus/value1',
+          args.selectedStatus
+        );
 
-        if (args.dateRange) {
+        if (args.dateRange) {  //--> to Model
           const [iStart, iEnd] = args.dateRange.split('!');
           this._dStartDate = new Date(parseInt(iStart, 10));
           this._dEndDate = new Date(parseInt(iEnd, 10));
 
           this.getView()
             .byId('dateSelection')
-            .setValue(`${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`);
+            .setValue(
+              `${this._dStartDate.toLocaleDateString()} - ${this._dEndDate.toLocaleDateString()}`
+            );
         }
-        this.getView().byId('statusSelection').setSelectedKeys(this._aStatus);
-        this.getView()
-          .byId('salesOrgSelection')
-          .setSelectedKey(args.location);
-        this._sLocation = args.location;
+
+        this.getView().byId('salesOrgSelection').setSelectedKey(args.location);
+        this.getModel('filter').setProperty('/location/value1', args.location);
+        console.log(this.getFilterModel().location.value1);
+        /* this.createSalesOrgModel().then(()=> {
+          let data = this.getSalesOrgModel();
+          console.log(data);
+          console.log(data[0].SalesOrganizationName);
+        }) */
         this.createSalesOrgModel().then(() => {
+          const value1 =
+            this.getModel('filter').getProperty('/location/value1');
           this.getView()
             .byId('secondPageTitle')
             .setText(
-              this.getSalesOrgModel().filter(
-                (e) => e.SalesOrganization === this._sLocation
-              )[0].SalesOrganizationName
+              this.getSalesOrgModel().find(
+                (e) => e.SalesOrganization === value1
+              ).SalesOrganizationName
             );
         });
         this._applyFilters();
       },
 
       /**
-       * event handler that changes selected status and filter
-       * @param {} oEvent
-       */
-      onStatusSelectionChange: function (oEvent) {
-        this._aStatus = oEvent.getSource().getSelectedKeys();
-      },
-
-      /**
        * event handler, after status has been selected
        */
-      onStatusSelectionFinished: function () {
+      onStatusSelectionFinished: function (oEvent) {
+        this.getModel('filter').setProperty(
+          '/selectedStatus/value1',
+          oEvent.getSource().getSelectedKeys().toString()
+        );
         this._filterChange();
       },
 
@@ -96,7 +103,7 @@ sap.ui.define(
        * @param {} oEvent
        */
       onSalesOrgChanged: function (oEvent) {
-        this._sLocation = oEvent.getSource().getSelectedKey();
+        this._sLocation = oEvent.getSource().getSelectedKey(); //--> to Model
         this._filterChange();
       },
 
@@ -122,18 +129,16 @@ sap.ui.define(
        * @param {} oEvent
        */
       onDeleteFilter: function () {
-        this._aStatus = [];
-        this._dStartDate = null;
-        this._dEndDate = null;
+        this.getModel('filter').setProperty('/selectedStatus/value1', null);
+        this._dStartDate = null;  //--> to Model
+        this._dEndDate = null; //--> to Model
         this._filterChange();
         this.getView().byId('statusSelection').setSelectedKeys(null);
         this.getView()
           .byId('salesOrgSelection')
-          .setSelectedKey(this._sLocation);
+          .setSelectedKey(this._sLocation);  //--> to Model
 
-        this.getView()
-          .byId('dateSelection')
-          .setValue(null)
+        this.getView().byId('dateSelection').setValue(null);
       },
 
       /**
@@ -141,28 +146,28 @@ sap.ui.define(
        */
       _applyFilters() {
         const aFilters = [];
-        if (this._sLocation) {
-          aFilters.push(
-            new Filter('SalesOrganization', FilterOperator.EQ, this._sLocation)
-          );
-        }
-        if (this._aStatus.length !== 0) {
-          this._aStatus.forEach((element) => {
-            aFilters.push(
-              new Filter('OverallDeliveryStatus', FilterOperator.EQ, element)
+
+        const filterData = this.getFilterModel();
+        /* this.getModel("filter").setProperty("/location/value1", this._sLocation) */
+        filterData.location.value1 = this._sLocation;
+        console.log(filterData);
+        /* console.log(this.getFilterModel()); */
+        Object.entries(filterData).forEach((e) => {
+          const [key, value] = e;
+          console.log(e);
+          if (!value.value1) return;
+          if (key === 'selectedStatus' && value.value1.length > 1) {
+            const values = value.value1.split(',');
+            values.forEach((el) =>
+              aFilters.push(new Filter(value.path, value.operator, el))
             );
-          });
-        }
-        if (this._dEndDate && this._dStartDate) {
+            return;
+          }
           aFilters.push(
-            new Filter(
-              'SalesOrderDate',
-              FilterOperator.BT,
-              this._dStartDate,
-              this._dEndDate
-            )
+            new Filter(value.path, value.operator, value.value1, value.value2)
           );
-        }
+        });
+
         this.getView()
           .byId('orderTable')
           .getBinding('items')
@@ -174,9 +179,14 @@ sap.ui.define(
        */
       _filterChange: function () {
         this.getRouter().navTo('secondPage', {
-          location: this._sLocation,
-          dateRange: this.convertDateRangeToTemplateString(this._dStartDate, this._dEndDate),
-          selectedStatus: this._aStatus.toString(),
+          location: this._sLocation, //--> from Model
+          dateRange: this.convertDateRangeToTemplateString( //--> from Model
+            this._dStartDate,
+            this._dEndDate
+          ),
+          selectedStatus: this.getModel('filter').getProperty(
+            '/selectedStatus/value1'
+          ),
         });
       },
     });

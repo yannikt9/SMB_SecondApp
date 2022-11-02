@@ -1,10 +1,10 @@
 sap.ui.define(
-  ['sap/ui/core/mvc/Controller', 'sap/ui/model/json/JSONModel',
-	"sap/ui/model/FilterOperator",
-	"sap/apf/utils/Filter"],
-  function (Controller,
-	JSONModel,
-	FilterOperator) {
+  [
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/model/FilterOperator',
+  ],
+  function (Controller, JSONModel, FilterOperator) {
     return Controller.extend('project1.controller.BaseController', {
       /**
        * gets Model
@@ -124,19 +124,21 @@ sap.ui.define(
       createFilterModel() {
         this.setModel(
           new JSONModel({
-            sStatus: {
+            selectedStatus: {
               path: 'OverallDeliveryStatus',
-              Operator: FilterOperator.EQ,
+              operator: FilterOperator.EQ,
               value1: null,
+              value2: null,
             },
-            salesOrg: {
+            location: {
               path: 'SalesOrganization',
-              Operator: FilterOperator.EQ,
+              operator: FilterOperator.EQ,
               value1: null,
+              value2: null,
             },
-            date: {
+            dateRange: {
               path: 'SalesOrderDate',
-              Operator: FilterOperator.BT,
+              operator: FilterOperator.BT,
               value1: null,
               value2: null,
             },
@@ -145,7 +147,7 @@ sap.ui.define(
         );
       },
       getFilterModel() {
-        return this.getModel('filterModel').getData();
+        return this.getModel('filter').getData();
       },
     });
   }
