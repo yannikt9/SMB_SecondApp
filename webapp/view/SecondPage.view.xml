@@ -55,21 +55,12 @@
 										placeholder="{i18n>deliveryStatus}"
 										selectionFinish=".onStatusSelectionFinished"
 										width="13rem"
+										items="{status>/}"
 									>
-										<items>
-											<core:Item
-												key="A"
-												text="{i18n>invoiceStatusA}"
-											/>
-											<core:Item
-												key="C"
-												text="{i18n>invoiceStatusC}"
-											/>
-											<core:Item
-												key="B"
-												text="{i18n>invoiceStatusB}"
-											/>
-										</items>
+										<core:Item
+											key="{status>status}"
+											text="{status>name}"
+										/>
 									</MultiComboBox>
 								</fb:control>
 							</fb:FilterGroupItem>
@@ -106,18 +97,6 @@
 										placeholder="{i18n>calendarPlaceholder}"
 										id="dateSelection"
 										width="13rem"
-										delimiter="{
-											path: '/delimiterDRS1'
-										}"
-										dateValue="{
-											path: '/dateValueDRS1'
-										}"
-										secondDateValue="{
-											path: '/secondDateValueDRS1'
-										}"
-										displayFormat="{
-											path: '/dateFormatDRS1'
-										}"
 										change=".onDateChanged"
 									/>
 								</fb:control>
