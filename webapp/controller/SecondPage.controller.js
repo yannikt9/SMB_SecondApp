@@ -9,10 +9,8 @@ sap.ui.define(
   function (BaseController, Filter, FilterOperator, FilterType, formatter) {
     return BaseController.extend('project1.controller.SecondPage', {
       formatter: formatter,
-      _sLocation: '',
       _dStartDate: '',
       _dEndDate: '',
-      /* _aStatus: [], */
 
       /**
        * routes to second page
@@ -32,7 +30,6 @@ sap.ui.define(
        * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
-        /* this._aStatus = []; */
         const args = oEvent.getParameter('arguments');
         this.getView()
           .byId('dateSelection')
@@ -105,7 +102,7 @@ sap.ui.define(
        * @param {} oEvent
        */
       onSalesOrgChanged: function (oEvent) {
-        this._sLocation = oEvent.getSource().getSelectedKey(); //--> to Model
+        this.getModel("filter").setProperty('/location/value1', oEvent.getSource().getSelectedKey());
         this._filterChange();
       },
 
@@ -132,13 +129,13 @@ sap.ui.define(
        */
       onDeleteFilter: function () {
         this.getModel('filter').setProperty('/selectedStatus/value1', null);
-        this._dStartDate = null; //--> to Model
-        this._dEndDate = null; //--> to Model
+        this.getModel("filter").setProperty('/dateRange/value1', null)
+        this.getModel("filter").setProperty('/dateRange/value2', null)
         this._filterChange();
         this.getView().byId('statusSelection').setSelectedKeys(null);
         this.getView()
           .byId('salesOrgSelection')
-          .setSelectedKey(this._sLocation); //--> to Model
+          .setSelectedKey(this.getModel("filter").getProperty('/location/value1')); 
 
         this.getView().byId('dateSelection').setValue(null);
       },
@@ -150,8 +147,6 @@ sap.ui.define(
         const aFilters = [];
 
         const filterData = this.getFilterModel();
-        /* this.getModel("filter").setProperty("/location/value1", this._sLocation) */
-        filterData.location.value1 = this._sLocation;
         console.log(filterData);
         /* console.log(this.getFilterModel()); */
         Object.entries(filterData).forEach((e) => {
@@ -181,11 +176,10 @@ sap.ui.define(
        */
       _filterChange: function () {
         this.getRouter().navTo('secondPage', {
-          location: this._sLocation, //--> from Model
+          location: this.getModel("filter").getProperty('/location/value1'),
           dateRange: this.convertDateRangeToTemplateString(
-            //--> from Model
-            this._dStartDate,
-            this._dEndDate
+            this.getModel("filter").getProperty('/dateRange/value1'),
+            this.getModel("filter").getProperty('/dateRange/value2')
           ),
           selectedStatus: this.getModel('filter').getProperty(
             '/selectedStatus/value1'
