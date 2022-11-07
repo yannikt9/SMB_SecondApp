@@ -53,7 +53,6 @@ sap.ui.define(
         }
         this.getView().byId('salesOrgSelection').setSelectedKey(args.location);
         this.getModel('filter').setProperty('/location/value1', args.location);
-        console.log(this.getFilterModel().location.value1);
         this.createSalesOrgModel().then(() => {
           const value1 =
             this.getModel('filter').getProperty('/location/value1');
@@ -86,11 +85,8 @@ sap.ui.define(
       onDateChanged: function (oEvent) {
         const dStartDate = new Date(oEvent.getSource().getDateValue());
         const dEndDate = new Date(oEvent.getSource().getSecondDateValue());
-        // console.log(dStartDate);
         this.getModel('filter').setProperty('/dateRange/value1', dStartDate);
-        // console.log(this.getModel('filter').getProperty('/dateRange/value1'));
         this.getModel('filter').setProperty('/dateRange/value2', dEndDate);
-        // console.log(this.getModel('filter').getProperty('/dateRange/value2'));
         this._filterChange();
       },
 
@@ -149,11 +145,8 @@ sap.ui.define(
         const aFilters = [];
 
         const filterData = this.getFilterModel();
-        console.log(filterData);
-        /* console.log(this.getFilterModel()); */
         Object.entries(filterData).forEach((e) => {
           const [key, value] = e;
-          console.log(e);
           if (!value.value1) return;
           if (key === 'selectedStatus' && value.value1.length > 1) {
             const values = value.value1.split(',');
@@ -179,8 +172,6 @@ sap.ui.define(
       _filterChange: function () {
         const start = this.getModel('filter').getProperty('/dateRange/value1');
         const end = this.getModel('filter').getProperty('/dateRange/value2');
-        console.log(start);
-        console.log(end);
         this.getRouter().navTo('secondPage', {
           location: this.getModel('filter').getProperty('/location/value1'),
           dateRange: this.convertDateRangeToTemplateString(start, end),
