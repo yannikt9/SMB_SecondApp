@@ -13,12 +13,19 @@
     "@sap/ux-ui5-fe-mockserver-middleware": "1",
     "@sap/ux-ui5-tooling": "1",
     "@ui5/cli": "^2.14.1",
+    "@wdio/cli": "^7.25.4",
+    "@wdio/local-runner": "^7.25.4",
+    "@wdio/mocha-framework": "^7.25.4",
+    "@wdio/spec-reporter": "^7.25.4",
+    "chromedriver": "^107.0.3",
     "eslint": "^8.2.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.25.2",
     "prettier": "2.7.1",
-    "ui5-task-eslint": "^1.0.2"
+    "ui5-task-eslint": "^1.0.2",
+    "wdio-chromedriver-service": "^8.0.0",
+    "wdio-ui5-service": "^0.9.15"
   },
   "scripts": {
     "start": "fiori run --open \"test/flpSandbox.html?sap-client=700&sap-ui-xx-viewCache=false#project1-display\"",
