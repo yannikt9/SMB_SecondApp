@@ -74,15 +74,12 @@ sap.ui.define(
        * @returns {String} template String
        */
       convertDateRangeToTemplateString: function (dStartDate, dEndDate) {
-        if (!dStartDate) {
+        if (!dStartDate || !dEndDate) {
           return '';
         }
-
-        if (!dEndDate) {
-          return '';
-        }
-
-        return `${dStartDate.getTime()}!${dEndDate.getTime()}`;
+        const startDate = new Date(dStartDate);
+        const endDate = new Date(dEndDate);
+        return `${startDate.getTime()}!${endDate.getTime()}`;
       },
 
       /**

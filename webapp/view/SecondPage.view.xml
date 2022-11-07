@@ -90,13 +90,17 @@
 								name="filterBarDateRange"
 								label="{i18n>timeFrame}"
 								groupName="ASD"
+								
 								visibleInFilterBar="true"
 							>
 								<fb:control>
 									<DateRangeSelection
+									dateValue="{filter>/dateRange/value1}"
+									secondDateValue="{filter>/dateRange/value2}"
 										placeholder="{i18n>calendarPlaceholder}"
 										id="dateSelection"
 										width="13rem"
+										valueFormat="dd.MM.yyyy"
 										change=".onDateChanged"
 									/>
 								</fb:control>
