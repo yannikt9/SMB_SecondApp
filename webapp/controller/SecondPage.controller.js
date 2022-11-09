@@ -43,13 +43,6 @@ sap.ui.define(
           const endDate = new Date(parseInt(iEnd, 10));
           this.getModel('filter').setProperty('/dateRange/value1', startDate);
           this.getModel('filter').setProperty('/dateRange/value2', endDate);
-          /* this.getView()
-            .byId('dateSelection')
-            .setValue(
-              `${this.getModel('filter').getProperty(
-                '/dateRange/value1'
-              ).toLocaleDateString()} - ${this.getModel('filter').getProperty('/dateRange/value2')}`
-            ); */
         }
         this.getView().byId('salesOrgSelection').setSelectedKey(args.location);
         this.getModel('filter').setProperty('/location/value1', args.location);
@@ -129,12 +122,6 @@ sap.ui.define(
         this.getModel('filter').setProperty('/dateRange/value2', null);
         this._filterChange();
         this.getView().byId('statusSelection').setSelectedKeys(null);
-        this.getView()
-          .byId('salesOrgSelection')
-          .setSelectedKey(
-            this.getModel('filter').getProperty('/location/value1')
-          );
-
         this.getView().byId('dateSelection').setValue(null);
       },
 
