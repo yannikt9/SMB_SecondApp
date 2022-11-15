@@ -73,6 +73,7 @@
 								<fb:control>
 									<ComboBox
 										id="salesOrgSelection"
+										selectedKey="{filter>/location/value1}"
 										placeholder="{i18n>salesOrg}"
 										change=".onSalesOrgChanged"
 										width="13rem"
