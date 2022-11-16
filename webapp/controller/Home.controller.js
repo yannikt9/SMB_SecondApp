@@ -21,7 +21,8 @@ sap.ui.define(
       _aStatus: [],
 
       /**
-       * sets model "display", while it's loading, calls for busy indicator and appeals to private set data function to filter appropriately
+       * Sets model "display", while it's loading, shows global busy indicator and
+       * Appeals to private "set data" function to filter appropriately
        */
       onInit: function () {
         this.getRouter()
@@ -33,14 +34,14 @@ sap.ui.define(
       },
 
       /**
-       * empties private filtering array _aStatus
+       * Empties private filtering array _aStatus
        */
       _onRouteMatched: function () {
         this._aStatus = [];
       },
 
       /**
-       * creates filter to display only the sales orders which are dated between the two selected dates
+       * Creates filter to only display sales orders which set between the two selected dates
        * @param {} oEvent
        */
       _onDateRangeSelect: function (oEvent) {
@@ -66,7 +67,7 @@ sap.ui.define(
       },
 
       /**
-       * upon selecting a status pushes it into private filter array
+       * Upon selection of a status pushes it into private filter array
        */
       _onSelectData: function (oEvent) {
         const status = this.convertStatus(
@@ -78,7 +79,7 @@ sap.ui.define(
       },
 
       /**
-       * deletes selected status from filter array upon deselection
+       * Upon deselection of a status pushes deletes it into private filter array
        * @param {} oEvent
        */
       _onDeselectData: function (oEvent) {
@@ -89,7 +90,8 @@ sap.ui.define(
       },
 
       /**
-       * navigates to second page and passes parameters such as the location, array of selected statuses, and the selected date range (as template String) in URI
+       * Event handler that navigates to second page,
+       * Passes parameters location, array of selected statuses, and the selected date range in URI
        * @param {} oEvent
        */
       _onChartPressed: function (oEvent) {
@@ -104,10 +106,11 @@ sap.ui.define(
       },
 
       /**
-       * creates an array of sales offices which is then used to sieve through all sales orders
-       * and create a model with parameters such as the amount of times each status is represented
-       * in the data for a given sales organization, as well as its name applies all filters
-       * passes results into model "display"
+       * Promises to get all data models
+       * Creates an array of sales offices
+       * Loops through data and dynamically creates a map of statuses and the amount of times each one is represented 
+       * Passes results into model "display"
+       * 
        * @param {sap.ui.model.Filter} [oFilter]
        */
       setData: function (oFilter) {
@@ -116,8 +119,8 @@ sap.ui.define(
           this._getSalesOrders(oFilter),
         ]).then((aValues) => {
           const [, aSalesOrders] = aValues;
-          //aValues[0] = Resultat von createSalesOrgModel = undefined
-          //aValues[1] = Resultat von _getSalesOrders
+          //aValues[0] = Result of createSalesOrgModel = undefined
+          //aValues[1] = Result of _getSalesOrders
         });
 
         this.getOwnerComponent()
@@ -137,15 +140,15 @@ sap.ui.define(
                     .getModel('status')
                     .getData()
                     .map((eStatus) => {
-                      const iOrderLenght = data.results.filter(
+                      const iOrderLength = data.results.filter(
                         (elm) =>
                           elm.SalesOrganization === element.org &&
                           elm.OverallDeliveryStatus === eStatus.status
                       ).length;
-                      iOrderCounter += iOrderLenght;
+                      iOrderCounter += iOrderLength;
                       return {
                         status: eStatus.name,
-                        quantity: iOrderLenght,
+                        quantity: iOrderLength,
                       };
                     });
                   if (iOrderCounter >= 1) {
@@ -155,30 +158,7 @@ sap.ui.define(
                       Statuses: aStatuses,
                     });
                   }
-
-                  /* const oObject = {
-                     SalesOfficeNumber: element.organization,
-                     SalesOfficeName: element.organizationName,
-                     Statuses: [
-                      {
-                         status: this.filterStatuses(
-                           element.status,
-                           'A'
-                           this.getText('invoiceStatusA')
-                         ),
-                         quantity: this.filterOrders(
-                           data,
-                           element.organization,
-                          'A'
-                         ),
-                       },
-                       
-                   ],
-                   };
-                   this._aSalesOffices.push(oObject); */
-
                 });
-
                 this.getView()
                   .getModel('display')
                   .setData({ offices: aLocations });
@@ -186,13 +166,14 @@ sap.ui.define(
               });
               if (data.results.length === 0) {
                 MessageBox.warning(this.getText('noOrdersInTimeSpan'));
+                return;
               }
             },
           });
       },
 
       /**
-       * promises to create model
+       * Promises to create model
        * @param {} oFilter
        * @returns Promise
        */
@@ -212,14 +193,17 @@ sap.ui.define(
         });
       },
 
-      _hideBusyIndicator: function () {
-        BusyIndicator.hide();
-        /* this.byId('grid').setBusy(false); */
-      },
-
+      /**
+       * Global busy indicator, is a separate function for ease of future deployment in grids
+       */
       _showBusyIndicator: function () {
         BusyIndicator.show(1000);
         /* this.byId('grid').setBusy(true); */
+      },
+
+      _hideBusyIndicator: function () {
+        BusyIndicator.hide();
+        /* this.byId('grid').setBusy(false); */
       },
     });
   }

@@ -2,17 +2,16 @@ sap.ui.define(
   [
     './BaseController',
     'sap/ui/model/Filter',
-    'sap/ui/model/FilterOperator',
     'sap/ui/model/FilterType',
     '../model/formatter',
   ],
-  function (BaseController, Filter, FilterOperator, FilterType, formatter) {
+  function (BaseController, Filter, FilterType, formatter) {
     return BaseController.extend('project1.controller.SecondPage', {
       formatter: formatter,
 
       /**
-       * routes to second page
-       * loads correct data by decoding URI parameters
+       * Routes to second page
+       * Loads correct data by decoding URI parameters
        */
       onInit: function () {
         this.createSalesOrgModel();
@@ -23,8 +22,8 @@ sap.ui.define(
       },
 
       /**
-       * filters data if filters have been passed from first page
-       * displays passed over filters
+       * Filters data in case filter arguments have been passed over from home page
+       * Displays said filters
        * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
@@ -44,6 +43,11 @@ sap.ui.define(
           this.getModel('filter').setProperty('/dateRange/value1', startDate);
           this.getModel('filter').setProperty('/dateRange/value2', endDate);
         }
+        if (args.selectedStatus) {
+          this.getView()
+            .byId('statusSelection')
+            .setSelectedKeys(args.selectedStatus.split(','));
+        }
         this.getView().byId('salesOrgSelection').setSelectedKey(args.location);
         this.getModel('filter').setProperty('/location/value1', args.location);
         this.createSalesOrgModel().then(() => {
@@ -61,7 +65,7 @@ sap.ui.define(
       },
 
       /**
-       * event handler, after status has been selected
+       * Event handler that filters model using selected statuses
        */
       onStatusSelectionFinished: function (oEvent) {
         this.getModel('filter').setProperty(
@@ -72,7 +76,7 @@ sap.ui.define(
       },
 
       /**
-       * event handler that changes date and filter
+       * Event handler that filters model using selected date range
        * @param {} oEvent
        */
       onDateChanged: function (oEvent) {
@@ -84,7 +88,7 @@ sap.ui.define(
       },
 
       /**
-       * event handler that changes the sales organization
+       * Event handler that filters model by selected sales organization
        * @param {} oEvent
        */
       onSalesOrgChanged: function (oEvent) {
@@ -96,7 +100,7 @@ sap.ui.define(
       },
 
       /**
-       * navigates to third page and passes according sales order and business partner through URI
+       * Navigates to third page and passes according sales order and business partner through URI
        * @param {} oEvent
        */
       onRowPressed: function (oEvent) {
@@ -113,7 +117,7 @@ sap.ui.define(
       },
 
       /**
-       * empties all filters
+       * Empties all filters
        * @param {} oEvent
        */
       onDeleteFilter: function () {
@@ -126,11 +130,11 @@ sap.ui.define(
       },
 
       /**
-       * creates a filter array by checking if values are given
+       * Creates a filter array by checking if values are given
+       * Applies filter array to table
        */
       _applyFilters() {
         const aFilters = [];
-
         const filterData = this.getFilterModel();
         Object.entries(filterData).forEach((e) => {
           const [key, value] = e;
@@ -154,7 +158,7 @@ sap.ui.define(
       },
 
       /**
-       * changes URI when filters change
+       * Updates URI when filters change
        */
       _filterChange: function () {
         const start = this.getModel('filter').getProperty('/dateRange/value1');

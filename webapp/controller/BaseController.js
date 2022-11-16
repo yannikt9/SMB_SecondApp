@@ -7,7 +7,7 @@ sap.ui.define(
   function (Controller, JSONModel, FilterOperator) {
     return Controller.extend('project1.controller.BaseController', {
       /**
-       * gets Model
+       * Convenience function which gets model
        * @param {String} [sName]
        * @returns {Object} Data model
        */
@@ -19,7 +19,7 @@ sap.ui.define(
       },
 
       /**
-       * sets Model
+       * Convenience function which gets model
        * @param {Object} oModel
        * @param {String} sName
        */
@@ -28,17 +28,17 @@ sap.ui.define(
       },
 
       /**
-       * gets Router
-       * @returns {Object} Router
+       * Convenience function which gets router
+       * @returns {Object} router
        */
       getRouter: function () {
         return this.getOwnerComponent().getRouter();
       },
 
       /**
-       * creates shortcut for i18n resource bundle
+       * Convenience function which gets i18n resource bundle
        * @param {String} sString
-       * @returns {String} text of i18n
+       * @returns {String} text from i18n
        */
       getText: function (sString) {
         return this.getView()
@@ -48,9 +48,9 @@ sap.ui.define(
       },
 
       /**
-       * converts status into character
+       * Converts status into character
        * @param {String} sStatus
-       * @returns statusString
+       * @returns status String
        */
       convertStatus: function (sStatus) {
         switch (sStatus) {
@@ -66,8 +66,8 @@ sap.ui.define(
       },
 
       /**
-       * if a start date has been selected, combines two values into a template String split
-       * by an exclamation mark for ease of separation at the second page to pass on in URI
+       * If dates have been selected, combines two parameters into a template String to pass on in URI
+       * Split by an exclamation mark for ease of separation at the second page
        *
        * @param {Date} dStartDate
        * @param {Date} dEndDate
@@ -83,7 +83,7 @@ sap.ui.define(
       },
 
       /**
-       * creates model salesOrg using promise, due to asynchronized structure of JavaScript
+       * Creates model salesOrg using promise to avoid problems with asynchronous buildup
        * @returns {Promise} salesOrg
        */
       createSalesOrgModel() {
@@ -111,7 +111,7 @@ sap.ui.define(
       },
 
       /**
-       * gets model of sales organizations
+       * Convenience function which gets model of sales organizations
        * @returns {Object} salesOrg
        */
       getSalesOrgModel() {
@@ -143,6 +143,11 @@ sap.ui.define(
           'filter'
         );
       },
+
+      /**
+       * Convenience function which gets filter model
+       * @returns {Object} 'filter'
+       */
       getFilterModel() {
         return this.getModel('filter').getData();
       },

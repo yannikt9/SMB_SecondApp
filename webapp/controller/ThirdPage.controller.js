@@ -3,17 +3,19 @@ sap.ui.define(
   function (BaseController, formatter, JSONModel) {
     return BaseController.extend('project1.controller.ThirdPage', {
       formatter: formatter,
+
       /**
-       * sets bound models to Third Page
+       * Sets bound models in third page
        */
       onInit: function () {
-        this.getView().setModel(new JSONModel(), 'businessPartnerModel');
+        this.getView().setModel(new JSONModel(), 'businessPartner');
         this.getRouter()
           .getRoute('thirdPage')
           .attachPatternMatched(this._onObjectMatched, this);
       },
+      
       /**
-       * reads corresponding models out of URI template strings
+       * Reads arguments for model out of URI template strings
        * @param {} oEvent
        */
       _onObjectMatched: function (oEvent) {
@@ -28,7 +30,7 @@ sap.ui.define(
               $expand: 'to_BusinessPartnerAddress',
             },
             success: (data) => {
-              this.getView().getModel('businessPartnerModel').setData(data);
+              this.getView().getModel('businessPartner').setData(data);
             },
           });
       },
